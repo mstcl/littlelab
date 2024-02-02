@@ -1,0 +1,23 @@
+---
+- name: Install ladder
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "ladder"
+    service_image: "ghcr.io/kubero-dev/ladder"
+    image_tag: "latest"
+    url: "{{ urls.ladder }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8080
+        middlewares:
+          - "internal-ip@file"

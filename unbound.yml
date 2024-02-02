@@ -1,0 +1,54 @@
+---
+- name: Install unbound
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "unbound"
+    service_image: "mvance/unbound"
+    image_tag: "latest"
+    network: "dns-net"
+    config_file: "unbound.conf"
+
+  pre_tasks:
+    - name: Create docker network for adguard and unbound
+      tags:
+        - docker
+        - network
+      community.docker.docker_network:
+        name: "{{ network }}"
+        ipam_config:
+          - subnet: 172.27.0.0/24
+
+  roles:
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
+            owner: "1000"
+            permission: "0755"
+        copies:
+          - file_name: "{{ config_file }}"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+            permission: "0644"
+    - role: docker
+      tags: docker
+      vars:
+        run: false
+
+  post_tasks:
+    - name: Fetch root hints
+      tags: update
+      ansible.builtin.uri:
+        url: 'https://www.internic.net/domain/named.cache'
+        method: GET
+        dest: "{{ base_directory }}/{{ service_directory }}/config/root.hints"
+      register: result
+
+    - name: Start compose file
+      tags: ["docker", "deploy"]
+      community.docker.docker_compose:
+        project_src: "{{ base_directory }}/{{ service_directory }}"
+        state: present
+        pull: false
+        remove_orphans: true

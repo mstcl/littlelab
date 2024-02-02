@@ -1,0 +1,27 @@
+---
+
+# - name: Create docker network
+#   community.docker.docker_network:
+#     name: "{{ network }}"
+#   when: network is defined
+
+- name: Deploy docker compose file
+  tags: docker
+  ansible.builtin.template:
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
+    mode: "0644"
+
+- name: Add redis
+  tags: docker
+  ansible.builtin.include_tasks: add_redis.yml
+  when: attach_redis
+
+- name: Start compose file
+  tags: ["docker", "deploy"]
+  community.docker.docker_compose:
+    project_src: "{{ base_directory }}/{{ service_directory }}"
+    state: present
+    pull: false
+    remove_orphans: true
+  when: run

@@ -1,0 +1,37 @@
+# Base variables
+base_hostname: examplebox # override the (decorative) hostname
+base_user: cats
+base_group: cats
+base_user_id: "1000"
+base_group_id: "1000"
+base_timezone: "Gnu/Linux"
+base_directory: "/path/homelab" # where compose and config files will be stored
+base_tld: "example.cats"
+base_tailip: "100.12.12.12" # headscale/tailscale ip of the box
+base_dns_ip: "172.12.12.12" # unbound dns
+base_dns_port: "1234" # unbound dns port
+
+# Core locations for storage and media
+location:
+  docker_data: "/my_data"
+  cache: "/cache"
+  films: "/my_films"
+  music: "/my_music"
+  books: "/my_books"
+  repos: "/my_repos"
+  downloads: "/my_downloads"
+
+# List of private repositories to reroute for cgit
+private_repos:
+  - "passwords"
+  - "secrets"
+
+# Reverse proxy urls for our services
+urls:
+  # this format will give plex.example.cats
+  plex: "plex"
+
+  # this format will give admin.example.cats/pihole
+  pihole:
+    sub: "admin"
+    path: "pihole"

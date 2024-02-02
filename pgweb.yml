@@ -1,0 +1,31 @@
+---
+- name: Install pgweb
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "pgweb"
+    service_image: "sosedoff/pgweb"
+    image_tag: "latest"
+    network: "pg-net"
+    url: "{{ urls.pgweb }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/bookmarks"
+            owner: "1000"
+            permission: "0755"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8081
+        middlewares:
+         - "internal-ip@file"
+
+- import_playbook: pgweb_bookmarks.yml

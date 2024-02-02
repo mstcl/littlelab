@@ -1,0 +1,7 @@
+---
+- name: Copy file
+  ansible.builtin.copy:
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/files/{{ item.file_name }}"
+    dest: "{{ item.destination_path }}/{{ item.file_name }}"
+    mode: "{{ item.permission }}"
+  with_items: "{{ copies }}"

@@ -1,0 +1,26 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ docker.traefik_network }}:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network }}
+    tty: true
+    stdin_open: true
+    environment:
+      READECK_LOG_LEVEL: "info"
+      READECK_SERVER_HOST: "0.0.0.0"
+      READECK_SERVER_PORT: 8000
+      READECK_SERVER_PREFIX: "/"
+      READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
+      READECK_USE_X_FORWARDED: "true"
+    volumes:
+      - {{ location.docker_data }}/{{ service_directory }}:/readeck

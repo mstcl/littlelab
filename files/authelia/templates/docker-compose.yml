@@ -1,0 +1,38 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ docker.traefik_network }}:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network}}
+    user: 4100:4100
+    cap_drop:
+      - AUDIT_WRITE
+      - MKNOD
+      - SYS_CHROOT
+      - NET_RAW
+      - SETFCAP
+      - SYS_PTRACE
+      - SYS_ADMIN
+    environment:
+      AUTHELIA_JWT_SECRET_FILE: /secrets/jwt
+      AUTHELIA_SESSION_SECRET_FILE: /secrets/session
+      AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE: /secrets/storage
+      AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE: /secrets/hmac
+      AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE: /secrets/oidc
+    volumes:
+      - ./config:/config
+      - {{ location.docker_data }}/{{ service_directory }}/data:/data
+      - ./secrets/AUTHELIA_JWT_SECRET:/secrets/jwt
+      - ./secrets/AUTHELIA_SESSION_SECRET:/secrets/session
+      - ./secrets/AUTHELIA_STORAGE_ENCRYPTION_KEY:/secrets/storage
+      - ./secrets/AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET:/secrets/hmac
+      - ./secrets/AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY:/secrets/oidc

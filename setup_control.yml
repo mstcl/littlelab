@@ -1,0 +1,21 @@
+- name: Setup control node
+  gather_facts: true
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Install collections
+      community.general.ansible_galaxy_install:
+        type: both
+        requirements_file: "requirements.yml"
+
+    - name: Install packages
+      tags: packages
+      ansible.builtin.include_role:
+        name: packages
+      vars:
+        pip:
+          - "infisical==1.6.0"
+        native:
+          # Useful for debugging infisical
+          - "infisical-bin"

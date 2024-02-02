@@ -1,0 +1,150 @@
+---
+
+theme: auto
+default_redirection_url: https://{{ base_tld }}/
+default_2fa_method: totp
+
+server:
+  host: 0.0.0.0
+  port: 9091
+  path: ""
+  enable_pprof: false
+  enable_expvars: false
+  disable_healthcheck: false
+
+  tls:
+    key: ""
+    certificate: ""
+    client_certificates: []
+
+  headers:
+    csp_template: ""
+  buffers:
+    read: 10485760
+    write: 10485760
+
+log:
+  level: debug
+
+telemetry:
+  metrics:
+    enabled: false
+    address: tcp://0.0.0.0:9959
+    buffers:
+      read: 4096
+      write: 4096
+
+    timeouts:
+      read: 6s
+      write: 6s
+      idle: 30s
+
+totp:
+  disable: false
+  issuer: {{ expanded_url }}
+  algorithm: sha1
+  digits: 6
+  period: 30
+  skew: 1
+  secret_size: 32
+
+webauthn:
+  disable: false
+  timeout: 60s
+  display_name: BimAuth
+  attestation_conveyance_preference: indirect
+  user_verification: preferred
+
+ntp:
+  address: "time.cloudflare.com:123"
+  version: 4
+  max_desync: 3s
+  disable_startup_check: false
+  disable_failure: false
+
+authentication_backend:
+  file:
+    path: /config/users.yml
+    watch: false
+    search:
+      email: true
+      case_insensitive: false
+    password:
+      algorithm: argon2
+      argon2:
+        variant: argon2id
+        iterations: 3
+        memory: 65536
+        parallelism: 4
+        key_length: 32
+        salt_length: 16
+
+  password_reset:
+    disable: false
+    custom_url: ""
+
+  refresh_interval: 5m
+
+password_policy:
+  standard:
+    enabled: true
+    min_length: 10
+    max_length: 0
+    require_uppercase: true
+    require_lowercase: true
+    require_number: true
+    require_special: true
+
+  zxcvbn:
+    enabled: false
+    min_score: 3
+
+access_control:
+  default_policy: deny
+  rules:
+  - domain: '*.{{ base_tld }}'
+    policy: two_factor
+
+session:
+  name: authelia_session
+  domain: {{ base_tld }}
+  same_site: lax
+  expiration: 1h
+  inactivity: 45m
+  remember_me_duration: 1M
+
+regulation:
+  max_retries: 3
+  find_time: 2m
+  ban_time: 5m
+
+storage:
+  local:
+    path: /data/db.sqlite3
+
+notifier:
+  disable_startup_check: true
+  smtp:
+    host: {{ smtp_host }}
+    port: 465
+    username: "{{ smtp_user }}"
+    password: "{{ smtp_password }}"
+    sender: "{{ smtp_sender }}"
+    subject: "[Authelia] {title}"
+    timeout: 5s
+    disable_require_tls: true
+    disable_starttls: true
+    disable_html_emails: true
+
+identity_providers:
+  oidc:
+    access_token_lifespan: 1h
+    authorize_code_lifespan: 20m
+    id_token_lifespan: 1h
+    refresh_token_lifespan: 90m
+    enable_client_debug_messages: false
+    cors:
+      endpoints:
+        - userinfo
+      allowed_origins_from_client_redirect_uris: true
+    clients:

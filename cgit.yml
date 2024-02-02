@@ -1,0 +1,66 @@
+---
+- import_playbook: cgit_private.yml
+
+- name: Install cgit
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "cgit"
+    service_image: "joseluisq/alpine-cgit"
+    image_tag: "latest"
+    config_file: "cgitrc"
+    css_file: "style.css"
+
+  roles:
+    - role: config
+      tags: config
+      vars:
+        files:
+          - template_name: "{{ config_file }}"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+        copies:
+          - file_name: "{{ css_file }}"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+          - file_name: "about.html"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+          - file_name: "header.html"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+          - file_name: "syntax-highlighting.py"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0655"
+          - file_name: "favicon.ico"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+        instance_name: "BIM Git Repositories"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 80
+        rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
+        additional_content: |2
+                priority: 1
+              cgit-private-repos:
+                rule: "{{ concat_rule }}"
+                service: "{{ service_directory }}"
+                priority: 10
+                middlewares:
+                  - "rewrite-cgit@file"
+                  - "internal-ip@file"
+              cgit-private:
+                rule: "Host(`private-{{ expanded_url }}`)"
+                service: "{{ service_directory }}"
+                middlewares:
+                  - "internal-ip@file"
+
+            middlewares:
+              rewrite-cgit:
+                redirectRegex:
+                  regex: "^https://{{ expanded_url }}/(.*)"
+                  replacement: "https://private-{{ expanded_url }}/${1}"

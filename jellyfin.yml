@@ -1,0 +1,29 @@
+---
+- name: Install jellyfin
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "jellyfin"
+    service_image: "jellyfin/jellyfin"
+    image_tag: "latest"
+    url: "{{ urls.jellyfin }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+          - path: "{{ location.cache }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 8096
+        middlewares:
+         - "internal-ip@file"

@@ -1,0 +1,23 @@
+---
+- name: Install headscale-panel
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "headscale-panel"
+    service_image: "simcu/headscale-ui"
+    image_tag: "latest"
+    url: "{{ urls['headscale-panel'] }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 80
+        middlewares:
+         - "internal-ip@file"

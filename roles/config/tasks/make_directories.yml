@@ -1,0 +1,9 @@
+---
+
+- name: Make files/directories
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: "{{ item.owner }}"
+    state: "{{ item.state | default('directory') }}"
+    mode: "{{ item.permission }}"
+  with_items: "{{ directories }}"

@@ -1,0 +1,63 @@
+---
+- name: Install headscale
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "headscale"
+    service_image: "headscale/headscale"
+    image_tag: "latest"
+    url: "{{ urls.headscale }}"
+    config_file: "config.yaml"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}/socket"
+            owner: "3010"
+            permission: "0755"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/data"
+            owner: "3010"
+            permission: "0755"
+        files:
+          - template_name: "{{ config_file }}"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+    - role: docker
+      tags: docker
+      vars:
+        run: false
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8080
+        middlewares:
+          - "cors@file"
+          - "internal-ip@file"
+        additional_content: |2
+            middlewares:
+              cors:
+                headers:
+                  accessControlAllowMethods: ["GET", "OPTIONS", "PUT"]
+                  accessControlAllowHeaders: "*"
+                  accessControlAllowOriginListRegex: ["https?://(.*)\\.bim\\.boats"]
+                  accessControlMaxAge: 100
+                  addVaryHeader: "true"
+
+  post_tasks:
+    - name: Change permission of directories
+      tags: permission
+      become: true
+      ansible.builtin.shell: "sudo chown -R headscale:headscale \
+                              {{ location.docker_data }}/{{ service_directory }}/*"
+
+    - name: Start compose file
+      tags: ["docker", "deploy"]
+      community.docker.docker_compose:
+        project_src: "{{ base_directory }}/{{ service_directory }}"
+        state: present
+        pull: false
+        remove_orphans: true

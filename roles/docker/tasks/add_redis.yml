@@ -1,0 +1,26 @@
+---
+- name: Add redis service
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
+    prepend_newline: true
+    marker: "  # {mark} REDIS CONFIGURATION"
+    content: |2
+        {{ service_directory }}-redis:
+          image: redis:{{ docker.redis_image_tag }}
+          container_name: {{ service_directory }}-redis
+          restart: always
+          security_opt:
+            - no-new-privileges:true
+          networks:
+            - {{ network }}
+          read_only: true
+          volumes:
+            - {{ location.docker_data }}/{{ service_directory }}_redis:/data
+          cap_drop:
+            - ALL
+          cap_add:
+            - CHOWN
+            - SETGID
+            - SETUID

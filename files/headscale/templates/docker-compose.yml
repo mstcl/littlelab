@@ -1,0 +1,20 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ docker.traefik_network }}:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network}}
+    user: 3010:971
+    volumes:
+      - ./{{ config_file }}:/etc/headscale/config.yaml
+      - {{ location.docker_data }}/{{ service_directory }}:/data
+    entrypoint: headscale serve

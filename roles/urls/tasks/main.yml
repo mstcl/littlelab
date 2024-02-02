@@ -1,0 +1,12 @@
+---
+- name: Parse URL
+  tags: urls
+  ansible.builtin.set_fact:
+    expanded_url: "{% if url.path is undefined %}{{ url + '.' + base_tld }}\
+       {% else %}{{ url.sub + '.' + base_tld + '/' + url.path }}{% endif %}"
+
+- name: Append urls
+  tags: urls
+  set_fact:
+    all_urls: "{{ all_urls | default([]) + [expanded_url] }}"
+  when: accumulate

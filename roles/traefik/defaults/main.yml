@@ -1,0 +1,4 @@
+---
+redirect: false
+trailing_slash: true
+create_service: true

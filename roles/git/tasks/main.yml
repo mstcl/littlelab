@@ -1,0 +1,9 @@
+---
+- name: Clone repo with specific branch
+  ansible.builtin.git:
+    repo: "{{ repo }}"
+    dest: "{{ destination }}"
+    clone: true
+    version: "{{ branch }}"
+    single_branch: true
+    update: true

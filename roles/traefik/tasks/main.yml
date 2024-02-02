@@ -1,0 +1,31 @@
+---
+- name: Make service config for Traefik
+  ansible.builtin.template:
+    src: "{{ hostvars.localhost.base_directory }}/files/traefik/templates/service.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ filename | default(service_directory) }}.yml"
+
+- name: Add additional blocks
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/traefik/dynamic/{{ filename | default(service_directory) }}.yml"
+    marker: "  # {mark} ADDITIONAL CONFIGURATION"
+    content: "{{ additional_content }}"
+  when: additional_content is defined
+
+- name: Configure path redirect
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/traefik/dynamic/{{ filename | default(service_directory) }}.yml"
+    marker: "  #  {mark} PATH REDIRECT CONFIGURATION"
+    content: |2
+        middlewares:
+          {{ service_directory }}-strip:
+            stripprefix:
+              prefixes: "/{{ url.path }}{{ '/' if trailing_slash == True}}"
+          {{ service_directory }}-redirect:
+            redirectregex:
+              regex: "^(.*)/{{ url.path }}$"
+              replacement: "$1/{{ url.path }}/"
+  when: redirect == True

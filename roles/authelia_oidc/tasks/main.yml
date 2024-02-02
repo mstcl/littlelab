@@ -1,0 +1,41 @@
+---
+
+- name: Clear facts
+  tags: authelia
+  ansible.builtin.set_fact:
+    expanded_url: ""
+
+- name: Get url
+  tags: authelia
+  ansible.builtin.include_role:
+    name: urls
+
+- name: Add an OIDC block to Authelia configuration
+  tags: authelia
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: "    clients:"
+    dest: "{{ base_directory }}/authelia/config/configuration.yml"
+    marker: "      # {mark} {{ service_name|upper }} CONFIGURATION"
+    content: |2
+            - id: {{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_' + service_name|upper +'_ID').value }}
+              description: {{ service_name }}
+              secret: '{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_'+ service_name|upper +'_DIGEST').value }}'
+              public: false
+              authorization_policy: two_factor
+              redirect_uris:
+      {% for uri in redirect_uris %}
+                - {{ uri }}
+      {% endfor %}
+              scopes:
+      {% if scopes is undefined %}
+                - openid
+                - profile
+                - groups
+                - email
+      {% else %}
+      {% for scope in item.scopes %}
+                - {{ scope }}
+      {% endfor %}
+      {% endif %}
+              userinfo_signing_algorithm: none

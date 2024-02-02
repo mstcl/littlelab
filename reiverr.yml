@@ -1,0 +1,28 @@
+---
+- name: Install reiverr
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "reiverr"
+    service_image: "ghcr.io/aleksilassila/reiverr"
+    image_tag: "latest"
+    url: "{{ urls.reiverr }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 9494
+        middlewares:
+          - "internal-ip@file"

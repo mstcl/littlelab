@@ -1,0 +1,8 @@
+---
+- name: Template configuration file
+  tags: template
+  ansible.builtin.template:
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/{{ item.template_name }}"
+    dest: "{{ item.destination_path }}/{{ item.file_name | default(item.template_name) }}"
+    mode: "{{ item.permission }}"
+  with_items: "{{ files }}"

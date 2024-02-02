@@ -1,0 +1,28 @@
+---
+- name: Install actual
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "actual"
+    service_image: "actualbudget/actual-server"
+    image_tag: "latest"
+    url: "{{ urls.actual }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 5006
+        middlewares:
+         - "internal-ip@file"

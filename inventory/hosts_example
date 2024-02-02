@@ -1,0 +1,4 @@
+localhost ansible_connection=local
+
+[example_group]
+examplebox ansible_user=cats ansible_host=111.222.333.444 ansible_port=22

@@ -1,0 +1,36 @@
+---
+- name: Install baikal
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "baikal"
+    service_image: "robinthrift/baikal"
+    image_tag: "0.9.3-nginx"
+    url: "{{ urls.baikal }}"
+    config_file: "baikal.yml"
+    password_hash: "{{ lookup('infisical.vault.read_secrets', path='/baikal', env_slug='prod', secret_name='BAIKAL_PASSWORD_HASHED').value }}"
+    invite_email: "{{ lookup('infisical.vault.read_secrets', path='/baikal', env_slug='prod', secret_name='BAIKAL_INVITE_EMAIL').value }}"
+    db_encryption_key: "{{ lookup('infisical.vault.read_secrets', path='/baikal', env_slug='prod', secret_name='BAIKAL_DB_ENCRYPTION_KEY').value }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+        files:
+          - template_name: "{{ config_file }}"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0666"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8080
+        middlewares:
+         - "internal-ip@file"

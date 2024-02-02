@@ -1,0 +1,23 @@
+---
+- name: Install morss
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "morss"
+    service_image: "pictuga/morss"
+    image_tag: "latest"
+    url: " {{ urls.morss }}"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8000
+        middlewares:
+         - "internal-ip@file"

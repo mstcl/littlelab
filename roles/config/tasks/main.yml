@@ -1,0 +1,20 @@
+---
+- name: Make service directory
+  ansible.builtin.file:
+    path: "{{ base_directory }}/{{ service_directory }}"
+    owner: "1000"
+    state: directory
+    mode: "0755"
+
+- name: Make additional files/directories
+  ansible.builtin.include_tasks: make_directories.yml
+  when: directories is defined
+
+- name: Template configuration files
+  tags: template
+  ansible.builtin.include_tasks: template_files.yml
+  when: files is defined
+
+- name: Copy other files
+  ansible.builtin.include_tasks: copy_files.yml
+  when: copies is defined
