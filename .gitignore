@@ -1,0 +1,11 @@
+inventory/hosts
+files/adguard-home/files/persistent_clients.yml
+files/authelia/files/users.yml
+vars/adguard-home.yml
+
+host_vars/*.yml
+!host_vars/examplebox.yml
+
+group_vars/*.yml
+
+debug.yml
