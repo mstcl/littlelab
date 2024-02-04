@@ -1,0 +1,11 @@
+---
+upstream_dns:
+  - 'tls://dns.quad9.net'
+fallback_dns:
+  - 'tls://unfiltered.adguard-dns.com'
+filters:
+  - url: https://my_filter.com
+    name: Very Big Filter
+    id: 1
+user_rules:
+  - '@@||example.com'

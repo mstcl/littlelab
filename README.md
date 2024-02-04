@@ -37,3 +37,12 @@ overwritten remote configuration to
 this is done, we can set `add_persistent_config: true`. This file is ignored in
 git as it is somewhat sensitive so we must store our own configuration
 elsewhere.
+
+The playbook also reads from `vars/adguard-home.yml` to configure user rules,
+upstream DNS, fallback DNS and blocklists. See the
+[example](./vars/adguard-home_example.yml) provided.
+
+### Authelia
+
+We must bring our own `users.yml`, which should be placed in
+`files/authelia/files/users.yml`.
