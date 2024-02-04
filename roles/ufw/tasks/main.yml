@@ -1,0 +1,34 @@
+---
+- name: Open port (whitelisted)
+  tags: firewall
+  community.general.ufw:
+    rule: allow
+    port: "{{ port }}"
+    protocol: "{{ ufw_protocol }}"
+    src: "{{ item }}"
+    comment: "{{ comment | default(service_directory) }}"
+  loop:
+    - 10.0.0.0/8
+    - 172.16.0.0/12
+    - 192.168.0.0/16
+    - 100.64.0.0/10
+    - 127.0.0.0/8
+    - fd7a:115c:a1e0::/48
+  become: true
+  when: local
+
+- name: Open port (all)
+  tags: firewall
+  community.general.ufw:
+    rule: allow
+    port: "{{ port }}"
+    protocol: "{{ ufw_protocol }}"
+    comment: "{{ comment | default(service_directory) }}"
+  become: true
+  when: not local
+
+- name: Reload firewall
+  tags: firewall
+  community.general.ufw:
+    state: reloaded
+  become: true

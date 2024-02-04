@@ -1,0 +1,32 @@
+---
+- name: Install watchyourlan
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "watchyourlan"
+    service_image: "aceberg/watchyourlan"
+    image_tag: "1.0.6"
+    url: "{{ urls.watchyourlan }}"
+
+  roles:
+    - role: ufw
+      vars:
+        port: 8840
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 8840
+            url: "{{ base_lanip }}"
+        middlewares:
+          - "internal-ip@file"
