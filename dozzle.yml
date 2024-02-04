@@ -5,7 +5,7 @@
   vars:
     service_directory: "dozzle"
     service_image: "amir20/dozzle"
-    image_tag: "latest"
+    image_tag: "v6.2.0"
     network: "socket-net"
     url: "{{ urls.dozzle }}"
 

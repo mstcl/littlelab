@@ -21,6 +21,7 @@ services:
     ports:
       - 80:10080
       - 443:10443
+      - 22:10022
     environment:
       CLOUDFLARE_EMAIL: "{{ cf_email }}"
       CLOUDFLARE_DNS_API_TOKEN: "{{ cf_token }}"

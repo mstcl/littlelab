@@ -36,7 +36,6 @@
           - port: 8080
         middlewares:
           - "cors@file"
-          - "internal-ip@file"
         additional_content: |2
             middlewares:
               cors:

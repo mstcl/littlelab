@@ -36,21 +36,23 @@
   roles:
     - role: urls
     - role: config
-      tags: config
       vars:
         directories:
           - path: "{{ base_directory }}/{{ service_directory }}/dynamic"
             owner: "1000"
             permission: "0755"
           - path: "{{ location.docker_data }}/{{ service_directory }}/certs"
-            owner: "1000"
+            owner: "2001"
             permission: "0755"
           - path: "{{ location.docker_data }}/{{ service_directory }}/plugins/sources"
-            owner: "1000"
+            owner: "2001"
             permission: "0755"
           - path: "/var/log/traefik"
             owner: "0"
             permission: "0755"
+    - role: config
+      tags: config
+      vars:
         files:
           - template_name: "{{ config_file }}"
             destination_path: "{{ base_directory }}/{{ service_directory }}"

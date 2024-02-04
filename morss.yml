@@ -6,7 +6,7 @@
     service_directory: "morss"
     service_image: "pictuga/morss"
     image_tag: "latest"
-    url: " {{ urls.morss }}"
+    url: "{{ urls.morss }}"
 
   roles:
     - role: urls

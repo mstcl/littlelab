@@ -1,13 +1,18 @@
-http:
+{{ protocol }}:
 {% if create_service == True %}
   services:
     {{ service_name | default(service_directory) }}:
       loadBalancer:
         servers:
 {% for server in servers %}
+{% if protocol == 'http' %}
           - url: "http://{{ server.url | default(service_directory) }}:{{ server.port }}"
+{% else %}
+          - address: "{{ server.url | default(service_directory) }}:{{ server.port }}"
+{% endif %}
 {% endfor %}
 {% endif %}
+{% if add_router %}
   routers:
 {% if router_name is defined %}
     {{ router_name }}:
@@ -22,6 +27,9 @@ http:
       rule: "Host(`{{ url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ url.path }}`)"
 {% endif %}
       service: "{{ service_name | default(service_directory) }}"
+      tls:
+        options: modern@file
+{% if protocol == 'http' %}
       middlewares:
 {% if redirect == True %}
         - {{ service_directory }}-strip
@@ -31,4 +39,6 @@ http:
 {% for middleware in middlewares %}
         - {{ middleware }}
 {% endfor %}
+{% endif %}
+{% endif %}
 {% endif %}

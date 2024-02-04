@@ -105,7 +105,7 @@
           - app.immich://
 
   post_tasks:
-    - name: Restrict secrets
+    - name: Restrict access
       become: true
       tags: permission
       block:
@@ -121,6 +121,14 @@
           ansible.builtin.shell: "sudo chmod 600 \
                                   {{ base_directory }}/{{ service_directory }}/\
                                   secrets/*"
+        - name: Change owners of configs
+          ansible.builtin.shell: "sudo chown 4100:4100 \
+                                  {{ base_directory }}/{{ service_directory }}/\
+                                  config/*"
+        - name: Change access of configs
+          ansible.builtin.shell: "sudo chmod 600 \
+                                  {{ base_directory }}/{{ service_directory }}/\
+                                  config/*"
 
     - name: Start compose file
       tags: ["docker", "deploy"]
