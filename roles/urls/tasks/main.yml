@@ -2,8 +2,8 @@
 - name: Parse URL
   tags: urls
   ansible.builtin.set_fact:
-    expanded_url: "{% if url.path is undefined %}{{ url + '.' + base_tld }}\
-       {% else %}{{ url.sub + '.' + base_tld + '/' + url.path }}{% endif %}"
+    expanded_url: "{%if url != base_tld %}{% if url.path is undefined %}{{ url + '.' + base_tld }}\
+       {% else %}{{ url.sub + '.' + base_tld + '/' + url.path }}{% endif %}{% else %}{{base_tld}}{% endif %}"
 
 - name: Append urls
   tags: urls
