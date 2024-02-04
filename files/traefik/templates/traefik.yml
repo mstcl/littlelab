@@ -3,8 +3,6 @@ global:
   sendAnonymousUsage: false
 
 entryPoints:
-  ssh:
-    address: ":10022"
   web:
     address: ":10080"
     forwardedHeaders:

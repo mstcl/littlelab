@@ -16,6 +16,13 @@
     password: "{{ lookup('infisical.vault.read_secrets', path='/adguard', env_slug='prod', secret_name='ADGUARD_PASSWORD_HASH').value }}"
 
   roles:
+    - role: ufw
+      vars:
+        port: 53
+    - role: ufw
+      vars:
+        port: 53
+        ufw_protocol: "udp"
     - role: urls
     - role: config
       tags: config

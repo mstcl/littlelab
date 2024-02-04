@@ -1,4 +1,5 @@
 ---
 collections:
   - name: community.docker
-    name: infisical.vault
+  - name: infisical.vault
+  - name: community.general

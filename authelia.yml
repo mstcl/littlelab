@@ -23,6 +23,7 @@
       tags: urls
     - role: config
       tags: config
+      become: true
       vars:
         directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"

@@ -9,6 +9,9 @@
     url: "{{ urls.sftpgo }}"
 
   roles:
+    - role: ufw
+      vars:
+        port: 2022
     - role: urls
       tags: url
     - role: config

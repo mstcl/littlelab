@@ -3,13 +3,11 @@ http:
     internal-ip:
       ipWhiteList:
         sourceRange:
-          - "10.0.2.0/24"
           - "10.0.0.0/8"
           - "172.0.0.0/8"
           - "192.168.0.0/16"
           - "100.64.0.0/10"
           - "fd7a:115c:a1e0::/48"
-          - "10.0.24.0/24"
           - "127.0.0.0/8"
     gzip-compress:
       compress:

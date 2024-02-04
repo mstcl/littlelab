@@ -15,6 +15,10 @@
     chat_id: "{{ lookup('infisical.vault.read_secrets', path='/telegram', env_slug='prod', secret_name='CHAT_ID').value }}"
 
   roles:
+    - role: ufw
+      vars:
+        local: false
+        port: 50300
     - role: urls
     - role: config
       tags: config
