@@ -1,0 +1,53 @@
+---
+- name: Install nginx-private
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "nginx-private"
+    service_image: "nginx"
+    image_tag: "mainline-alpine"
+    config_file: "nginx.conf"
+
+  roles:
+    - role: config
+      tags: config
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/conf.d"
+            owner: "1000"
+            permission: "0755"
+        copies:
+          - file_name: "nginx.conf"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+          - file_name: "default.conf"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/conf.d"
+            permission: "0644"
+          - file_name: "error.html"
+            destination_path: "{{ base_directory }}/{{ service_directory }}"
+            permission: "0644"
+    - role: nginx
+      tags: nginx
+      vars:
+        configs:
+          - config_name: "homepage"
+            server_url: "{{ base_tld }}"
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 80
+        router_name: "private-dashboard"
+        rule: "Host(`{{ base_tld }}`)"
+        middlewares:
+          - "public-dashboard@file"
+          - "internal-ip@file"
+        additional_content: |2
+            middlewares:
+              public-dashboard:
+                errors:
+                  status: 403
+                  service: "nginx"
+                  query: "/index.html"

@@ -1,0 +1,8 @@
+---
+- name: Add a config
+  tags: nginx
+  ansible.builtin.template:
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/site.conf"
+    dest: "{{ base_directory }}/{{ service_directory }}/conf.d/{{ item.config_name }}.conf"
+    mode: "0644"
+  with_items: "{{ configs }}"
