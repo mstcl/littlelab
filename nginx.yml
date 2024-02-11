@@ -1,9 +1,9 @@
 ---
-- name: Install nginx-private
+- name: Install nginx
   hosts: homelab
   gather_facts: false
   vars:
-    service_directory: "nginx-private"
+    service_directory: "nginx"
     service_image: "nginx"
     image_tag: "mainline-alpine"
     config_file: "nginx.conf"

@@ -1,0 +1,44 @@
+server {
+	listen 80;
+	server_name  {{ item.server_url }};
+	set $domain_name {{ item.server_url }};
+	if ($http_host != $domain_name) {
+		return 403;
+	}
+
+	gzip_types text/css application/javascript image/svg+xml;
+	gzip_vary on;
+
+	client_max_body_size 20M;
+
+	add_header X-Frame-Options SAMEORIGIN;
+	add_header X-Content-Type-Options nosniff;
+	add_header X-XSS-Protection "1; mode=block";
+
+	location / {
+		proxy_pass $proxpass;
+		rewrite ^(.+)/+$ $1 permanent;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	}
+
+	location = /.well-known/security.txt {
+		proxy_pass "http://lemmy-ui";
+	}
+
+	location ~ ^/(api|pictrs|feeds|nodeinfo|.well-known) {
+		proxy_pass "http://lemmy";
+		proxy_http_version 1.1;
+		proxy_set_header Upgrade $http_upgrade;
+		proxy_set_header Connection "upgrade";
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header Host $host;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+	}
+
+	location = /robots.txt {
+		add_header Content-Type text/plain;
+		return 200 "User-Agent: *\nDisallow: /login\nDisallow: /settings\nDisallow: /create_community\n Disallow: /create_post\nDisallow: /create_private_message\nDisallow: /inbox\nDisallow: /setup\nDisallow: /admin\nDisallow: /password_change\nDisallow: /search/\nUser-agent: VelenPublicWebCrawler\nDisallow: /";
+	}
+}

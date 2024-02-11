@@ -46,3 +46,24 @@ upstream DNS, fallback DNS and blocklists. See the
 
 We must bring our own `users.yml`, which should be placed in
 `files/authelia/files/users.yml`.
+
+### NGINX
+
+To get NGINX to work, we consider a few things:
+
+* The `nginx` role, if called without `configs` or `mounts`, configures an
+NGINX instance (that is, making default hardened `nginx.conf` and various files
+and directories).
+* To reverse proxy a service, we call the `nginx` roll with with `configs`
+and/or `mounts`. This should be called within the service playbooks, not the
+corresponding nginx playbooks.
+    * The `config` block lists all the server configurations to
+template into `conf.d`. These templates should be found at
+`roles/nginx/templates/<service>.conf.j2`.
+    * The `mount` block will append bind mounts to the compose file found at
+    `files/<my-nginx-instance>/templates/docker-compose.yml.2`.
+* For example, the `nginx-lemmy` [playbook](./nginx-lemmy.yml) configures an
+NGINX container specifically for Lemmy (with a special `nginx.conf` to override
+the default one, as the default one is too hardened and breaks federation. Then
+inside the `lemmy` [playbook](./lemmy.yml) we call the role `nginx` with a
+`config` block to add the NGINX configuration.

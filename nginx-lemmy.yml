@@ -1,9 +1,9 @@
 ---
-- name: Install nginx-private
+- name: Install nginx-lemmy
   hosts: homelab
   gather_facts: false
   vars:
-    service_directory: "nginx-private"
+    service_directory: "nginx-lemmy"
     service_image: "nginx"
     image_tag: "mainline-alpine"
     config_file: "nginx.conf"
@@ -11,6 +11,8 @@
   roles:
     - role: config
     - role: nginx
+      vars:
+        nginx_config_override: "nginx_lemmy.conf"
     - role: docker
     - role: traefik
       vars:

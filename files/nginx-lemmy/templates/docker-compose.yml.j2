@@ -1,7 +1,7 @@
 version: "{{ docker.compose_version }}"
 
 networks:
-  {{ docker.traefik_network }}:
+  {{ docker.expose_network }}:
     external: true
 
 services:
@@ -12,9 +12,10 @@ services:
     security_opt:
       - no-new-privileges
     networks:
-      - {{ docker.traefik_network}}
+      - {{ docker.expose_network}}
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - ./error.html:/error
       - ./{{ config_file }}:/etc/nginx/nginx.conf:ro
       - ./conf.d:/etc/nginx/conf.d:ro
-      - {{ location.files }}/data/shared/dashboard:/homepage
+      - ./snippets:/etc/nginx/snippets:ro

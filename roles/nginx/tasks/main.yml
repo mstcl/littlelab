@@ -1,8 +1,53 @@
 ---
-- name: Add a config
+- name: Make necessary directories
+  tags: nginx
+  ansible.builtin.file:
+    path: "{{ base_directory }}/{{ service_directory }}/{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "conf.d"
+    - "snippets"
+  when: configs is undefined
+
+- name: Copy default config files
+  tags: nginx
+  ansible.builtin.copy:
+    src: "{{ item.file_name }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/{{ item.dir_name }}/\
+      {{ item.dest_file_name | default(item.file_name) }}"
+    mode: "0644"
+    owner: "1000"
+  loop:
+    - file_name: "{{ nginx_config_override | default('nginx.conf') }}"
+      dest_file_name: "nginx.conf"
+      dir_name: ""
+    - file_name: "error.html"
+      dir_name: ""
+    - file_name: "default.conf"
+      dir_name: "conf.d"
+  when: configs is undefined
+
+- name: Add a templated config
   tags: nginx
   ansible.builtin.template:
-    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/site.conf"
-    dest: "{{ base_directory }}/{{ service_directory }}/conf.d/{{ item.config_name }}.conf"
+    src: "sites/{{ item.config_src | default(item.config_name) }}.conf.j2"
+    dest: "{{ base_directory }}/{{ nginx_flavour }}/conf.d/\
+      {{ item.config_name }}.conf"
     mode: "0644"
   with_items: "{{ configs }}"
+  when: configs is defined
+  notify: Restart {{ nginx_flavour }}
+
+- name: Add a templated config
+  tags: nginx
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/{{ nginx_flavour }}/docker-compose.yml"
+    marker: "      #  {mark} {{ item.reference|upper }}"
+    content: |2
+            - {{ item.host_location }}:{{ item.container_location }}
+  with_items: "{{ mounts }}"
+  when: mounts is defined
+  notify: Restart {{ nginx_flavour }}
