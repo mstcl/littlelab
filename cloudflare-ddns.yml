@@ -6,17 +6,18 @@
     service_directory: "cloudflare-ddns"
     service_image: "favonia/cloudflare-ddns"
     image_tag: "latest"
-    cf_token: "{{ lookup('infisical.vault.read_secrets', path='/cloudflare', env_slug='prod', secret_name='CF_API_TOKEN_DDNS').value }}"
+    cf_token: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/cloudflare', env_slug='prod', secret_name='CF_API_TOKEN_DDNS').value }}"
 
   pre_tasks:
     - name: Get list of urls
+      tags: urls
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item }}"
+        url: "{{ item.value }}"
         accumulate: true
-      loop: "{{ public|flatten(levels=1) }}"
-
+        type: "public"
+      loop: "{{ urls | dict2items }}"
     - name: Join urls
       ansible.builtin.set_fact:
         public_urls: "{{ all_urls | join(',') }}"

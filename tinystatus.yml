@@ -1,0 +1,64 @@
+---
+- name: Install tinystatus
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "tinystatus"
+    url: "{{ urls.tinystatus }}"
+
+  pre_tasks:
+    - name: Get list of services
+      ansible.builtin.set_fact:
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+      vars:
+        url: "{{ item.value }}"
+      loop: "{{ urls | dict2items }}"
+    - name: Get list of urls
+      ansible.builtin.include_role:
+        name: urls
+      vars:
+        url: "{{ item.value }}"
+        accumulate: true
+        type: "monitor"
+      loop: "{{ urls | dict2items }}"
+
+    - name: Check for tinystatus repo
+      ansible.builtin.stat:
+        path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+      register: clone_results
+
+    - name: Install dependencies
+      tags: packages
+      ansible.builtin.include_role:
+        name: packages
+      vars:
+        native:
+          - gnu-netcat
+
+  roles:
+    - role: git
+      vars:
+        repo: https://github.com/mstcl/tinystatus.git
+        destination: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+        branch: master
+      when: not clone_results.stat.exists
+
+    - role: config
+      tags: config
+      vars:
+        files:
+          - template_name: "checks.csv"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+            permission: "0644"
+        copies:
+          - file_name: "incidents.txt"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+            permission: "0644"
+
+  post_tasks:
+    - name: Make crontab for tinystatus
+      tags: cron
+      ansible.builtin.cron:
+        name: "Update statuspage"
+        minute: "*/2"
+        job: "cd {{ base_directory }}/{{ service_directory }}/tinystatus && ./tinystatus > {{ location.files }}/data/shared/static/status/index.html"

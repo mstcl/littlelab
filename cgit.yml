@@ -10,36 +10,23 @@
     image_tag: "latest"
     config_file: "cgitrc"
     css_file: "style.css"
+    url: "{{ urls.cgit }}"
 
   roles:
+    - role: urls
     - role: config
-      tags: config
       vars:
-        files:
-          - template_name: "{{ config_file }}"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
+        files: [{}]
         copies:
           - file_name: "{{ css_file }}"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
           - file_name: "about.html"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
           - file_name: "header.html"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
           - file_name: "syntax-highlighting.py"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
             permission: "0655"
           - file_name: "favicon.ico"
-            destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
         instance_name: "BIM Git Repositories"
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
         servers:
           - port: 80

@@ -13,9 +13,7 @@
     - role: config
       tags: config
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
         servers:
           - port: 80

@@ -8,15 +8,21 @@
     image_tag: "latest"
     config_file: "configuration.yml"
     url: "{{ urls.authelia }}"
-    smtp_host: "{{ lookup('infisical.vault.read_secrets', path='/smtp', env_slug='prod', secret_name='SMTP_HOST').value }}"
-    smtp_user: "{{ lookup('infisical.vault.read_secrets', path='/smtp', env_slug='prod', secret_name='SMTP_USER').value }}"
-    smtp_password: "{{ lookup('infisical.vault.read_secrets', path='/smtp', env_slug='prod', secret_name='SMTP_PASSWORD').value }}"
-    smtp_sender: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_SMTP_SENDER').value }}"
-    jwt_secret: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_JWT_SECRET').value }}"
-    session_secret: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_SESSION_SECRET').value }}"
-    storage_encryption_key: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_STORAGE_ENCRYPTION_KEY').value }}"
-    hmac: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE').value }}"
-    oidc_private: "{{ lookup('infisical.vault.read_secrets', path='/authelia', env_slug='prod', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE').value }}"
+    # SECRETS
+    smtp_host: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/smtp', env_slug='prod', secret_name='SMTP_HOST').value }}"
+    smtp_user: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/smtp', env_slug='prod', secret_name='SMTP_USER').value }}"
+    smtp_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/smtp', env_slug='prod', secret_name='SMTP_PASSWORD').value }}"
+    smtp_sender: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_SMTP_SENDER').value }}"
+    jwt_secret: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_JWT_SECRET').value }}"
+    session_secret: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_SESSION_SECRET').value }}"
+    storage_encryption_key: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_STORAGE_ENCRYPTION_KEY').value }}"
+    hmac: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE').value }}"
+    oidc_private: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/authelia', env_slug='prod', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE').value }}"
+    # DEFAULTS
+    secret_permissions: &secret_permissions
+      owner: "4100"
+      permission: "0600"
+      destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
 
   roles:
     - role: urls
@@ -28,39 +34,26 @@
         directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
             owner: "4100"
-            permission: "0755"
           - path: "{{ base_directory }}/{{ service_directory }}/config"
-            owner: "1000"
-            permission: "0755"
           - path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            owner: "1000"
-            permission: "0755"
         files:
-          - template_name: "{{ config_file }}"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-            permission: "0644"
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+            owner: "4100"
+            permission: "0600"
           - template_name: "AUTHELIA_JWT_SECRET"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
           - template_name: "AUTHELIA_SESSION_SECRET"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
           - template_name: "AUTHELIA_STORAGE_ENCRYPTION_KEY"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
           - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
           - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
           - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
-            permission: "0644"
+            <<: *secret_permissions
     - role: docker
       tags: docker
-      vars:
-        run: false
     - role: traefik
       tags: traefik
       vars:
@@ -104,37 +97,3 @@
           - https://{{ expanded_url }}/user-settings
           - https://{{ expanded_url }}/api/oauth/mobile-redirect
           - app.immich://
-
-  post_tasks:
-    - name: Restrict access
-      become: true
-      tags: permission
-      block:
-        - name: Change owners of data directory
-          ansible.builtin.shell: "sudo chown -R 4100:4100 \
-                                  {{ location.docker_data }}/{{ service_directory }}/\
-                                  data"
-        - name: Change owners of secrets
-          ansible.builtin.shell: "sudo chown 4100:4100 \
-                                  {{ base_directory }}/{{ service_directory }}/\
-                                  secrets/*"
-        - name: Change mode
-          ansible.builtin.shell: "sudo chmod 600 \
-                                  {{ base_directory }}/{{ service_directory }}/\
-                                  secrets/*"
-        - name: Change owners of configs
-          ansible.builtin.shell: "sudo chown 4100:4100 \
-                                  {{ base_directory }}/{{ service_directory }}/\
-                                  config/*"
-        - name: Change access of configs
-          ansible.builtin.shell: "sudo chmod 600 \
-                                  {{ base_directory }}/{{ service_directory }}/\
-                                  config/*"
-
-    - name: Start compose file
-      tags: ["docker", "deploy"]
-      community.docker.docker_compose:
-        project_src: "{{ base_directory }}/{{ service_directory }}"
-        state: present
-        pull: false
-        remove_orphans: true

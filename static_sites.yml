@@ -1,0 +1,67 @@
+---
+- name: Deploy static sites
+  hosts: homelab
+  gather_facts: false
+  vars:
+    static_path: "{{ location.files }}/data/shared/static"
+    nginx_defaults: &nginx_defaults
+      config_src: "site"
+    dashboard: &dashboard
+      - config_name: "homepage"
+        <<: *nginx_defaults
+        server_url: "{{ base_tld }}"
+
+  handlers:
+    - import_tasks: roles/docker/handlers/main.yml
+
+  roles:
+    - role: nginx
+      vars:
+        nginx_flavour: "nginx"
+        configs:
+          - *dashboard
+          - config_name: "status"
+            <<: *nginx_defaults
+            server_url: "{{ urls.tinystatus.sub }}.{{ base_tld }}"
+        mounts:
+          - reference: "status page"
+            host_location: "{{ static_path }}/status"
+            container_location: "/status"
+          - reference: "homepage"
+            host_location: "{{ static_path }}/dashboard_public"
+            container_location: "/homepage"
+    - role: nginx
+      vars:
+        nginx_flavour: "nginx-private"
+        configs:
+          - *dashboard
+        mounts:
+          - reference: "homepage"
+            host_location: "{{ static_path }}/dashboard"
+            container_location: "/homepage"
+    - role: traefik
+      tags: traefik
+      vars:
+        file_name: "dashboard"
+        service_name: "nginx-private"
+        create_service: false
+        router_name: "private-dashboard"
+        rule: "Host(`{{ base_tld }}`)"
+        middlewares:
+          - "public-dashboard@file"
+          - "internal-ip@file"
+        additional_content: |2
+            middlewares:
+              public-dashboard:
+                errors:
+                  status: 403
+                  service: "nginx"
+                  query: "/index.html"
+    - role: traefik
+      tags: traefik
+      vars:
+        file_name: "status"
+        service_name: "nginx"
+        create_service: false
+        router_name: "status"
+        rule: "Host(`{{ urls.tinystatus.sub }}.{{ base_tld }}`)"

@@ -5,23 +5,17 @@
   vars:
     service_directory: "dozzle"
     service_image: "amir20/dozzle"
-    image_tag: "v6.2.0"
+    image_tag: "v6.2.3"
     network: "socket-net"
     url: "{{ urls.dozzle }}"
 
   roles:
     - role: urls
     - role: config
-      tags: config
       vars:
-        directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
+        directories: [{}]
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
         servers:
           - port: 8080

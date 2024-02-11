@@ -1,0 +1,71 @@
+---
+- name: Install lemmy
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "lemmy"
+    service_image: "dessalines/lemmy"
+    image_tag: "0.18.5"
+    pictrs_image_tag: "0.4.5"
+    postgres_image_tag: "16-alpine"
+    url: "{{ urls.lemmy }}"
+    network: "postgres-net"
+    config_file: "config.hjson"
+    # SECRETS
+    postgres_user: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/lemmy', env_slug='prod', secret_name='LEMMY_POSTGRES_USER').value }}"
+    postgres_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/lemmy', env_slug='prod', secret_name='LEMMY_POSTGRES_PASSWORD').value }}"
+    smtp_sender: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/lemmy', env_slug='prod', secret_name='LEMMY_SMTP_SENDER').value }}"
+    smtp_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/lemmy', env_slug='prod', secret_name='LEMMY_SMTP_PASSWORD').value }}"
+    smtp_host: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/smtp', env_slug='prod', secret_name='SMTP_HOST').value }}"
+    pictrs_api_key: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/lemmy', env_slug='prod', secret_name='LEMMY_PICTRS_API_KEY').value }}"
+    postgres_db: "{{ service_directory}}"
+    # DEFAULTS
+    nginx_flavour: "nginx-lemmy"
+    db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+
+  roles:
+    - role: urls
+    - role: config
+      become: true
+      vars:
+        directories:
+          -
+          - path: "{{ db_location }}"
+            owner: "70"
+            permission: "0700"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/pictrs"
+            owner: "991"
+          - path: "{{ base_directory }}/{{ service_directory}}/css"
+        files: [{}]
+    - role: docker
+      vars:
+        attach_postgres: true
+        run: false
+        postgres_location: "{{ db_location }}"
+    - role: nginx
+      vars:
+        configs:
+          - config_name: "lemmy"
+            server_url: "{{ urls.lemmy.sub }}.{{ base_tld }}"
+    - role: traefik
+      vars:
+        create_service: false
+        service_name: "nginx-lemmy"
+
+  post_tasks:
+    - name: Fetch lemmy css
+      tags: css
+      ansible.builtin.get_url:
+        url: https://codeberg.org/lckdscl/selfhosted_userstyles/raw/branch/master/jumper/lemmy/{{ item }}
+        dest: "{{ base_directory }}/{{ service_directory }}/css/{{ item }}"
+        mode: "0644"
+      loop:
+        - "_variables.whiskers_v8.scss"
+        - "whiskers_v8.css"
+        - "whiskers_v8.scss"
+
+    - name: Start compose file
+      tags: ["docker", "deploy"]
+      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      vars:
+        force_up: true

@@ -1,0 +1,24 @@
+---
+- name: Install cinny
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "cinny"
+    service_image: "ajbura/cinny"
+    image_tag: "v3.2.0"
+    url: "{{ urls.cinny }}"
+    config_file: "config.json"
+
+  roles:
+    - role: urls
+    - role: config
+      tags: config
+      vars:
+        files: [{}]
+    - role: docker
+      tags: docker
+    - role: traefik
+      tags: traefik
+      vars:
+        servers:
+          - port: 80

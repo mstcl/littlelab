@@ -1,0 +1,103 @@
+---
+- name: Install piped
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "piped"
+    service_image: "1337kavin/piped"
+    url: "{{ urls.piped }}"
+    image_tag: "latest"
+    config_file: "config.properties"
+    network: "postgres-net"
+    # SECRETS
+    postgres_user: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/piped', env_slug='prod', secret_name='PIPED_POSTGRES_USER').value }}"
+    postgres_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/piped', env_slug='prod', secret_name='PIPED_POSTGRES_PASSWORD').value }}"
+    postgres_db: "{{ service_directory }}"
+    # DEFAULTS
+    socket_location: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy"
+    db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+    nginx_flavour: "nginx"
+    traefik: &traefik_defaults
+      create_service: false
+      service_name: "nginx"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ socket_location }}"
+          - path: "{{ db_location }}"
+            owner: "70"
+            permission: "0700"
+        files: [{}]
+        copies:
+          - file_name: "ytproxy.conf"
+            destination_path: "{{ base_directory }}/{{ nginx_flavour }}/snippets"
+            permission: "0644"
+    - role: nginx
+      vars:
+        configs:
+          - config_name: "piped"
+            server_url: "{{ urls.piped.sub }}.{{ base_tld }}"
+          - config_name: "piped-proxy"
+            server_url: "{{ urls['piped-proxy'].sub }}.{{ base_tld }}"
+          - config_name: "piped-frontend"
+            server_url: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"
+        mounts:
+          - reference: "Piped socket"
+            host_location: "{{ socket_location }}"
+            container_location: "/var/run/ytproxy"
+    - role: docker
+      vars:
+        attach_postgres: true
+        run: false
+        postgres_location: "{{ db_location }}"
+    - role: traefik
+      vars:
+        <<: *traefik_defaults
+        file_name: "piped-proxy"
+        router_name: "{{ file_name }}"
+        rule: "Host(`{{ urls['piped-proxy'].sub }}.{{ base_tld }}`)"
+    - role: traefik
+      vars:
+        <<: *traefik_defaults
+        file_name: "piped-frontend"
+        router_name: "{{ file_name }}"
+        rule: "Host(`{{ urls['piped-frontend'].sub }}.{{ base_tld }}`)"
+    - role: traefik
+      vars:
+        <<: *traefik_defaults
+        file_name: "piped"
+        router_name: "{{ file_name }}"
+        rule: "Host(`{{ urls.piped.sub }}.{{ base_tld }}`)"
+
+  post_tasks:
+    - name: Check for actix socket
+      tags: socket
+      ansible.builtin.stat:
+        path: "{{ base_directory }}/{{ service_directory }}/piped-proxy/actix.sock"
+      register: socket_results
+
+    - name: Start piped-proxy
+      tags: socket
+      community.docker.docker_compose_v2:
+        project_src: "{{ base_directory }}/{{ service_directory }}"
+        services:
+          - piped-proxy
+        state: present
+      when: not socket_results.stat.exists
+
+    - name: Change permissions on actix.sock to 0777
+      tags: ["socket", "permission"]
+      become: true
+      ansible.builtin.file:
+        path: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy/actix.sock"
+        mode: "0777"
+
+    - name: Start rest of piped stack
+      tags: ["deploy", "docker"]
+      community.docker.docker_compose_v2:
+        project_src: "{{ base_directory }}/{{ service_directory }}"
+        state: present
+      notify: Restart public nginx

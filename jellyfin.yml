@@ -11,15 +11,10 @@
   roles:
     - role: urls
     - role: config
-      tags: config
       vars:
         directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
+          -
           - path: "{{ location.cache }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
     - role: docker
     - role: traefik
       vars:

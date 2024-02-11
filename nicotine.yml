@@ -21,7 +21,6 @@
         port: 50300
     - role: urls
     - role: config
-      tags: config
       vars:
         directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}"
@@ -38,9 +37,7 @@
             destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
             permission: "0655"
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
         redirect: true
         servers:

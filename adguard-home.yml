@@ -12,50 +12,38 @@
     url: "{{ urls['adguard-home'] }}"
     network: "dns-net"
     config_file: "AdGuardHome.yaml"
+    # SECRET
     user: "{{ lookup('infisical.vault.read_secrets', path='/adguard', env_slug='prod', secret_name='ADGUARD_USER').value }}"
     password: "{{ lookup('infisical.vault.read_secrets', path='/adguard', env_slug='prod', secret_name='ADGUARD_PASSWORD_HASH').value }}"
 
   roles:
     - role: ufw
-      vars:
+      vars: &ufw_defaults
         port: 53
+        local: false
     - role: ufw
       vars:
-        port: 53
+        <<: *ufw_defaults
         ufw_protocol: "udp"
     - role: urls
     - role: config
-      tags: config
-      vars:
-        directories:
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-            owner: "1000"
-            permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
-        files:
-          - template_name: "{{ config_file }}"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-            permission: "0644"
-    - role: config
-      tags: config
       become: true
       vars:
         directories:
+          -
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
           - path: "/etc/systemd/resolved.conf.d"
             owner: "0"
-            permission: "0755"
+        files:
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
         copies:
           - file_name: "disable_dnsstublistener.conf"
             destination_path: "/etc/systemd/resolved.conf.d"
-            permission: "0644"
+            owner: "0"
     - role: docker
-      tags: docker
       vars:
         run: false
     - role: traefik
-      tags: traefik
       vars:
         servers:
           - port: 3000
@@ -73,10 +61,9 @@
                 plugin:
                   rewriteHeaders:
                     rewrites:
-                      response:
-                        - header: "Location"
-                          regex: "^/(.*)"
-                          replacement: "/{{ url.path }}/$1"
+                      - header: "Location"
+                        regex: "^/(.*)"
+                        replacement: "/{{ url.path }}/$1"
 
   post_tasks:
     - name: Append client list to config
@@ -89,24 +76,20 @@
         block: "{{ lookup('file', hostvars.localhost.base_directory + '/files/' + service_directory + '/files/persistent_clients.yml') }}"
       when: add_persistent_config
 
-    - name: systemd
+    - name: Configure systemd-resolved
       tags: systemd
+      become: true
       block:
         - name: Reload systemd daemons
-          become: true
           ansible.builtin.systemd:
             daemon_reload: true
-
         - name: Restart systemd-resolved
-          become: true
           ansible.builtin.systemd:
             name: systemd-resolved
             state: restarted
 
     - name: Start compose file
       tags: ["docker", "deploy"]
-      community.docker.docker_compose:
-        project_src: "{{ base_directory }}/{{ service_directory }}"
-        state: present
-        pull: false
-        remove_orphans: true
+      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      vars:
+        force_up: true

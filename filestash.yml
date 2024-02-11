@@ -13,10 +13,7 @@
     - role: config
       tags: config
       vars:
-        directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
+        directories: [{}]
     - role: docker
       tags: docker
     - role: traefik

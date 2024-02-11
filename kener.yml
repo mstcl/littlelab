@@ -1,17 +1,18 @@
 ---
-- name: Install mafl
+- name: Install kener
   hosts: homelab
   gather_facts: false
   vars:
-    service_directory: "mafl"
-    service_image: "hywax/mafl"
+    service_directory: "kener"
+    service_image: "docker.io/rajnandan1/kener"
     image_tag: "latest"
-    url: "{{ urls.mafl }}"
-    config_file: "config.yml"
+    url:
 
   roles:
     - role: urls
     - role: config
+      vars:
+        directories: [{}]
     - role: docker
     - role: traefik
       vars:

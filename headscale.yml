@@ -13,6 +13,7 @@
     - role: urls
     - role: config
       tags: config
+      become: true
       vars:
         directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/socket"
@@ -24,7 +25,8 @@
         files:
           - template_name: "{{ config_file }}"
             destination_path: "{{ base_directory }}/{{ service_directory }}"
-            permission: "0644"
+            owner: "3010"
+            permission: "0640"
     - role: docker
       tags: docker
       vars:
@@ -55,8 +57,6 @@
 
     - name: Start compose file
       tags: ["docker", "deploy"]
-      community.docker.docker_compose:
-        project_src: "{{ base_directory }}/{{ service_directory }}"
-        state: present
-        pull: false
-        remove_orphans: true
+      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      vars:
+        force_up: true

@@ -11,25 +11,14 @@
   roles:
     - role: urls
     - role: config
-      tags: config
       vars:
         directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/playlists"
-            owner: "1000"
-            permission: "0755"
           - path: "{{ location.docker_data }}/{{ service_directory }}/podcasts"
-            owner: "1000"
-            permission: "0755"
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
-            owner: "1000"
-            permission: "0755"
           - path: "{{ location.cache }}/{{ service_directory }}"
-            owner: "1000"
-            permission: "0755"
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
         servers:
           - port: 4747
