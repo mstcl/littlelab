@@ -25,7 +25,7 @@
     - name: Create a container
       community.docker.docker_container:
         name: test
-        image: traefik:v2.10
+        image: traefik:v3.0
         capabilities:
           - sys_time
         cap_drop:
