@@ -2,29 +2,12 @@
 - name: Install lemmy
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/lemmy.yml
   vars:
     service_directory: "lemmy"
     image: "dessalines/lemmy:0.18.5"
-    lemmy_ui:
-      image: "dessalines/lemmy-ui:0.18.5"
-    postgres:
-      image: "postgres:16-alpine"
-    pictrs:
-      image: "asonix/pictrs:0.4.5"
     url: "{{ urls.lemmy }}"
-    network: "postgres-net"
-    config_file: "config.hjson"
-    # SECRETS
-    postgres_user: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_USER') }}"
-    postgres_password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_PASSWORD') }}"
-    smtp_sender: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_SENDER') }}"
-    smtp_password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_PASSWORD') }}"
-    smtp_host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
-    pictrs_api_key: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_PICTRS_API_KEY') }}"
-    postgres_db: "{{ service_directory}}"
-    # DEFAULTS
-    nginx_flavour: "nginx-lemmy"
-    db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
   roles:
     - role: urls
