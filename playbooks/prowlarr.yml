@@ -20,3 +20,13 @@
           - port: 9696
         middlewares:
          - "internal-ip@file"
+
+  post_tasks:
+    - name: Create a container
+      community.docker.docker_container:
+        name: test
+        image: traefik:v2.10
+        capabilities:
+          - sys_time
+        cap_drop:
+          - all
