@@ -37,9 +37,9 @@ services:
       - {{ docker.expose_network}}
       - {{ network }}
     environment:
-      - LEMMY_UI_LEMMY_INTERNAL_HOST={{ service_directory }}:8536
-      - LEMMY_UI_HOST=0.0.0.0:8238
-      - LEMMY_UI_EXTRA_THEMES_FOLDER=/extra-themes
+      LEMMY_UI_LEMMY_INTERNAL_HOST: {{ service_directory }}:8536
+      LEMMY_UI_HOST: 0.0.0.0:8238
+      LEMMY_UI_EXTRA_THEMES_FOLDER: /extra-themes
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - {{ base_directory }}/{{ service_directory }}/css:/extra-themes
@@ -56,7 +56,9 @@ services:
     networks:
       - {{ network }}
     environment:
-      - PICTRS__API_KEY="{{ pictrs_api_key }}"
+      PICTRS__SERVER__API_KEY: "{{ pictrs_api_key }}"
+      PICTRS__UPGRADE__CONCURRENCY: "{{ pictrs_concurrency }}"
+      PICTRS__MEDIA__RETENTION__PROXY: "{{ pictrs_media_retention_proxy }}"
     user: 991:991
     volumes:
       - {{ location.docker_data }}/{{ service_directory }}/pictrs:/mnt
