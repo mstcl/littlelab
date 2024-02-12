@@ -1,0 +1,22 @@
+---
+- name: Install mycorrhiza
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "mycorrhiza"
+    service_image: "mycorrhiza"
+    image_tag: "v1.14.0"
+    url: "{{ urls.mycorrhiza }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 1737
+        middlewares:
+         - "internal-ip@file"

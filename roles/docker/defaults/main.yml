@@ -1,3 +1,5 @@
 ---
 run: true
 attach_redis: false
+attach_postgres: false
+force_up: false

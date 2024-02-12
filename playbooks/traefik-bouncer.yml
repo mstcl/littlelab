@@ -1,0 +1,51 @@
+---
+- name: Install traefik-bouncer
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "traefik-bouncer"
+    service_image: "fbonalair/traefik-crowdsec-bouncer"
+    image_tag: "latest"
+
+  pre_tasks:
+    - name: Try and fetch API key
+      block:
+        - name: Grab secret
+          ansible.builtin.set_fact:
+            bouncer_api_key: "{{ lookup('get_secrets', path='/traefik', secret_name='TRAEFIK_BOUNCER_API_KEY') }}"
+      rescue:
+        - name: Generate api-key
+          become: true
+          ansible.builtin.command:
+            argv:
+              - cscli
+              - bouncers
+              - add
+              - "{{ service_directory }}"
+              - "-o"
+              - json
+          register: generate_results
+        - name: Set API key
+          ansible.builtin.set_fact:
+            bouncer_api_key: "{{ (generate_results.stdout | from_json) }}"
+        - name: Print API key to save
+          ansible.builtin.debug:
+            msg:
+              [
+                "TRAEFIK-BOUNCER API KEY TO SAVE INTO INFISICAL:",
+                "{{ bouncer_api_key }}",
+              ]
+
+  roles:
+    - role: config
+    - role: docker
+    - role: traefik
+      vars:
+        create_service: false
+        create_router: false
+        additional_content: |2
+            middlewares:
+              crowdsec-bouncer:
+                forwardAuth:
+                  address: "http://traefik-bouncer:8080/api/v1/forwardAuth"
+                  trustForwardHeader: true

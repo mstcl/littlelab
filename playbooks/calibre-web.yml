@@ -1,0 +1,30 @@
+---
+- name: Install calibre-web
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "calibre-web"
+    service_image: "linuxserver/calibre-web"
+    image_tag: "latest"
+    url: "{{ urls.calibre_web }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 8083
+        middlewares:
+          - "authelia@file"
+          - "internal-ip@file"
+        additional_content: |2
+              calibre-web-opds:
+                rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/opds`))"
+                service: "{{ service_directory }}"
+                tls: *modern
+                middlewares:
+                  - "internal-ip@file"

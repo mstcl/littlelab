@@ -2,11 +2,16 @@
 - name: Parse URL
   tags: urls
   ansible.builtin.set_fact:
-    expanded_url: "{%if url != base_tld %}{% if url.path is undefined %}{{ url + '.' + base_tld }}\
-       {% else %}{{ url.sub + '.' + base_tld + '/' + url.path }}{% endif %}{% else %}{{base_tld}}{% endif %}"
+    expanded_url: "{%if url != base_tld %}{{ url.sub + '.' + base_tld }}{% if url.path is defined %}/{{ url.path }}{% endif %}{% else %}{{base_tld}}{% endif %}"
+
+- name: Get accumulate paths
+  tags: urls
+  ansible.builtin.set_fact:
+    iter: "{{ url[type] | default('false') }}"
+  when: accumulate
 
 - name: Append urls
   tags: urls
   set_fact:
-    all_urls: "{{ all_urls | default([]) + [expanded_url] }}"
+    all_urls: "{% if iter %}{{ all_urls | default([]) + [expanded_url]}}{%else%}{{ all_urls | default([]) }}{% endif %}"
   when: accumulate

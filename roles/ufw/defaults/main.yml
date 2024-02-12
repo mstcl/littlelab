@@ -1,3 +1,4 @@
 ---
 local: true
-ufw_protocol: 'tcp'
+protocol: tcp
+rule: allow

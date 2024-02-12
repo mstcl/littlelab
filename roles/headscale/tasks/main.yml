@@ -1,0 +1,13 @@
+---
+- name: Add new user
+  tags: ["headscale", "user"]
+  ansible.builtin.include_tasks: add_new_user.yml
+  when: username is defined
+- name: Generate a pre-authkey for a user
+  tags: ["headscale", "pak"]
+  ansible.builtin.include_tasks: generate_pak.yml
+  when: create_pak and username is defined
+- name: Add node to tailnet
+  tags: ["headscale", "tailscale"]
+  ansible.builtin.include_tasks: join_tailnet.yml
+  when: login_server_url is defined and pak is defined

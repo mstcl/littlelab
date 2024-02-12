@@ -1,0 +1,44 @@
+---
+- name: Install patrol
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "patrol"
+    service_image: "ghcr.io/karimsa/patrol"
+    image_tag: "latest"
+    url: "{{ urls.patrol }}"
+    config_file: "config.yml"
+
+  pre_tasks:
+    - name: Get list of services
+      tags: urls
+      ansible.builtin.set_fact:
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+      vars:
+        url: "{{ item.value }}"
+      loop: "{{ urls | dict2items }}"
+    - name: Get list of urls
+      tags: urls
+      ansible.builtin.include_role:
+        name: urls
+      vars:
+        url: "{{ item.value }}"
+        accumulate: true
+        type: "monitor"
+      loop: "{{ urls | dict2items }}"
+
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}/data"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/data/data.db"
+            state: "touch"
+            permission: "0666"
+        files: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]

@@ -1,0 +1,28 @@
+---
+- name: Install baikal
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "baikal"
+    service_image: "robinthrift/baikal"
+    image_tag: "0.9.3-nginx"
+    url: "{{ urls.baikal }}"
+    config_file: "baikal.yml"
+    # SECRETS
+    password_hash: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_PASSWORD_HASHED') }}"
+    invite_email: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_INVITE_EMAIL') }}"
+    db_encryption_key: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_DB_ENCRYPTION_KEY')}}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+        files:
+          - permission: "0666"
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+          - "internal-ip@file"

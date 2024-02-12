@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
 	margin: 0em;
 	font-family: sans-serif;
 }
@@ -44,7 +45,7 @@ div#cgit table#header td.main {
 	font-weight: 600;
 	padding-left: 12%;
 	white-space: nowrap;
-	padding-top: .25em;
+	padding-top: 0.25em;
 	text-align: left;
 }
 
@@ -77,7 +78,7 @@ div#cgit table.tabs {
 }
 
 div#cgit table.tabs td {
-	padding: .5em 0em;
+	padding: 0.5em 0em;
 	vertical-align: middle;
 	padding-left: 12%;
 }
@@ -91,7 +92,8 @@ div#cgit table.tabs td a.active {
 	color: #000;
 }
 
-div#cgit table.tabs a[href^="http://"]:after, div#cgit table.tabs a[href^="https://"]:after {
+div#cgit table.tabs a[href^="http://"]:after,
+div#cgit table.tabs a[href^="https://"]:after {
 	content: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAQAAAAnOwc2AAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfgAhcJDQY+gm2TAAAAHWlUWHRDb21tZW50AAAAAABDcmVhdGVkIHdpdGggR0lNUGQuZQcAAABbSURBVAhbY2BABs4MU4CwhYHBh2Erww4wrGFQZHjI8B8IgUIscJWyDHcggltQhI4zGDCcRwhChPggHIggP1QoAVmQkSETrGoHsiAEsACtBYN0oDAMbgU6EBcAAL2eHUt4XUU4AAAAAElFTkSuQmCC);
 	opacity: 0.5;
 	margin: 0 0 0 5px;
@@ -114,7 +116,7 @@ div#cgit table.tabs td.form select {
 }
 
 div#cgit div.path {
-	margin:auto;
+	margin: auto;
 	padding: 5px 12%;
 	color: #000;
 	font-size: 100%;
@@ -129,9 +131,8 @@ div#cgit div.content {
 	line-height: 1.5em;
 	padding: 1%;
 	background: white;
-	border-radius: .25rem;
+	border-radius: 0.25rem;
 }
-
 
 div#cgit table.list {
 	width: 100%;
@@ -141,7 +142,7 @@ div#cgit table.list {
 
 div#cgit table.list tr {
 	background: #eee;
-	border-radius: .25rem !important;
+	border-radius: 0.25rem !important;
 }
 
 div#cgit table.list tr.logheader {
@@ -179,13 +180,16 @@ div#cgit table.list tr.nohover-highlight:hover:nth-child(odd) {
 div#cgit table.list th {
 	font-weight: bold;
 	color: #888;
-	/*border-top: dashed 1px #888;
+	/*! border-top: dashed 1px #888; */
+	/*
 	border-bottom: dashed 1px #888;*/
 	padding: 0.1em 0.5em 0.5em 0.5em;
 	vertical-align: baseline;
 }
 
-div#cgit table.list th a, div#cgit table.list th a:visited, div#cgit table.list td a {
+div#cgit table.list th a,
+div#cgit table.list th a:visited,
+div#cgit table.list td a {
 	color: #000;
 }
 
@@ -297,7 +301,9 @@ div#cgit div.error {
 	margin: 1em 2em;
 }
 
-div#cgit a.ls-blob, div#cgit a.ls-dir, div#cgit .ls-mod {
+div#cgit a.ls-blob,
+div#cgit a.ls-dir,
+div#cgit .ls-mod {
 	font-family: monospace;
 }
 
@@ -319,20 +325,23 @@ div#cgit table.blob {
 
 div#cgit table.blob td.hashes,
 div#cgit table.blob td.lines {
-	margin: 0; padding: 0 0 0 0.5em;
+	margin: 0;
+	padding: 0 0 0 0.5em;
 	vertical-align: top;
 	color: black;
 }
 
 div#cgit table.blob td.linenumbers {
-	margin: 0; padding: 0 0.5em 0 0.5em;
+	margin: 0;
+	padding: 0 0.5em 0 0.5em;
 	vertical-align: top;
 	text-align: right;
 	border-right: 1px solid gray;
 }
 
 div#cgit table.blob pre {
-	padding: 0; margin: 0;
+	padding: 0;
+	margin: 0;
 }
 
 div#cgit table.blob td.linenumbers a,
@@ -370,11 +379,11 @@ div#cgit table.blame div.alt:nth-child(odd) {
 	background: white;
 }
 
-div#cgit table.blame td.lines > div {
+div#cgit table.blame td.lines>div {
 	position: relative;
 }
 
-div#cgit table.blame td.lines > div > pre {
+div#cgit table.blame td.lines>div>pre {
 	padding: 0 0 0 0.5em;
 	position: absolute;
 	top: 0;
@@ -400,7 +409,10 @@ div#cgit table.bin-blob td {
 }
 
 div#cgit table.nowrap td {
+	text-overflow: ellipsis;
 	white-space: nowrap;
+	overflow: hidden;
+	max-width: 300px;
 }
 
 div#cgit table.commit-info {
@@ -595,7 +607,7 @@ div#cgit table.list td.reposection {
 	font-style: italic;
 	color: #888;
 	background: #f5f5f5;
-	border-radius: .25rem;
+	border-radius: 0.25rem;
 }
 
 div#cgit a.button {
@@ -611,13 +623,9 @@ div#cgit a.secondary {
 	font-size: 90%;
 }
 
-div#cgit td.toplevel-repo {
+div#cgit td.toplevel-repo {}
 
-}
-
-div#cgit table.list td.sublevel-repo {
-	padding-left: 1.5em;
-}
+div#cgit table.list td.sublevel-repo {}
 
 div#cgit ul.pager {
 	list-style-type: none;
@@ -637,6 +645,10 @@ div#cgit ul.pager a {
 
 div#cgit ul.pager .current {
 	font-weight: bold;
+}
+
+div#cgit span {
+	float: right;
 }
 
 div#cgit span.age-mins {
@@ -919,18 +931,25 @@ div#cgit table.ssdiff td.space div {
 		width: 100%;
 		overflow-x: auto;
 	}
-	div#cgit table#header, div#cgit table.tabs {
+
+	div#cgit table#header,
+	div#cgit table.tabs {
 		background: unset;
 	}
-	div#cgit table#header td.main, div#cgit table.tabs td {
+
+	div#cgit table#header td.main,
+	div#cgit table.tabs td {
 		padding-left: 2%;
 	}
+
 	div#cgit table#header td.form {
 		padding-right: 2%;
 	}
+
 	div#cgit table.tabs td.form {
 		width: 0%;
 	}
+
 	div#cgit div.content {
 		margin: unset;
 		margin-top: 1%;
@@ -938,8 +957,8 @@ div#cgit table.ssdiff td.space div {
 		padding: 1%;
 		width: 100%;
 	}
+
 	div#cgit table.list td.sublevel-repo {
-		padding-left: .5em;
+		padding-left: 0.5em;
 	}
 }
-

@@ -1,0 +1,54 @@
+---
+- name: Install qbittorrent
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "qbittorrent"
+    service_image: "gists/qbittorrent"
+    image_tag: "latest"
+    config_file: "qBittorrent.conf"
+    url: "{{ urls.qbittorrent }}"
+    # SECRETS
+    io_port: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PORT') }}"
+    user: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_USERNAME') }}"
+    password: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD') }}"
+    password_encrypted: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD_PBKDF2') }}"
+    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
+    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+
+  roles:
+    - role: ufw
+      vars: &ufw_defaults
+        local: false
+        port: 6881
+    - role: ufw
+      vars:
+        <<: *ufw_defaults
+        protocol: "udp"
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
+        files:
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+          - template_name: "add.sh"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
+          - template_name: "finish.sh"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
+        copies:
+          - file_name: "categories.json"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: git
+      vars:
+        repo: https://github.com/VueTorrent/VueTorrent.git
+        destination: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
+        branch: latest-release
+    - role: docker
+    - role: traefik
+      vars:
+        redirect: true
+        servers: [{}]
+        middlewares:
+         - "internal-ip@file"

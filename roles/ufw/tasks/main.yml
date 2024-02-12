@@ -1,34 +1,30 @@
 ---
-- name: Open port (whitelisted)
-  tags: firewall
+- name: Rule with only trusted IPs
+  tags: ufw
   community.general.ufw:
-    rule: allow
+    rule: "{{ rule }}"
     port: "{{ port }}"
-    protocol: "{{ ufw_protocol }}"
+    protocol: "{{ protocol }}"
     src: "{{ item }}"
     comment: "{{ comment | default(service_directory) }}"
   loop:
     - 10.0.0.0/8
     - 172.16.0.0/12
     - 192.168.0.0/16
-    - 100.64.0.0/10
+    - "{{ base_tailnet }}/10"
     - 127.0.0.0/8
     - fd7a:115c:a1e0::/48
   become: true
   when: local
+  notify: Reload firewall
 
-- name: Open port (all)
-  tags: firewall
+- name: Rule with all IPs
+  tags: ufw
   community.general.ufw:
-    rule: allow
+    rule: "{{ rule }}"
     port: "{{ port }}"
-    protocol: "{{ ufw_protocol }}"
+    protocol: "{{ protocol }}"
     comment: "{{ comment | default(service_directory) }}"
   become: true
   when: not local
-
-- name: Reload firewall
-  tags: firewall
-  community.general.ufw:
-    state: reloaded
-  become: true
+  notify: Reload firewall

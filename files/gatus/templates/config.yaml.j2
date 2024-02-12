@@ -1,0 +1,13 @@
+storage:
+  type: sqlite
+  path: /data/data.db
+
+endpoints:
+{% for monitor in all_names %}
+  - name: {{ monitor }}
+    interval: 2m
+    url: "https://{{ all_urls[loop.index0] }}"
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 48h"
+{% endfor %}

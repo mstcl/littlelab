@@ -1,0 +1,49 @@
+---
+- name: Install headscale
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "headscale"
+    service_image: "headscale/headscale"
+    image_tag: "0.23.0-alpha3"
+    url: "{{ urls.headscale }}"
+    config_file: "config.yaml"
+
+  roles:
+    - role: urls
+    - role: config
+      become: true
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}/socket"
+            owner: "3010"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/data"
+            owner: "3010"
+        files:
+          - owner: "3010"
+            permission: "0640"
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+          - "cors@file"
+        additional_content: |2
+            middlewares:
+              cors:
+                headers:
+                  accessControlAllowMethods: ["GET", "OPTIONS", "PUT"]
+                  accessControlAllowHeaders: "*"
+                  accessControlAllowOriginListRegex: ["https?://(.*)\\.bim\\.boats"]
+                  accessControlMaxAge: 100
+                  addVaryHeader: "true"
+
+  post_tasks:
+    - name: Create headscale user for node and join the tailnet
+      tags: ["headscale", "tailscale", "user"]
+      ansible.builtin.include_role:
+        name: headscale
+      vars:
+        username: "{{ base_hostname }}"
+        register_node: true
+        login_server_url: "{{ expanded_url }}"

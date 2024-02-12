@@ -1,0 +1,22 @@
+---
+- name: Install dokemon
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "dokemon"
+    service_image: "productiveops/dokemon"
+    image_tag: "latest"
+    url: "{{ urls.dokemon }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 9090
+        middlewares:
+          - "internal-ip@file"

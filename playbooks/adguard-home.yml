@@ -1,0 +1,96 @@
+---
+- name: Install adguard-home
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - "vars/adguard-home.yml"
+  vars:
+    add_persistent_config: true # set this to false if clients have not been configured
+    service_directory: "adguard-home"
+    service_image: "adguard/adguardhome"
+    image_tag: "latest"
+    url: "{{ urls['adguard-home'] }}"
+    network: "dns-net"
+    config_file: "AdGuardHome.yaml"
+    # SECRET
+    user: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_USER') }}"
+    password: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_PASSWORD_HASH') }}"
+
+  roles:
+    - role: ufw
+      vars: &ufw_defaults
+        port: 53
+        local: false
+    - role: ufw
+      vars:
+        <<: *ufw_defaults
+        protocol: "udp"
+    - role: urls
+    - role: config
+      become: true
+      vars:
+        directories:
+          -
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
+          - path: "/etc/systemd/resolved.conf.d"
+            owner: "0"
+        files:
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+        copies:
+          - file_name: "disable_dnsstublistener.conf"
+            destination_path: "/etc/systemd/resolved.conf.d"
+            owner: "0"
+    - role: docker
+      vars:
+        run: false
+    - role: traefik
+      vars:
+        servers:
+          - port: 3000
+        trailing_slash: false
+        middlewares:
+          - "adguard-home-strip@file"
+          - "adguard-home-redirect@file"
+          - "internal-ip@file"
+        additional_content: |2
+            middlewares:
+              adguard-home-strip:
+                stripprefix:
+                  prefixes: "/{{ url.path }}"
+              adguard-home-redirect:
+                plugin:
+                  rewriteHeaders:
+                    rewrites:
+                      - header: "Location"
+                        regex: "^/(.*)"
+                        replacement: "/{{ url.path }}/$1"
+
+  post_tasks:
+    - name: Append client list to config
+      tags: ["post"]
+      ansible.builtin.blockinfile:
+        state: present
+        insertafter: "^  persistent:"
+        path: "{{ base_directory }}/{{ service_directory }}/config/{{ config_file }}"
+        marker: "  # {mark} CLIENT CONFIGURATION"
+        block: "{{ lookup('file', hostvars.localhost.base_directory + '/files/' + service_directory + '/files/persistent_clients.yml') }}"
+      when: add_persistent_config
+      notify: Restart compose stack
+
+    - name: Configure systemd-resolved
+      tags: systemd
+      become: true
+      block:
+        - name: Reload systemd daemons
+          ansible.builtin.systemd:
+            daemon_reload: true
+        - name: Restart systemd-resolved
+          ansible.builtin.systemd:
+            name: systemd-resolved
+            state: restarted
+
+    - name: Start compose file
+      tags: ["docker", "deploy"]
+      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      vars:
+        force_up: true

@@ -1,0 +1,33 @@
+---
+- name: Install pgweb
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "pgweb"
+    service_image: "sosedoff/pgweb"
+    image_tag: "latest"
+    network: "pg-net"
+    url: "{{ urls.pgweb }}"
+
+  pre_tasks:
+    - name: Create docker network for postgres databases
+      tags: ["network", "docker"]
+      community.docker.docker_network:
+        name: "{{ docker.traefik_network }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/bookmarks"
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 8081
+        middlewares:
+         - "internal-ip@file"
+
+- name: Make bookmark links
+  import_playbook: pgweb_bookmarks.yml

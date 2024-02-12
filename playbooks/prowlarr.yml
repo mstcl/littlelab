@@ -1,0 +1,22 @@
+---
+- name: Install prowlarr
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "prowlarr"
+    service_image: "linuxserver/prowlarr"
+    image_tag: "latest"
+    url: "{{ urls.prowlarr }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 9696
+        middlewares:
+         - "internal-ip@file"

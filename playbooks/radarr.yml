@@ -1,0 +1,22 @@
+---
+- name: Install radarr
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "radarr"
+    service_image: "linuxserver/radarr"
+    image_tag: "latest"
+    url: "{{ urls.radarr }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 7878
+        middlewares:
+         - "internal-ip@file"

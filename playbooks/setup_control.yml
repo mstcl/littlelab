@@ -1,0 +1,33 @@
+- name: Setup control node
+  gather_facts: true
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Install collections
+      community.general.ansible_galaxy_install:
+        type: both
+        requirements_file: "requirements.yml"
+
+    - name: Install packages
+      tags: packages
+      ansible.builtin.include_role:
+        name: packages
+      vars:
+        pip:
+          - "infisical==1.6.0"
+        native:
+          # Useful for scanning for leaked secrets
+          - "infisical-bin"
+
+    # workaround to make playbooks in subdirectories work
+    - name: Create symbolic link for variables
+      tags: config
+      ansible.builtin.file:
+        src: "{{ base_directory }}/{{ item }}"
+        dest: "{{ base_directory }}/playbooks/{{ item }}"
+        state: link
+      loop:
+        - host_vars
+        - group_vars
+        - vars

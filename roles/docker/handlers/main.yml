@@ -1,1 +1,21 @@
 ---
+- name: Restart compose stack
+  ansible.builtin.include_tasks: ../tasks/down_and_up.yml
+
+- name: Restart nginx
+  community.docker.docker_container:
+    name: nginx
+    state: started
+    restart: true
+
+- name: Restart nginx-private
+  community.docker.docker_container:
+    name: nginx-private
+    state: started
+    restart: true
+
+- name: Restart nginx-lemmy
+  community.docker.docker_container:
+    name: nginx-lemmy
+    state: started
+    restart: true

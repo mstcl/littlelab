@@ -1,0 +1,3 @@
+{% for monitor in all_names %}
+http, 200, {{ monitor }}, https://{{ all_urls[loop.index0] }}
+{% endfor %}

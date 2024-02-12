@@ -1,5 +1,6 @@
 ---
 - name: Add redis service
+  tags: ["docker", "redis"]
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
@@ -10,7 +11,7 @@
         {{ service_directory }}-redis:
           image: redis:{{ docker.redis_image_tag }}
           container_name: {{ service_directory }}-redis
-          restart: always
+          restart: unless-stopped
           security_opt:
             - no-new-privileges:true
           networks:

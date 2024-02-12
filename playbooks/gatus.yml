@@ -1,0 +1,47 @@
+---
+- name: Install gatus
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "gatus"
+    service_image: "twinproduction/gatus"
+    image_tag: "latest"
+    url:
+      sub: "test-status"
+    config_file: "config.yaml"
+
+  pre_tasks:
+    - name: Get list of services
+      tags: urls
+      ansible.builtin.set_fact:
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+      vars:
+        url: "{{ item.value }}"
+      loop: "{{ urls | dict2items }}"
+    - name: Get list of urls
+      tags: urls
+      ansible.builtin.include_role:
+        name: urls
+      vars:
+        url: "{{ item.value }}"
+        accumulate: true
+        type: "monitor"
+      loop: "{{ urls | dict2items }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          -
+          - path: "{{ base_directory}}/{{ service_directory }}/config"
+            owner: "1000"
+            permission: "0755"
+        files:
+          - destination_path: "{{ base_directory}}/{{ service_directory }}/config"
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+          - "internal-ip@file"

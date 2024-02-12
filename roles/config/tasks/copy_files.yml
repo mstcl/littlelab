@@ -1,7 +1,12 @@
 ---
 - name: Copy file
+  tags: config
   ansible.builtin.copy:
-    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/files/{{ item.file_name }}"
-    dest: "{{ item.destination_path }}/{{ item.file_name }}"
-    mode: "{{ item.permission }}"
+    src: "{{ hostvars.localhost.base_directory }}/files/\
+          {{ item.service_override | default(service_directory) }}/files/\
+          {{ item.file_name }}"
+    dest: "{{ item.destination_path | default(base_directory + '/' + service_directory)}}\
+           /{{ item.file_name }}"
+    mode: "{{ item.permission | default('0644') }}"
+    owner: "{{ item.owner | default('1000') }}"
   with_items: "{{ copies }}"

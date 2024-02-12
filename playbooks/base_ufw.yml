@@ -1,0 +1,41 @@
+---
+- name: Block IP ranges with UFW
+  hosts: homelab
+  gather_facts: false
+  become: true
+  vars:
+    # DEFAULTS
+    dns_defaults: &dns_defaults
+      rule: "allow"
+      comment: "systemd-resolved"
+
+  pre_tasks:
+    - name: Block IP ranges
+      community.general.ufw:
+        rule: deny
+        src: "{{ item.src }}"
+        comment: "{{ item.comment }}"
+      loop:
+        - src: "47.128.0.0/14"
+          comment: "AWS"
+      notify: Reload firewall
+
+  roles:
+    - role: ufw
+      vars:
+        rule: "limit"
+        port: "{{ sshd_port }}"
+        comment: "sshd"
+    - role: ufw
+      vars:
+        <<: *dns_defaults
+        port: "5355"
+    - role: ufw
+      vars:
+        <<: *dns_defaults
+        port: "5355"
+        protocol: "udp"
+    - role: ufw
+      vars:
+        <<: *dns_defaults
+        port: "5353"

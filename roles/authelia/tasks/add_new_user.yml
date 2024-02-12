@@ -1,0 +1,32 @@
+# TODO: MAKE SURE users.yml is there
+- name: Grab password hash
+  ansible.builtin.command: "docker run authelia/authelia:latest \
+    authelia crypto hash generate argon2 --password '{{ password }}'"
+  register: authelia
+- name: Save password hash
+  ansible.builtin.set_fact:
+    hash: "{{ authelia.stdout[8:] }}"
+- name: Try and set admin to boolean
+  block:
+    - name: Set admin to boolean
+      ansible.builtin.set_fact:
+        admin: "{{ admin | bool }}"
+- name: Append to users.yml
+  become: true
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/authelia/config/users.yml"
+    marker: "  # {mark} {{ username | upper }} CONFIGURATION"
+    content: |2
+        {{ username }}:
+          disabled: false
+          display_name: "{{ display_name }}"
+          password: "{{ hash }}"
+          email: {{ email }}
+      {% if admin %}
+          groups:
+            - admin
+      {% else %}
+          groups: []
+      {% endif %}

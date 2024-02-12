@@ -1,0 +1,31 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ docker.traefik_network }}:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network}}
+    volumes:
+      - {{ location.docker_data }}/{{ service_directory }}:/app
+      - ./{{ config_file }}:/app/services.yml
+    user: "1000:1000"
+    environment:
+      DB_CONN: "sqlite"
+      NAME: "{{ instance_name }}"
+      DOMAIN: "https://{{ expanded_url }}"
+      DESCRIPTION: "Services uptime monitoring"
+      SAMPLE_DATA: "false"
+      ADMIN_USER: "{{ user }}"
+      ADMIN_PASSWORD: "{{ password }}"
+      API_SECRET: "{{ api_key }}"
+      REMOVE_AFTER: "720h"
+      ALLOW_REPORTS: "false"
+      VERBOSE: "1"

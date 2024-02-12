@@ -1,0 +1,33 @@
+---
+- name: Authorize and join the tailnet
+  tags: ["tailscale", "headscale"]
+  check_mode: false
+  block:
+    - name: Check tailscale connection
+      ansible.builtin.command:
+        argv: &status
+          - tailscale
+          - status
+          - "--json"
+      register: tailscale_result
+    - name: Connect to tailnet
+      become: true
+      ansible.builtin.command:
+        argv:
+          - tailscale
+          - up
+          - "--login-server"
+          - "https://{{ login_server_url }}"
+          - "--authkey"
+          - "{{ pak }}"
+      when: (tailscale_result.stdout | from_json).BackendState == "NeedsLogin"
+    - name: Get status to fetch tailip
+      ansible.builtin.command:
+        argv: *status
+      register: tailscale_result
+    - debug:
+        msg:
+          [
+            "TAILIP FOR THIS NODE:",
+            "{{ (tailscale_result.stdout | from_json).TailscaleIPs.0 }}",
+          ]

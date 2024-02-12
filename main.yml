@@ -1,3 +1,66 @@
 ---
-- import_playbook: setup_control.yml
-- import_playbook: setup_remote.yml
+# ~~ MANDATORY PLAYBOOKS ~~
+
+- name: Setup control node (do this first!!)
+  import_playbook: playbooks/setup_control.yml
+- name: Setup remote nodes
+  import_playbook: playbooks/setup_remote.yml
+
+# ~~ PRIMARY HOST PLAYBOOKS ~~
+
+# (1) NETWORKING AND SECURITY
+
+# TODO: Configure and harden SSHD
+
+# Configuration in (./files/traefik/templates/traefik.yml.j2)
+- name: Install traefik
+  import_playbook: playbooks/traefik.yml
+
+# NOTE: Edit this playbook to add basic or arbitrary UFW rules
+- name: Establish some default UFW rules
+  import_playbook: playbooks/base_ufw.yml
+
+# TODO: Crowdsec
+
+- name: Install traefik bouncer for crowdsec
+  import_playbook: playbooks/traefik-bouncer.yml
+
+# Configuration in (./files/unbound/files/unbound.conf)
+- name: Install unbound
+  import_playbook: playbooks/unbound.yml
+
+# Configuration in (./files/adguard-home/templates/AdGuardHome.yaml.j2)
+# NOTE: Open vars/adguard-home.yml and configure as needed.
+# NOTE: This runs without client persistent configs. If you want to use this,
+# configure it in the GUI dashboard, copy everything under the key
+# clients.persistent and place it, with the indentation intact,
+# into the file (./files/adguard-home/files/persistent_clients.yml). Run
+# ansible-playbook playbooks/adguard-home.yml --tags=post
+# to apply the changes.
+- name: Install adguard-home
+  import_playbook: playbooks/adguard-home.yml
+
+# Configuration in (./files/headscale/templates/config.yaml.j2)
+# NOTE: after this runs, a tailip will be written to stdout
+# save it as base_tailip in `hostvars/<node_name>.yml`
+- name: Install headscale and join the tailnet
+  import_playbook: playbooks/headscale.yml
+
+# You will need an API key to access this. To fetch one, run
+# ansible-playbook generate_api_key.yml --tags=headscale
+- name: Install headscale-panel
+  import_playbook: playbooks/headscale-panel.yml
+
+# Configureation in (./files/authelia/templates/configuration.yml.j2)
+# NOTE: To make a user, generate a long password first, save it and run
+# ansible-playbook add_authelia_user.yml
+- name: Install authelia
+  import_playbook: playbooks/authelia.yml
+
+
+# (2) MONITORING
+
+- name: Install dozzle
+  import_playbook: playbooks/dozzle.yml
+
+# TODO: Portainer

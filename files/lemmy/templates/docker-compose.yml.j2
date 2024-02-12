@@ -1,0 +1,62 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ network }}:
+    internal: true
+  {{ docker.expose_network }}:
+    external: true
+  pg-net:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.expose_network}}
+      - {{ network }}
+    environment:
+      - RUST_LOG="warn,lemmy_server=warn,lemmy_api=warn,lemmy_api_common=warn,lemmy_api_crud=warn,lemmy_apub=warn,lemmy_db_schema=warn,lemmy_db_views=warn,lemmy_db_views_actor=warn,lemmy_db_views_moderator=warn,lemmy_routes=warn,lemmy_utils=warn,lemmy_websocket=warn"
+    volumes:
+      - ./{{ config_file }}:/config/config.hjson
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - {{ service_directory }}-postgres
+      - pictrs
+
+  {{ service_directory }}-ui:
+    image: {{ service_image }}-ui:{{ image_tag }}
+    container_name: {{ service_directory }}-ui
+    restart: always
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.expose_network}}
+      - {{ network }}
+    environment:
+      - LEMMY_UI_LEMMY_INTERNAL_HOST={{ service_directory }}:8536
+      - LEMMY_UI_HOST=0.0.0.0:8238
+      - LEMMY_UI_EXTRA_THEMES_FOLDER=/extra-themes
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - {{ base_directory }}/{{ service_directory }}/css:/extra-themes
+    depends_on:
+      - {{ service_directory }}
+
+  pictrs:
+    image: asonix/pictrs:{{ pictrs_image_tag }}
+    container_name: pictrs
+    restart: always
+    security_opt:
+      - no-new-privileges
+    hostname: pictrs
+    networks:
+      - {{ network }}
+    environment:
+      - PICTRS__API_KEY="{{ pictrs_api_key }}"
+    user: 991:991
+    volumes:
+      - {{ location.docker_data }}/{{ service_directory }}/pictrs:/mnt

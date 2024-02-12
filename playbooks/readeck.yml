@@ -1,0 +1,21 @@
+---
+- name: Install readeck
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "readeck"
+    service_image: "codeberg.org/readeck/readeck"
+    image_tag: "latest"
+    url: "{{ urls.readeck }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+          - "internal-ip@file"

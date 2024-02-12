@@ -1,0 +1,9 @@
+---
+- name: Add OIDC block
+  tags: ["authelia", "oidc"]
+  ansible.builtin.include_tasks: add_oidc_block.yml
+  when: redirect_uris is defined
+- name: Add new user
+  tags: ["authelia", "user"]
+  ansible.builtin.include_tasks: add_new_user.yml
+  when: username is defined
