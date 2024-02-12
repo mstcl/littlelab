@@ -4,7 +4,7 @@
   ansible: {
     fileMatch: ["^.*\\.ya?ml$"],
   },
-  baseBranches: ["master", "test"]
+  baseBranches: ["master", "test"],
   timezone: "Europe/London",
   packageRules: [
     {
