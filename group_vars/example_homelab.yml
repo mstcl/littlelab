@@ -1,0 +1,6 @@
+docker:
+  compose_version: "3.8"
+  redis_image_tag: "6.2-alpine"
+  postgres_image_tag: "15-alpine"
+  traefik_network: "traefik-public"
+  expose_network: "traefik-expose"

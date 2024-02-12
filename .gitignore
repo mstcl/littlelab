@@ -7,5 +7,6 @@ host_vars/*.yml
 !host_vars/examplebox.yml
 
 group_vars/*.yml
+!group_vars/example_homelab.yml
 
 debug.yml
