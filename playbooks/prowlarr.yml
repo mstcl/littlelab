@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "prowlarr"
-    service_image: "linuxserver/prowlarr"
+    service_image: "linuxserver/prowlarr:latest"
     image_tag: "latest"
     url: "{{ urls.prowlarr }}"
 
