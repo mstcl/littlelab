@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "dokemon"
-    service_image: "productiveops/dokemon"
-    image_tag: "latest"
+    image: "productiveops/dokemon:latest"
     url: "{{ urls.dokemon }}"
 
   roles:

@@ -4,9 +4,12 @@
   gather_facts: false
   vars:
     service_directory: "piped"
-    service_image: "1337kavin/piped"
+    image: "1337kavin/piped:latest"
+    piped_frontend:
+      image: "1337kavin/piped-frontend:latest"
+    piped_proxy:
+      image: "1337kavin/piped-proxy:latest"
     url: "{{ urls.piped }}"
-    image_tag: "latest"
     config_file: "config.properties"
     network: "postgres-net"
     # SECRETS

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "searxng"
-    service_image: "searxng/searxng"
-    image_tag: "latest"
+    image: "searxng/searxng:latest"
     config_file: "settings.yml"
     network: "redis-net"
     url: "{{ urls.searxng }}"

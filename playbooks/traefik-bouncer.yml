@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "traefik-bouncer"
-    service_image: "fbonalair/traefik-crowdsec-bouncer"
-    image_tag: "latest"
+    image: "fbonalair/traefik-crowdsec-bouncer:latest"
 
   pre_tasks:
     - name: Try and fetch API key

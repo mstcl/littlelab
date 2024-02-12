@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "qbittorrent"
-    service_image: "gists/qbittorrent"
-    image_tag: "latest"
+    image: "gists/qbittorrent:latest"
     config_file: "qBittorrent.conf"
     url: "{{ urls.qbittorrent }}"
     # SECRETS

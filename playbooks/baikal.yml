@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "baikal"
-    service_image: "robinthrift/baikal"
-    image_tag: "0.9.3-nginx"
+    image: "robinthrift/baikal:0.9.3-nginx"
     url: "{{ urls.baikal }}"
     config_file: "baikal.yml"
     # SECRETS

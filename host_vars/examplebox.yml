@@ -10,6 +10,8 @@ base_tld: "example.cats"
 base_tailip: "100.12.12.12" # headscale/tailscale ip of the box, fill in when asked to
 base_lanip: "192.168.123.123" # local lan ip of the box, fill in in when asked to
 
+sshd_port: "22" # The port for sshd
+
 # These can be arbitrary, just make sure the networks are created
 # in playbooks/traefik.yml and playbooks/unbound.yml have the same
 # IPAM subnet.

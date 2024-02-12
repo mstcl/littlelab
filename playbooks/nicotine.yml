@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "nicotine"
-    service_image: "sirjmann92/nicotineplus-proper"
-    image_tag: "3.2.9"
+    image: "sirjmann92/nicotineplus-proper:3.2.9"
     config_file: "config"
     url: "{{ urls.nicotine }}"
     # SECRETS

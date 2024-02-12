@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "statping"
-    service_image: "adamboutcher/statping-ng"
-    image_tag: "latest"
+    image: "adamboutcher/statping-ng:latest"
     url: "{{ urls.statping }}"
     config_file: "services.yml"
     instance_name: "BIM status page"

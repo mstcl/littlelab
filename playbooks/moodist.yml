@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "moodist"
-    service_image: "ghcr.io/remvze/moodist"
-    image_tag: "latest"
+    image: "ghcr.io/remvze/moodist:latest"
     url: "{{ urls.moodist }}"
 
   roles:

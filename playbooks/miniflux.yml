@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "miniflux"
-    service_image: "miniflux/miniflux"
-    image_tag: "latest"
+    image: "miniflux/miniflux:latest"
     url: "{{ urls.miniflux }}"
     network: "postgres-net"
     db_location: "{{ location.docker_data }}/{{ service_directory }}/db"

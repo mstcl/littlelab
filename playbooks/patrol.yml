@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "patrol"
-    service_image: "ghcr.io/karimsa/patrol"
-    image_tag: "latest"
+    image: "ghcr.io/karimsa/patrol:latest"
     url: "{{ urls.patrol }}"
     config_file: "config.yml"
 

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "wikiless"
-    service_image: "metastem/wikiless"
-    image_tag: "latest"
+    image: "metastem/wikiless:latest"
     config_file: "wikiless.config"
     network: "redis-net"
     url: "{{ urls.wikiless}}"

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "cinny"
-    service_image: "ajbura/cinny"
-    image_tag: "v3.2.0"
+    image: "ajbura/cinny:v3.2.0"
     url: "{{ urls.cinny }}"
     config_file: "config.json"
 

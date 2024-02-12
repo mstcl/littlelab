@@ -9,7 +9,7 @@
     marker: "  # {mark} REDIS CONFIGURATION"
     content: |2
         {{ service_directory }}-redis:
-          image: redis:{{ docker.redis_image_tag }}
+          image: {{ redis.image }}
           container_name: {{ service_directory }}-redis
           restart: unless-stopped
           security_opt:

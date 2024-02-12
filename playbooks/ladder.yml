@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "ladder"
-    service_image: "ghcr.io/kubero-dev/ladder"
-    image_tag: "latest"
+    image: "ghcr.io/kubero-dev/ladder:latest"
     url: "{{ urls.ladder }}"
 
   roles:

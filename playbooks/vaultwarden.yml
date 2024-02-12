@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "vaultwarden"
-    service_image: "vaultwarden/server"
-    image_tag: "1.30.3"
+    image: "vaultwarden/server:1.30.3"
     url: "{{ urls.vaultwarden }}"
     # SECRETS
     smtp_host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"

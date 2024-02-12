@@ -4,9 +4,8 @@
   gather_facts: false
   vars:
     service_directory: "kener"
-    service_image: "docker.io/rajnandan1/kener"
-    image_tag: "latest"
-    url:
+    image: "docker.io/rajnandan1/kener:latest"
+    url: "{{ urls.kener }}"
 
   roles:
     - role: urls

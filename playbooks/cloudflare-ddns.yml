@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "cloudflare-ddns"
-    service_image: "favonia/cloudflare-ddns"
-    image_tag: "latest"
+    image: "favonia/cloudflare-ddns:latest"
     cf_token: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/cloudflare', env_slug='prod', secret_name='CF_API_TOKEN_DDNS').value }}"
 
   pre_tasks:

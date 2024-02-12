@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "unbound"
-    service_image: "mvance/unbound"
-    image_tag: "latest"
+    image: "mvance/unbound:latest"
     network: "dns-net"
     config_file: "unbound.conf"
 

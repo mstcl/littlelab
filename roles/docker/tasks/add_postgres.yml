@@ -9,7 +9,7 @@
     marker: "  # {mark} POSTGRES CONFIGURATION"
     content: |2
         {{ service_directory }}-postgres:
-          image: postgres:{{ postgres_image_tag | default(docker.postgres_image_tag) }}
+          image: {{ postgres.image }}
           container_name: {{ service_directory }}-postgres
           restart: unless-stopped
           security_opt:
