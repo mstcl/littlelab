@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "dozzle"
-    image: "amir20/dozzle:v6.2.3"
+    image: "amir20/dozzle:v6.2.4"
     network: "socket-net"
     url: "{{ urls.dozzle }}"
 
