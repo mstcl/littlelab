@@ -2,24 +2,23 @@
 
 **appropriately ansibled**
 
-<!-- mdformat-toc start --slug=github --no-anchors --maxlevel=6 --minlevel=1 -->
+<!-- mdformat-toc start --slug=github --no-anchors --maxlevel=6 --minlevel=2 -->
 
-- [Homelab](#homelab)
-  - [Inventory](#inventory)
-  - [Variables](#variables)
-  - [Running](#running)
-  - [Other playbooks](#other-playbooks)
-    - [Adding a new service](#adding-a-new-service)
-    - [Update a docker container image](#update-a-docker-container-image)
-    - [Creating new users for services](#creating-new-users-for-services)
-      - [Authelia](#authelia)
-      - [Headscale](#headscale)
-    - [Generating API keys](#generating-api-keys)
-      - [Headscale](#headscale-1)
-  - [Role documentation](#role-documentation)
-    - [NGINX](#nginx)
-      - [First usage](#first-usage)
-      - [Second usage](#second-usage)
+- [Inventory](#inventory)
+- [Variables](#variables)
+- [Running](#running)
+- [Other playbooks](#other-playbooks)
+  - [Adding a new service](#adding-a-new-service)
+  - [Update a docker container image](#update-a-docker-container-image)
+  - [Creating new users for services](#creating-new-users-for-services)
+    - [Authelia](#authelia)
+    - [Headscale](#headscale)
+  - [Generating API keys](#generating-api-keys)
+    - [Headscale](#headscale-1)
+- [Role documentation](#role-documentation)
+  - [NGINX](#nginx)
+    - [First usage](#first-usage)
+    - [Second usage](#second-usage)
 
 <!-- mdformat-toc end -->
 
