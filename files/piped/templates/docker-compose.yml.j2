@@ -14,7 +14,7 @@ networks:
 
 services:
   {{ service_directory }}:
-    image: {{ service_image }}:{{ image_tag }}
+    image: {{ image }}
     container_name: {{ service_directory }}
     <<: *function
     cap_drop:
@@ -36,7 +36,7 @@ services:
 
 
   {{ service_directory }}-frontend:
-    image: {{ service_image }}-frontend:{{ image_tag }}
+    image: {{ piped_frontend.image }}
     container_name: {{ service_directory }}-frontend
     <<: *function
     cap_drop:
@@ -55,7 +55,7 @@ services:
       - {{ service_directory }}
 
   {{ service_directory }}-proxy:
-    image: {{ service_image }}-proxy:{{ image_tag }}
+    image: {{ piped_proxy.image }}
     container_name: {{ service_directory }}-proxy
     <<: *function
     cap_drop:

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "actual"
-    service_image: "actualbudget/actual-server"
-    image_tag: "latest"
+    image: "actualbudget/actual-server:latest"
     url: "{{ urls.actual }}"
 
   roles:

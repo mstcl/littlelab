@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "watchyourlan"
-    service_image: "aceberg/watchyourlan"
-    image_tag: "1.0.6"
+    image: "aceberg/watchyourlan:1.0.6"
     url: "{{ urls.watchyourlan }}"
     bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='LAN_BOT_TOKEN') }}"
     chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID')  }}"

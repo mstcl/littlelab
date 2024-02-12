@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "headscale"
-    service_image: "headscale/headscale"
-    image_tag: "0.23.0-alpha3"
+    image: "headscale/headscale:0.23.0-alpha3"
     url: "{{ urls.headscale }}"
     config_file: "config.yaml"
 

@@ -7,8 +7,7 @@
   gather_facts: false
   vars:
     service_directory: "cgit"
-    service_image: "joseluisq/alpine-cgit"
-    image_tag: "latest"
+    image: "joseluisq/alpine-cgit:latest"
     config_file: "cgitrc"
     css_file: "style.css"
     url: "{{ urls.cgit }}"

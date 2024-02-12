@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "calibre-web"
-    service_image: "linuxserver/calibre-web"
-    image_tag: "latest"
+    image: "linuxserver/calibre-web:latest"
     url: "{{ urls.calibre_web }}"
 
   roles:

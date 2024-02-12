@@ -1,6 +1,12 @@
 docker:
-  compose_version: "3.8"
-  redis_image_tag: "6.2-alpine"
-  postgres_image_tag: "15-alpine"
-  traefik_network: "traefik-public"
-  expose_network: "traefik-expose"
+  compose_version: "3.8" # the current compose version
+  traefik_network: "traefik" # the docker network for internal services
+  expose_network: "expose" # the docker network for public services
+
+postgres:
+  image: "postgres:15-alpine" # postgres image
+
+redis:
+  image: "redis:6.2-alpine" # redis image
+
+# anything else for the group homelab goes here

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "radarr"
-    service_image: "linuxserver/radarr"
-    image_tag: "latest"
+    image: "linuxserver/radarr:latest"
     url: "{{ urls.radarr }}"
 
   roles:

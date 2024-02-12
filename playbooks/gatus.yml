@@ -4,10 +4,8 @@
   gather_facts: false
   vars:
     service_directory: "gatus"
-    service_image: "twinproduction/gatus"
-    image_tag: "latest"
-    url:
-      sub: "test-status"
+    image: "twinproduction/gatus:latest"
+    url: "{{ urls.gatus }}"
     config_file: "config.yaml"
 
   pre_tasks:

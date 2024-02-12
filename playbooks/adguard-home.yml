@@ -7,8 +7,7 @@
   vars:
     add_persistent_config: true # set this to false if clients have not been configured
     service_directory: "adguard-home"
-    service_image: "adguard/adguardhome"
-    image_tag: "latest"
+    image: "adguard/adguardhome:latest"
     url: "{{ urls['adguard-home'] }}"
     network: "dns-net"
     config_file: "AdGuardHome.yaml"

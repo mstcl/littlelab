@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "mycorrhiza"
-    service_image: "mycorrhiza"
-    image_tag: "v1.14.0"
+    image: "mycorrhiza:v1.14.0"
     url: "{{ urls.mycorrhiza }}"
 
   roles:

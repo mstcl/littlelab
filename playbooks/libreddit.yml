@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "libreddit"
-    service_image: "libreddit/libreddit"
-    image_tag: "latest"
+    image: "libreddit/libreddit:latest"
     url: "{{ urls.libreddit }}"
 
   roles:

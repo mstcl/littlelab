@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "pgweb"
-    service_image: "sosedoff/pgweb"
-    image_tag: "latest"
+    image: "sosedoff/pgweb:latest"
     network: "pg-net"
     url: "{{ urls.pgweb }}"
 

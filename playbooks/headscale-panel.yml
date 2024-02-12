@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "headscale-panel"
-    service_image: "simcu/headscale-ui"
-    image_tag: "latest"
+    image: "simcu/headscale-ui:latest"
     url: "{{ urls['headscale-panel'] }}"
 
   roles:

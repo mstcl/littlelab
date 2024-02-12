@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "morss"
-    service_image: "pictuga/morss"
-    image_tag: "latest"
+    image: "pictuga/morss:latest"
     url: "{{ urls.morss }}"
 
   roles:

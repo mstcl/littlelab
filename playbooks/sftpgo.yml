@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "sftpgo"
-    service_image: "drakkan/sftpgo"
-    image_tag: "2.5.x-alpine"
+    image: "drakkan/sftpgo:2.5.x-alpine"
     url: "{{ urls.sftpgo }}"
 
   roles:

@@ -4,8 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "filestash"
-    service_image: "machines/filestash"
-    image_tag: "latest"
+    image: "machines/filestash:latest"
     url: "{{ urls.filestash }}"
 
   roles:
