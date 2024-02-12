@@ -1,0 +1,30 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ network }}:
+    internal: true
+  {{ docker.traefik_network }}:
+    external: true
+  pg-net:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network}}
+      - {{ network }}
+    environment:
+        DATABASE_URL: "{{ postgres_url }}"
+        BASE_URL: "https://{{ expanded_url }}"
+        RUN_MIGRATIONS: "1"
+        OAUTH2_PROVIDER: "oidc"
+        OAUTH2_CLIENT_ID: "{{ oidc_id }}"
+        OAUTH2_CLIENT_SECRET: "{{ oidc_secret }}"
+        OAUTH2_REDIRECT_URL: "https://{{ expanded_url }}/oauth2/oidc/callback"
+        OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
+        OAUTH2_USER_CREATION: "0"

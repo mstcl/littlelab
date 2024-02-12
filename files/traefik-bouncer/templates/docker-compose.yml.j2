@@ -1,0 +1,21 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  bouncer:
+    external: true
+
+services:
+  {{ service_directory }}:
+    image: {{ service_image }}:{{ image_tag }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      bouncer:
+        ipv4_address: {{ traefik_bouncer_ip }}
+    environment:
+        GIN_MODE: release
+        CROWDSEC_BOUNCER_API_KEY: "{{ bouncer_api_key }}"
+        CROWDSEC_AGENT_HOST: "{{ base_lanip }}:8119"
+        CROWDSEC_BOUNCER_LOG_LEVEL: 2

@@ -1,0 +1,11 @@
+db: data.db
+name: Uptime for BIM services
+port: 8080
+services:
+  General:
+    checks:
+{% for monitor in all_names %}
+    - name: {{ monitor }}
+      interval: 120s
+      cmd: 'curl -fsSL -o /dev/null https://{{ all_urls[loop.index0] }}'
+{% endfor %}

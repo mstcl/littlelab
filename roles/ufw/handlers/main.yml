@@ -1,0 +1,6 @@
+---
+- name: Reload firewall
+  tags: firewall
+  community.general.ufw:
+    state: reloaded
+  become: true

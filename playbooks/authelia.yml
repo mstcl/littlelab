@@ -1,0 +1,96 @@
+---
+- name: Install authelia
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "authelia"
+    service_image: "docker.io/authelia/authelia"
+    image_tag: "latest"
+    config_file: "configuration.yml"
+    url: "{{ urls.authelia }}"
+    # SECRETS
+    smtp_host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+    smtp_user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
+    smtp_password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+    smtp_sender: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SMTP_SENDER') }}"
+    jwt_secret: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_JWT_SECRET') }}"
+    session_secret: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SESSION_SECRET') }}"
+    storage_encryption_key: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_STORAGE_ENCRYPTION_KEY') }}"
+    hmac: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE') }}"
+    oidc_private: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE') }}"
+    # DEFAULTS
+    permissions: &permissions
+      owner: "4100"
+      permission: "0600"
+    secret_permissions: &secret_permissions
+      <<: *permissions
+      destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
+
+  roles:
+    - role: urls
+    - role: config
+      become: true
+      vars:
+        directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
+          - path: "{{ base_directory }}/{{ service_directory }}/secrets"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/data"
+            owner: "4100"
+        files:
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+            <<: *permissions
+          - template_name: "users.yml"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+            <<: *permissions
+          - template_name: "AUTHELIA_JWT_SECRET"
+            <<: *secret_permissions
+          - template_name: "AUTHELIA_SESSION_SECRET"
+            <<: *secret_permissions
+          - template_name: "AUTHELIA_STORAGE_ENCRYPTION_KEY"
+            <<: *secret_permissions
+          - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
+            <<: *secret_permissions
+          - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
+            <<: *secret_permissions
+          - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY"
+            <<: *secret_permissions
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 9091
+        middlewares:
+          - "internal-ip@file"
+        additional_content: |2
+            middlewares:
+              authelia:
+                forwardAuth:
+                  address: "http://authelia:9091/api/verify?rd=https%3A%2F%2F{{ expanded_url }}%2F"
+                  trustForwardHeader: true
+                  authResponseHeaders: ["Remote-User","Remote-Groups","Remote-Name","Remote-Email"]
+              authelia-basic:
+                forwardAuth:
+                  address: "http://authelia:9091/api/verify?auth=basic"
+                  trustForwardHeader: true
+                  authResponseHeaders: ["Remote-User","Remote-Groups","Remote-Name","Remote-Email"]
+    - role: authelia
+      vars:
+        url: "{{ urls.portainer }}"
+        service_name: "Portainer"
+        redirect_uris:
+          - https://{{ expanded_url }}
+    - role: authelia
+      vars:
+        url: "{{ urls.miniflux }}"
+        service_name: "Miniflux"
+        redirect_uris:
+          - https://{{ expanded_url }}/oauth2/oidc/callback
+    - role: authelia
+      vars:
+        url: "{{ urls.immich }}"
+        service_name: "Immich"
+        redirect_uris:
+          - https://{{ expanded_url }}/auth/login
+          - https://{{ expanded_url }}/user-settings
+          - https://{{ expanded_url }}/api/oauth/mobile-redirect
+          - app.immich://

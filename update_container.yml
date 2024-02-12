@@ -1,0 +1,14 @@
+---
+- name: Update a Docker container image
+  hosts: homelab
+  gather_facts: false
+  vars_prompt:
+    - name: image_repo
+      prompt: Enter the repository name
+      private: false
+
+  tasks:
+    - name: Update the image
+      community.docker.docker_image_pull:
+        name: "{{ image_repo }}"
+        platform: amd64

@@ -1,0 +1,26 @@
+---
+- name: Install wikiless
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "wikiless"
+    service_image: "metastem/wikiless"
+    image_tag: "latest"
+    config_file: "wikiless.config"
+    network: "redis-net"
+    url: "{{ urls.wikiless}}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
+            owner: "999"
+        files: [{}]
+    - role: docker
+      vars:
+        attach_redis: true
+    - role: traefik
+      vars:
+        servers: [{}]

@@ -1,21 +1,20 @@
 ---
-
-# - name: Create docker network
-#   community.docker.docker_network:
-#     name: "{{ network }}"
-#   when: network is defined
-
 - name: Deploy docker compose file
   tags: docker
   ansible.builtin.template:
-    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml"
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml.j2"
     dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
     mode: "0644"
 
 - name: Add redis
-  tags: docker
+  tags: ["docker", "redis"]
   ansible.builtin.include_tasks: add_redis.yml
   when: attach_redis
+
+- name: Add postgres
+  tags: ["docker", "postgres"]
+  ansible.builtin.include_tasks: add_postgres.yml
+  when: attach_postgres
 
 - name: Start compose file
   tags: ["docker", "deploy"]

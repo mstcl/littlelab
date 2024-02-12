@@ -3,4 +3,4 @@ redirect: false
 trailing_slash: true
 protocol: 'http'
 create_service: true
-add_router: true
+create_router: true

@@ -7,9 +7,15 @@ base_group_id: "1000"
 base_timezone: "Gnu/Linux"
 base_directory: "/path/homelab" # where compose and config files will be stored
 base_tld: "example.cats"
-base_tailip: "100.12.12.12" # headscale/tailscale ip of the box
-base_dns_ip: "172.12.12.12" # unbound dns
-base_dns_port: "1234" # unbound dns port
+base_tailip: "100.12.12.12" # headscale/tailscale ip of the box, fill in when asked to
+base_lanip: "192.168.123.123" # local lan ip of the box, fill in in when asked to
+
+# These can be arbitrary, just make sure the networks are created
+# in playbooks/traefik.yml and playbooks/unbound.yml have the same
+# IPAM subnet.
+traefik_bouncer_ip: "172.13.13.13" # traefik-bouncer ip
+unbound_dns_ip: "172.12.12.12" # unbound dns
+unbound_dns_port: "1234" # unbound dns port
 
 # Core locations for storage and media
 location:

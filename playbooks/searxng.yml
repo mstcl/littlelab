@@ -1,0 +1,29 @@
+---
+- name: Install searxng
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "searxng"
+    service_image: "searxng/searxng"
+    image_tag: "latest"
+    config_file: "settings.yml"
+    network: "redis-net"
+    url: "{{ urls.searxng }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
+            owner: "999"
+        files: [{}]
+        instance_name: "BIM SearXNG"
+        searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
+    - role: docker
+      attach_redis: true
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+         - "internal-ip@file"

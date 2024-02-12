@@ -1,0 +1,28 @@
+---
+- name: Add new pak and print result
+  tags: ["headscale", "pak"]
+  check_mode: false
+  block:
+    - name: Create pre-authkey
+      community.docker.docker_container_exec:
+        container: headscale
+        chdir: /
+        argv:
+          - headscale
+          - preauthkeys
+          - create
+          - "-u"
+          - "{{ username }}"
+          - "-o"
+          - "json"
+      register: create_result
+    - name: Save pre-authkey
+      ansible.builtin.set_fact:
+        pak: "{{ (create_result.stdout | from_json).key }}"
+    - name: Result of pre-authkey creation
+      ansible.builtin.debug:
+        msg:
+          [
+            "THIS IS THE PREAUTHKEY. COPY IT IN CASE OF PLAY FAILURE:",
+            "{{ pak }}",
+          ]

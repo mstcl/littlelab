@@ -1,0 +1,22 @@
+---
+- name: Install picoshare
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "picoshare"
+    service_image: "mtlynch/picoshare"
+    image_tag: "latest"
+    url: "{{ urls.picoshare }}"
+    # SECRETS
+    picoshare_secret: "{{ lookup('get_secrets', path='/picoshare', secret_name='PS_SHARED_SECRET') }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 4001

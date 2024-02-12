@@ -1,0 +1,23 @@
+---
+- name: Add bookmarks to pgweb
+  gather_facts: false
+  hosts: homelab
+
+  tasks:
+    - name: Make pgweb bookmark files
+      tags: config
+      ansible.builtin.template:
+        src: "{{ hostvars.localhost.base_directory }}/files/pgweb/templates/bookmark.toml"
+        dest: "{{ base_directory }}/pgweb/bookmarks/{{ item }}.toml"
+        mode: "0644"
+      with_items: "{{ services }}"
+      vars:
+        postgres_url: "{{ lookup('get_secrets', path='/'+item, secret_name=item|upper+'_POSTGRES_URL') }}"
+        services:
+          - "miniflux"
+          - "dendrite"
+          - "sliding-sync"
+          - "wa-bridge"
+          - "lemmy"
+          - "immich"
+          - "piped"

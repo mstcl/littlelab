@@ -1,0 +1,41 @@
+---
+- name: Install nicotine
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "nicotine"
+    service_image: "sirjmann92/nicotineplus-proper"
+    image_tag: "3.2.9"
+    config_file: "config"
+    url: "{{ urls.nicotine }}"
+    # SECRETS
+    user: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_USERNAME') }}"
+    password: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PASSWORD') }}"
+    io_port: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PORT') }}"
+    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
+    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+
+  roles:
+    - role: ufw
+      vars:
+        local: false
+        port: 50300
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          -
+          - path: "{{ base_directory }}/{{ service_directory }}/utils"
+        files:
+          -
+          - template_name: "finish.sh"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
+            permission: "0655"
+    - role: docker
+    - role: traefik
+      vars:
+        redirect: true
+        servers:
+          - port: 6565
+        middlewares:
+         - "internal-ip@file"
