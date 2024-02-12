@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "traefik"
-    image: "traefik:v2.11"
+    image: "traefik:3.0"
     config_file: "traefik.yml"
     network: "traefik-net"
     cf_email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
