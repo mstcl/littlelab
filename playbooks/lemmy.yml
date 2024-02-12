@@ -6,7 +6,7 @@
     service_directory: "lemmy"
     image: "dessalines/lemmy:0.18.5"
     lemmy_ui:
-      image: "dessalines/lemmy-ui:0.18.5"
+      image: "dessalines/lemmy-ui:0.19.3"
     postgres:
       image: "postgres:16-alpine"
     pictrs:
