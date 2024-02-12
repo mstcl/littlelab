@@ -10,7 +10,7 @@
     postgres:
       image: "postgres:16-alpine"
     pictrs:
-      image: "asonix/pictrs:0.4.5"
+      image: "asonix/pictrs:0.5.6"
     url: "{{ urls.lemmy }}"
     network: "postgres-net"
     config_file: "config.hjson"
