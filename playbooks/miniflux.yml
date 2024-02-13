@@ -2,19 +2,12 @@
 - name: Install miniflux
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/miniflux.yml
   vars:
     service_directory: "miniflux"
-    image: "miniflux/miniflux:latest"
+    image: "miniflux/miniflux:2.0.51"
     url: "{{ urls.miniflux }}"
-    network: "postgres-net"
-    db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-    # SECRETS
-    oidc_id: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/miniflux', env_slug='prod', secret_name='MINIFLUX_OIDC_ID').value }}"
-    oidc_secret: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/miniflux', env_slug='prod', secret_name='MINIFLUX_OIDC_SECRET').value }}"
-    postgres_user: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/miniflux', env_slug='prod', secret_name='MINIFLUX_POSTGRES_USER').value }}"
-    postgres_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/miniflux', env_slug='prod', secret_name='MINIFLUX_POSTGRES_PASSWORD').value }}"
-    postgres_db: "{{ service_directory}}"
-    postgres_url: "postgres://{{ postgres_user }}:{{ postgres_password }}@{{ service_directory }}-postgres/{{ postgres_db }}?sslmode=disable"
 
   roles:
     - role: urls
@@ -23,14 +16,13 @@
       vars:
         directories:
           -
-          - path: "{{ db_location }}"
+          - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
     - role: docker
       vars:
         attach_postgres: true
         run: false
-        postgres_location: "{{ db_location }}"
     - role: traefik
       vars:
         servers: [{}]

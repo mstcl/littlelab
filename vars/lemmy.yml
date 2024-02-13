@@ -1,0 +1,31 @@
+---
+nginx_flavour: "nginx-lemmy" # NGINX flavour
+network: "postgres-net" # Docker network to talk to postgres
+config_file: "config.hjson"
+
+smtp:
+  sender: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_SENDER') }}"
+  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_PASSWORD') }}"
+  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+
+pictrs:
+  image: "asonix/pictrs:0.4.5"
+  api_key: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_PICTRS_API_KEY') }}"
+
+pictrs_options:
+  - PICTRS__SERVER__API_KEY: "{{ pictrs.api_key }}"
+  - PICTRS__UPGRADE__CONCURRENCY: "8"
+  - PICTRS__MEDIA__RETENTION__PROXY: "30m"
+
+lemmy_ui:
+  image: "dessalines/lemmy-ui:0.18.5"
+
+lemmy_ui_options:
+  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
+
+postgres:
+  image: "postgres:16-alpine"
+  user: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_PASSWORD') }}"
+  db: "{{ service_directory }}"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"

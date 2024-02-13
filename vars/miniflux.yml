@@ -1,0 +1,20 @@
+---
+network: "postgres-net" # Docker network to talk to postgres
+
+postgres:
+  image: "postgres:15-alpine"
+  db: "{{ service_directory}}"
+  user: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_PASSWORD') }}"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"
+
+miniflux_options:
+  - DATABASE_URL: "postgres://{{ postgres.user }}:{{ postgres.password }}@{{ service_directory }}-postgres/{{ postgres.db }}?sslmode=disable"
+  - BASE_URL: "https://{{ expanded_url }}"
+  - RUN_MIGRATIONS: "1"
+  - OAUTH2_PROVIDER: "oidc"
+  - OAUTH2_CLIENT_ID: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_ID') }}"
+  - OAUTH2_CLIENT_SECRET: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_SECRET') }}"
+  - OAUTH2_REDIRECT_URL: "https://{{ expanded_url }}/oauth2/oidc/callback"
+  - OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
+  - OAUTH2_USER_CREATION: "0"

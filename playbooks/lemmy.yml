@@ -16,7 +16,7 @@
       vars:
         directories:
           -
-          - path: "{{ db_location }}"
+          - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
           - path: "{{ location.docker_data }}/{{ service_directory }}/pictrs"
@@ -27,7 +27,6 @@
       vars:
         attach_postgres: true
         run: false
-        postgres_location: "{{ db_location }}"
     - role: nginx
       vars:
         configs:

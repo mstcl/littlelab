@@ -2,24 +2,13 @@
 - name: Install piped
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/piped.yml
   vars:
     service_directory: "piped"
     image: "1337kavin/piped:latest"
-    piped_frontend:
-      image: "1337kavin/piped-frontend:latest"
-    piped_proxy:
-      image: "1337kavin/piped-proxy:latest"
     url: "{{ urls.piped }}"
-    config_file: "config.properties"
-    network: "postgres-net"
-    # SECRETS
-    postgres_user: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/piped', env_slug='prod', secret_name='PIPED_POSTGRES_USER').value }}"
-    postgres_password: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/piped', env_slug='prod', secret_name='PIPED_POSTGRES_PASSWORD').value }}"
-    postgres_db: "{{ service_directory }}"
-    # DEFAULTS
-    socket_location: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy"
-    db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-    nginx_flavour: "nginx"
+    # ANCHORS
     traefik: &traefik_defaults
       create_service: false
       service_name: "nginx"
@@ -30,7 +19,7 @@
       vars:
         directories:
           - path: "{{ socket_location }}"
-          - path: "{{ db_location }}"
+          - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
         files: [{}]
@@ -54,7 +43,6 @@
       vars:
         attach_postgres: true
         run: false
-        postgres_location: "{{ db_location }}"
     - role: traefik
       vars:
         <<: *traefik_defaults
