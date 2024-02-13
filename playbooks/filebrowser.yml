@@ -1,0 +1,27 @@
+---
+- name: Install filebrowser
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "filebrowser"
+    image: "filebrowser/filebrowser:v2.27.0"
+    url: "{{ urls.filebrowser }}"
+    config_file: "filebrowser.yml"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          -
+          - path: "{{ location.docker_data }}/{{ service_directory }}/database.db"
+            state: "touch"
+            permission: "0666"
+        files: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        servers: [{}]
+        middlewares:
+          - "authelia@file"
+          - "internal-ip@file"

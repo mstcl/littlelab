@@ -1,11 +1,20 @@
 # TODO: MAKE SURE users.yml is there
-- name: Grab password hash
-  ansible.builtin.command: "docker run authelia/authelia:latest \
-    authelia crypto hash generate argon2 --password '{{ password }}'"
-  register: authelia
+- name: Run a temp container to generate the password hash
+  ansible.builtin.include_role:
+    name: docker
+  vars:
+    image: "authelia/authelia:4.37.5"
+    entrypoint:
+      - authelia
+      - crypto
+      - hash
+      - generate
+      - argon2
+      - "--password"
+      - "{{ password }}"
 - name: Save password hash
   ansible.builtin.set_fact:
-    hash: "{{ authelia.stdout[8:] }}"
+    hash: "{{ result.container.Output[8:-1] }}"
 - name: Try and set admin to boolean
   block:
     - name: Set admin to boolean

@@ -16,9 +16,12 @@ services:
     volumes:
       - {{ location.files }}:/srv/sftpgo
       - {{ location.docker_data }}/{{ service_directory }}:/var/lib/sftpgo
+      - ./files.html:/usr/share/sftpgo/templates/webclient/files.html
     environment:
-      - SFTPGO_WEBDAVD__BINDINGS__0__PORT=10080
-      - SFTPGO_HTTPD__BINDINGS__0__ENABLE_WEB_CLIENT=false
-      - SFTPGO_HTTPD__WEB_ROOT=/{{ url.path }}
+{% for item in sftpgo_options %}
+{% for key, value in item.items() %}
+      {{ key }}: "{{ value }}"
+{% endfor %}
+{% endfor %}
     ports:
       - 2022:2022

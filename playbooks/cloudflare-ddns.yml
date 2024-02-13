@@ -5,7 +5,7 @@
   vars:
     service_directory: "cloudflare-ddns"
     image: "favonia/cloudflare-ddns:1.11.0"
-    cf_token: "{{ lookup('infisical.vault.read_secrets', project_id=infisical_project_id, path='/cloudflare', env_slug='prod', secret_name='CF_API_TOKEN_DDNS').value }}"
+    cf_token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_DDNS') }}"
 
   pre_tasks:
     - name: Get list of urls

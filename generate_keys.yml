@@ -1,0 +1,53 @@
+---
+- name: Generate keys for various services
+  hosts: homelab
+  gather_facts: false
+
+  tasks:
+    - name: Generate API key for headscale
+      when: service == "headscale_api"
+      block:
+        - name: Generate API
+          tags: headscale
+          community.docker.docker_container_exec:
+            container: headscale
+            chdir: /
+            argv:
+              - headscale
+              - apikeys
+              - create
+              - "-o"
+              - "json"
+          register: headscale
+        - name: Print result
+          ansible.builtin.debug:
+            msg:
+              ["HEADSCALE API GENERATED:", "{{ headscale.stdout | from_json }}"]
+
+    - name: Generate PAK for headscale
+      when: service == "headscale_pak"
+      tags: headscale
+      block:
+        - name: Generate PAK
+          community.docker.docker_container_exec:
+            container: headscale
+            chdir: /
+            argv:
+              - headscale
+              - preauthkeys
+              - create
+              - "-u"
+              - "{{ username }}"
+              - "-o"
+              - "json"
+          register: headscale
+        - name: Print result
+          ansible.builtin.debug:
+            msg:
+              ["HEADSCALE PAK GENERATED:", "{{ headscale.stdout | from_json }}"]
+
+    - name: Generate hash pair for Authelia OIDC
+      tags: authelia
+      ansible.builtin.include_role:
+        name: authelia
+      when: service == "authelia"
