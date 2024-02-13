@@ -38,6 +38,8 @@
 
     - name: Start compose file
       tags: ["docker", "deploy"]
-      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      ansible.builtin.include_role:
+        name: docker
+        tasks_from: down_and_up.yml
       vars:
         force_up: true

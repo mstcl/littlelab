@@ -3,10 +3,4 @@ docker:
   traefik_network: "traefik" # the docker network for internal services
   expose_network: "expose" # the docker network for public services
 
-postgres:
-  image: "postgres:15-alpine" # postgres image
-
-redis:
-  image: "redis:6.2-alpine" # redis image
-
 # anything else for the group homelab goes here

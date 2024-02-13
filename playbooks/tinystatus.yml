@@ -47,9 +47,13 @@
         files:
           - template_name: "checks.csv"
             destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+    - role: config
+      tags: incident
+      vars:
         copies:
           - file_name: "incidents.txt"
             destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+      notify: Regenerate page
 
   post_tasks:
     - name: Make crontab for tinystatus
@@ -58,4 +62,10 @@
         name: "Update statuspage"
         minute: "*/2"
         job: "cd {{ base_directory }}/{{ service_directory }}/tinystatus && \
+          ./tinystatus > {{ location.files }}/data/shared/static/status/index.html"
+
+  handlers:
+    - name: Regenerate page
+      ansible.builtin.command:
+        command: "cd {{ base_directory }}/{{ service_directory }}/tinystatus && \
           ./tinystatus > {{ location.files }}/data/shared/static/status/index.html"

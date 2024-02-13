@@ -21,7 +21,7 @@
     content: |2
         {{ username }}:
           disabled: false
-          display_name: "{{ display_name }}"
+          displayname: "{{ display_name }}"
           password: "{{ hash }}"
           email: {{ email }}
       {% if admin %}

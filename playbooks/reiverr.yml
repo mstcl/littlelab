@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "reiverr"
-    image: "ghcr.io/aleksilassila/reiverr:latest"
+    image: "ghcr.io/aleksilassila/reiverr:v0.8.0"
     url: "{{ urls.reiverr }}"
 
   roles:

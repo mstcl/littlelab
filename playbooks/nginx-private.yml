@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "nginx-private"
-    image: "nginx:mainline-alpine"
+    image: "nginx:mainline-alpine3.18"
     config_file: "nginx.conf"
 
   roles:

@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "authelia"
-    image: "docker.io/authelia/authelia:latest"
+    image: "docker.io/authelia/authelia:4.37.5"
     config_file: "configuration.yml"
     url: "{{ urls.authelia }}"
     # SECRETS
