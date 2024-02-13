@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "mycorrhiza"
-    image: "mycorrhiza:v1.14.0"
+    image: "thecoopcloud/mycorrhiza:v1.14.0"
     url: "{{ urls.mycorrhiza }}"
 
   roles:
@@ -18,4 +18,4 @@
         servers:
           - port: 1737
         middlewares:
-         - "internal-ip@file"
+          - "internal-ip@file"
