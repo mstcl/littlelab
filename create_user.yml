@@ -1,5 +1,5 @@
 ---
-- name: Add a new user for certain services
+- name: Create a user for certain services
   hosts: homelab
   gather_facts: false
 
@@ -8,3 +8,5 @@
       tags: authelia
     - role: headscale
       tags: headscale
+    - role: filebrowser
+      tags: filebrowser

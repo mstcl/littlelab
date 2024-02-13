@@ -13,8 +13,9 @@
   - [Creating new users for services](#creating-new-users-for-services)
     - [Authelia](#authelia)
     - [Headscale](#headscale)
-  - [Generating API keys](#generating-api-keys)
-    - [Headscale](#headscale-1)
+    - [Filebrowser](#filebrowser)
+  - [Generating keys](#generating-keys)
+    - [Implemented services](#implemented-services)
 - [Role documentation](#role-documentation)
   - [NGINX](#nginx)
     - [First usage](#first-usage)
@@ -44,7 +45,7 @@ file (mostly as Jinja2 templates) and make sure they look good.
 To add a new service playbook and template docker compose file:
 
 ```bash
-ansible-playbook add_new_service.yml
+ansible-playbook create_service.yml
 ```
 
 It will prompt for a service name, and create a playbook
@@ -70,34 +71,48 @@ ansible-playbook playbooks/authelia.yml --tags=docker
 
 ### Creating new users for services
 
-The playbook `add_new_user.yml` can help with this.
+The playbook `create_user.yml` can help with this.
+
+To make an user:
+
+```bash
+ansible-playbook create_user.yml --tags='<service-name>' -e variable1='<variable1>' -e variable2='<variable2>' # etc.
+```
+
+The variables are specific for each service. Use single quotes on the variables, especially on the password.
 
 #### Authelia
 
-To make an authelia user:
-
-```bash
-ansible-playbook add_new_user.yml --tags=authelia -e username='user' -e display_name='User' \
-    -e email='user@example.com' -e password='password' -e admin='false'
-```
-
-#### Headscale
-
-To make a headscale user:
-
-```bash
-ansible-playbook add_new_user.yml --tags=headscale -e username='user'
-```
-
-### Generating API keys
-
-The playbook `generate_api_key.yml` can help with this.
+- `username`: the username to login (string).
+- `display_name`: the display name that is shown on the login page (string).
+- `password`: the password (string).
+- `email`: the email that Authelia will use for confirmation of certain things (string).
+- `admin`: whether or not the user is in the admin group, true/false/yes/no accepted (boolean).
 
 #### Headscale
 
+- `username`: the username to login (string).
+
+#### Filebrowser
+
+- `username`: the username to login (string).
+- `password`: the password (string).
+
+### Generating keys
+
+The playbook `generate_keys.yml` can help with this.
+
+To generate a key:
+
 ```bash
-ansible-playbook generate_api_key.yml --tags=headscale
+ansible-playbook generate_keys.yml -e service='<service-name>'
 ```
+
+#### Implemented services
+
+- `headscale_api`: Headscale API
+- `headscale_pak`: Headscale preauthkey
+- `authelia`: Authelia hash pair for OIDC
 
 ## Role documentation
 

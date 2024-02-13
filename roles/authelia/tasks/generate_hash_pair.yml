@@ -1,0 +1,24 @@
+---
+- name: Run a temp container to generate the hash pair
+  tags: ["authelia", "oidc"]
+  ansible.builtin.include_role:
+    name: docker
+  vars:
+    image: "authelia/authelia:4.37.5"
+    entrypoint:
+      - authelia
+      - crypto
+      - hash
+      - generate
+      - pbkdf2
+      - "--variant"
+      - sha512
+      - "--random"
+      - "--random.length"
+      - "72"
+      - "--random.charset"
+      - "rfc3986"
+  register: result
+- name: Print result
+  ansible.builtin.debug:
+    msg: ["HASH PAIR GENERATED:", "{{ result.container.Output.split('\n')[:-1] }}"]

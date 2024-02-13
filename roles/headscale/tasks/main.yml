@@ -1,7 +1,7 @@
 ---
 - name: Add new user
   tags: ["headscale", "user"]
-  ansible.builtin.include_tasks: add_new_user.yml
+  ansible.builtin.include_tasks: create_user.yml
   when: username is defined
 - name: Generate a pre-authkey for a user
   tags: ["headscale", "pak"]

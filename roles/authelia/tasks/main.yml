@@ -5,5 +5,9 @@
   when: redirect_uris is defined
 - name: Add new user
   tags: ["authelia", "user"]
-  ansible.builtin.include_tasks: add_new_user.yml
+  ansible.builtin.include_tasks: create_user.yml
   when: username is defined
+- name: Generate hash pair
+  tags: ["authelia"]
+  ansible.builtin.include_tasks: generate_hash_pair.yml
+  when: redirect_uris is not defined and username is not defined

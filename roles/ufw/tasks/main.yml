@@ -2,9 +2,9 @@
 - name: Rule with only trusted IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ rule }}"
+    rule: "{{ rule | default('allow') }}"
     port: "{{ port }}"
-    protocol: "{{ protocol }}"
+    protocol: "{{ protocol | default('tcp') }}"
     src: "{{ item }}"
     comment: "{{ comment | default(service_directory) }}"
   loop:
@@ -23,7 +23,7 @@
   community.general.ufw:
     rule: "{{ rule }}"
     port: "{{ port }}"
-    protocol: "{{ protocol }}"
+    protocol: "{{ protocol | default('tcp') }}"
     comment: "{{ comment | default(service_directory) }}"
   become: true
   when: not local

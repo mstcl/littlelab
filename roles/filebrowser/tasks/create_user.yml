@@ -1,0 +1,32 @@
+---
+- name: Create user and print result
+  tags: ["filebrowser", "user"]
+  block:
+    - name: Stop container
+      community.docker.docker_container:
+        name: filebrowser
+        state: stopped
+    - name: Run a temp container to create the user
+      ansible.builtin.include_role:
+        name: docker
+      vars:
+        image: "filebrowser/filebrowser:v2.27.0"
+        entrypoint:
+          - "/filebrowser"
+          - "-c"
+          - "/.filebrowser.yml"
+          - users
+          - add
+          - "{{ username }}"
+          - "{{ password }}"
+        mounts:
+          - target: /database.db
+            type: "bind"
+            source: "{{ location.docker_data }}/filebrowser/database.db"
+          - target: /.filebrowser.yml
+            type: "bind"
+            source: "{{ base_directory }}/filebrowser/filebrowser.yml"
+    - name: Start container
+      community.docker.docker_container:
+        name: filebrowser
+        state: started

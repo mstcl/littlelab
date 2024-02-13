@@ -1,4 +1,2 @@
 ---
 local: true
-protocol: tcp
-rule: allow

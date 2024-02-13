@@ -1,0 +1,5 @@
+---
+- name: Add new user
+  tags: ["filebrowser", "user"]
+  ansible.builtin.include_tasks: create_user.yml
+  when: username is defined

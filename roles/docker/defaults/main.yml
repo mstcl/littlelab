@@ -2,4 +2,5 @@
 run: true
 attach_redis: false
 attach_postgres: false
+print_output: false
 force_up: false

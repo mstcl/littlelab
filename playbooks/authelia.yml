@@ -93,3 +93,9 @@
           - https://{{ expanded_url }}/user-settings
           - https://{{ expanded_url }}/api/oauth/mobile-redirect
           - app.immich://
+    - role: authelia
+      vars:
+        url: "{{ urls.sftpgo }}"
+        service_name: "Sftpgo"
+        redirect_uris:
+          - https://{{ expanded_url }}

@@ -1,9 +1,9 @@
 ---
-- name: Add new user and print result
+- name: Create user and print result
   tags: ["headscale", "user"]
   check_mode: false
   block:
-    - name: Add new user
+    - name: Create user
       community.docker.docker_container_exec:
         container: headscale
         chdir: /

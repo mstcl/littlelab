@@ -2,9 +2,11 @@
 - name: Install sftpgo
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/sftpgo.yml
   vars:
     service_directory: "sftpgo"
-    image: "drakkan/sftpgo:2.5.x-alpine"
+    image: "drakkan/sftpgo:edge-alpine"
     url: "{{ urls.sftpgo }}"
 
   roles:
@@ -17,6 +19,8 @@
         directories:
           -
           - path: "{{ location.files }}"
+        copies:
+          - file_name: "files.html"
     - role: docker
     - role: traefik
       vars:
