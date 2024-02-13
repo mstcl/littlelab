@@ -18,7 +18,7 @@ pictrs_options:
   - PICTRS__MEDIA__RETENTION__PROXY: "30m"
 
 lemmy_ui:
-  image: "dessalines/lemmy-ui:0.18.5"
+  image: "dessalines/lemmy-ui:0.19.3"
 
 lemmy_ui_options:
   - LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
