@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "jellyfin"
-    image: "jellyfin/jellyfin:latest"
+    image: "jellyfin/jellyfin:10.8.13"
     url: "{{ urls.jellyfin }}"
 
   roles:

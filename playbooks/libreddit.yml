@@ -2,9 +2,11 @@
 - name: Install libReddit
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/libreddit.yml
   vars:
     service_directory: "libreddit"
-    image: "libreddit/libreddit:latest"
+    image: "quay.io/redlib/redlib:latest"
     url: "{{ urls.libreddit }}"
 
   roles:

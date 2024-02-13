@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "lidarr"
-    image: "linuxserver/lidarr:latest"
+    image: "linuxserver/lidarr:2.1.7"
     url: "{{ urls.lidarr }}"
 
   roles:

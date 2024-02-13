@@ -7,7 +7,7 @@
   vars:
     add_persistent_config: true # set this to false if clients have not been configured
     service_directory: "adguard-home"
-    image: "adguard/adguardhome:latest"
+    image: "adguard/adguardhome:v0.107.44"
     url: "{{ urls['adguard-home'] }}"
     network: "dns-net"
     config_file: "AdGuardHome.yaml"
@@ -90,6 +90,8 @@
 
     - name: Start compose file
       tags: ["docker", "deploy"]
-      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      ansible.builtin.include_role:
+        name: docker
+        tasks_from: down_and_up.yml
       vars:
         force_up: true

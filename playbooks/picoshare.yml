@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "picoshare"
-    image: "mtlynch/picoshare:latest"
+    image: "mtlynch/picoshare:1.4.1"
     url: "{{ urls.picoshare }}"
     # SECRETS
     picoshare_secret: "{{ lookup('get_secrets', path='/picoshare', secret_name='PS_SHARED_SECRET') }}"

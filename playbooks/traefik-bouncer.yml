@@ -4,10 +4,11 @@
   gather_facts: false
   vars:
     service_directory: "traefik-bouncer"
-    image: "fbonalair/traefik-crowdsec-bouncer:latest"
+    image: "fbonalair/traefik-crowdsec-bouncer:0.5.0"
 
   pre_tasks:
     - name: Try and fetch API key
+      tags: api
       block:
         - name: Grab secret
           ansible.builtin.set_fact:

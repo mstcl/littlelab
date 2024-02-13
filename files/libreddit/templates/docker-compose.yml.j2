@@ -17,3 +17,11 @@ services:
     read_only: true
     cap_drop:
       - ALL
+    environment:
+{% if libreddit_options is defined and libreddit_options | length > 0 %}
+{% for item in libreddit_options %}
+{% for key, value in item.items() %}
+      REDLIB_{{ key }}: "{{ value }}"
+{% endfor %}
+{% endfor %}
+{% endif %}

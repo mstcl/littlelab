@@ -1,15 +1,17 @@
 ---
-- name: Install ladder
+- name: Install dweebui
   hosts: homelab
   gather_facts: false
   vars:
-    service_directory: "ladder"
-    image: "ghcr.io/everywall/ladder:v0.0.21"
-    url: "{{ urls.ladder }}"
+    service_directory: "dweebui"
+    image: "lllllllillllllillll/dweebui:v0.20"
+    url: "{{ urls.dweebui }}"
 
   roles:
     - role: urls
     - role: config
+      vars:
+        directories: [{}]
     - role: docker
     - role: traefik
       vars:

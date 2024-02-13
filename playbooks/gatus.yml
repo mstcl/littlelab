@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "gatus"
-    image: "twinproduction/gatus:latest"
+    image: "twinproduction/gatus:v5.7.0"
     url: "{{ urls.gatus }}"
     config_file: "config.yaml"
 

@@ -1,11 +1,7 @@
 version: "{{ docker.compose_version }}"
 
 networks:
-  {{ network }}:
-    internal: true
   {{ docker.traefik_network }}:
-    external: true
-  pg-net:
     external: true
 
 services:
@@ -17,12 +13,9 @@ services:
       - no-new-privileges
     networks:
       - {{ docker.traefik_network}}
-      - {{ network }}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-{% if miniflux_options is defined and miniflux_options | length > 0 %}
-{% for item in miniflux_options %}
-{% for key, value in item.items() %}
-      {{ key }}: "{{ value }}"
-{% endfor %}
-{% endfor %}
-{% endif %}
+      NODE_ENV: "production"
+      PORT: 8080
+      SECRET: ""

@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "gonic"
-    image: "sentriz/gonic:latest"
+    image: "sentriz/gonic:v0.16.2"
     url: "{{ urls.gonic }}"
 
   roles:

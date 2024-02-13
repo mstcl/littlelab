@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "readeck"
-    image: "codeberg.org/readeck/readeck:latest"
+    image: "codeberg.org/readeck/readeck:0.12.0"
     url: "{{ urls.readeck }}"
 
   roles:

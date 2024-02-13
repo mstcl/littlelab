@@ -17,3 +17,4 @@ services:
       - {{ location.docker_data }}/{{ service_directory }}:/config
       - {{ location.cache }}/{{ service_directory }}:/cache
       - {{ location.films }}:/media
+    entrypoint: ["/jellyfin/jellyfin", "--nowebclient"]
