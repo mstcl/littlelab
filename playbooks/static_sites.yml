@@ -12,7 +12,7 @@
         server_url: "{{ base_tld }}"
 
   handlers:
-    - import_tasks: roles/docker/handlers/main.yml
+    - import_tasks: ../roles/docker/handlers/main.yml
 
   roles:
     - role: nginx
