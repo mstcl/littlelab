@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     service_directory: "mafl"
-    image: "hywax/mafl:v0.9.2"
+    image: "hywax/mafl:v1.4.1"
     url: "{{ urls.mafl }}"
     config_file: "config.yml"
 
