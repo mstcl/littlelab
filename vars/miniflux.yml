@@ -2,7 +2,7 @@
 network: "postgres-net" # Docker network to talk to postgres
 
 postgres:
-  image: "postgres:15-alpine"
+  image: "postgres:16-alpine"
   db: "{{ service_directory}}"
   user: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_USER') }}"
   password: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_PASSWORD') }}"

@@ -10,7 +10,7 @@ piped_proxy:
   image: "1337kavin/piped-proxy:latest"
 
 postgres:
-  image: "postgres:15-alpine"
+  image: "postgres:16-alpine"
   user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
   password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
   db: "{{ service_directory }}"
