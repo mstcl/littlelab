@@ -20,10 +20,10 @@
                 - {{ service_directory }}-postgres
             {{ network }}:
               aliases:
-                - {{ postgres_alias | default(service_directory + '-postgres') }}
+                - {{ postgres.alias | default(service_directory + '-postgres') }}
           volumes:
-            - {{ postgres_location }}:/var/lib/postgresql/data
+            - {{ postgres.location }}:/var/lib/postgresql/data
           environment:
-              POSTGRES_USER: "{{ postgres_user }}"
-              POSTGRES_PASSWORD: "{{ postgres_password }}"
-              POSTGRES_DB: "{{ postgres_db }}"
+              POSTGRES_USER: "{{ postgres.user }}"
+              POSTGRES_PASSWORD: "{{ postgres.password }}"
+              POSTGRES_DB: "{{ postgres.db }}"

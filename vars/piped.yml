@@ -1,0 +1,17 @@
+---
+network: "postgres-net"  # Docker network to talk to postgres
+config_file: "config.properties"
+socket_location: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy"
+nginx_flavour: "nginx"
+
+piped_frontend:
+  image: "1337kavin/piped-frontend:latest"
+piped_proxy:
+  image: "1337kavin/piped-proxy:latest"
+
+postgres:
+  image: "postgres:15-alpine"
+  user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
+  db: "{{ service_directory }}"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"
