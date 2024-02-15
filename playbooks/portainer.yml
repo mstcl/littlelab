@@ -1,0 +1,25 @@
+---
+- name: Install portainer
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/portainer.yml
+  vars:
+    service_directory: "portainer"
+    image: "portainer/portainer-ee:2.19.4-alpine"
+    url: "{{ urls.portainer }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        redirect: true
+        trailing_slash: false
+        servers:
+          - port: 9000
+        middlewares:
+          - "internal-ip@file"

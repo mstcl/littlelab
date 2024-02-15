@@ -25,8 +25,8 @@ services:
       - 80:10080
       - 443:10443
     environment:
-      CLOUDFLARE_EMAIL: "{{ cf_email }}"
-      CLOUDFLARE_DNS_API_TOKEN: "{{ cf_token }}"
+      CLOUDFLARE_EMAIL: "{{ cf.email }}"
+      CLOUDFLARE_DNS_API_TOKEN: "{{ cf.token }}"
     volumes:
       - ./{{ config_file }}:/etc/traefik/traefik.yml:ro
       - ./dynamic:/etc/traefik/dynamic:ro
@@ -38,3 +38,19 @@ services:
         limits:
           memory: 700mb
           cpus: "0.75"
+
+  {{ service_directory }}-access-log:
+    image: {{ apine.image }}
+    container_name: {{ service_directory }}-access-log
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network }}
+    read_only: true
+    volumes:
+      - /var/log/traefik/access.log:/var/log/traefik/access.log:ro
+    command:
+      - tail
+      - -f
+      - /var/log/traefik/access.log

@@ -31,7 +31,7 @@
       vars:
         file_name: "webdav"
         service_name: "webdav"
-        rule: "Host(`{{ urls.webdav }}.{{ base_tld }}`)"
+        rule: "Host(`{{ urls.webdav.sub }}.{{ base_tld }}`)"
         servers:
           - port: 10080
             url: "sftpgo"

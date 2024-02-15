@@ -1,0 +1,6 @@
+---
+network: "socket-net" # network for portainer to talk to the socket
+ipam_subnet: 172.19.0
+
+socket:
+  image: wollomatic/socket-proxy:1.1.1
