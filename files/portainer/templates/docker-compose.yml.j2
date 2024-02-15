@@ -8,7 +8,7 @@ networks:
     attachable: false
     ipam:
       config:
-        - subnet: 192.168.188.0/24
+        - subnet: {{ ipam_subnet }}.0/24
 
 services:
   {{ service_directory }}:
@@ -20,24 +20,15 @@ services:
     networks:
       {{ docker.traefik_network}}: {}
       {{ network }}:
-        ipv4_address: 192.168.188.10
-    volumes:
-      - {{ location.docker_data }}/{{ service_directory }}:/data
-    cap_drop:
-      - ALL
-    environment:
-      DOZZLE_REMOTE_HOST: "tcp://dozzle-socket-proxy:2375|{{ base_hostname }}"
-{% if dozzle_options is defined and dozzle_options | length > 0 %}
-{% for item in dozzle_options %}
-{% for key, value in item.items() %}
-      {{ key }}: "{{ value }}"
-{% endfor %}
-{% endfor %}
-{% endif %}
+        ipv4_address: {{ ipam_subnet }}.10
     depends_on:
       - {{ service_directory }}-socket-proxy
     mem_limit: 256M
-
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - {{ location.docker_data }}/{{ service_directory }}:/data
+    ports:
+      - 9001:9000
 
   {{ service_directory }}-socket-proxy:
     image: {{ socket.image }}
@@ -53,12 +44,20 @@ services:
       - ALL
     user: 65534:973
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     command:
-      - '-loglevel=error'
+      - '-loglevel=debug'
       - '-listenip=0.0.0.0'
-      - '-allowfrom=192.168.188.10/32'
-      - '-allowGET=/v1\..{1,2}/(version|containers/.*|events.*)'
+      - '-allowfrom={{ ipam_subnet }}.10/32'
+      - '-allowGET=.*'
+      - '-allowHEAD=.*'
+      - '-allowPOST=.*'
+      - '-allowPUT=.*'
+      - '-allowPATCH=.*'
+      - '-allowDELETE=.*'
+      - '-allowCONNECT=.*'
+      - '-allowTRACE=.*'
+      - '-allowOPTIONS=.*'
       - '-watchdoginterval=3600'
       - '-stoponwatchdog'
       - '-shutdowngracetime=5'

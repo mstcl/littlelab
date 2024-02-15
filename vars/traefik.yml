@@ -1,0 +1,10 @@
+---
+network: "traefik-net" # network to let traefik access bouncer
+ipam_subnet: "172.24.0"
+config_file: "traefik.yml"
+
+cf:
+  email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
+  token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_TRAEFIK') }}"
+alpine:
+  image: alpine:3.19.1

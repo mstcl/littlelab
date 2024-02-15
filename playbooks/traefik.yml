@@ -2,13 +2,11 @@
 - name: Install traefik
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/traefik.yml
   vars:
     service_directory: "traefik"
     image: "traefik:2.11"
-    config_file: "traefik.yml"
-    network: "traefik-net"
-    cf_email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
-    cf_token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_TRAEFIK') }}"
     url: "{{ urls.traefik }}"
 
   pre_tasks:
@@ -19,7 +17,7 @@
           community.docker.docker_network:
             name: "bouncer"
             ipam_config:
-              - subnet: 172.24.0.0/24
+              - subnet: "{{ ipam_subnet }}.0/24"
         - name: Create docker network for other services
           community.docker.docker_network:
             name: "{{ item }}"

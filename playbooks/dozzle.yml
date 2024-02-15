@@ -2,10 +2,11 @@
 - name: Install dozzle
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/dozzle.yml
   vars:
     service_directory: "dozzle"
     image: "amir20/dozzle:v6.2.4"
-    network: "socket-net"
     url: "{{ urls.dozzle }}"
 
   roles:
