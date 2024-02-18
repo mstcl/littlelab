@@ -1,0 +1,24 @@
+---
+- name: Install hemmelig
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/hemmelig.yml
+  vars:
+    service_directory: "hemmelig"
+    image: "hemmeligapp/hemmelig:v5.19.6"
+    url: "{{ urls.hemmelig }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          - "{{ location.docker_data }}/{{ service_directory }}/uploads"
+          - "{{ location.docker_data }}/{{ service_directory }}/db"
+    - role: docker
+    - role: traefik
+      vars:
+        servers:
+          - port: 3000
+    - role: cron

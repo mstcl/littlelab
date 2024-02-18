@@ -6,8 +6,6 @@
     service_directory: "watchyourlan"
     image: "aceberg/watchyourlan:1.0.6"
     url: "{{ urls.watchyourlan }}"
-    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='LAN_BOT_TOKEN') }}"
-    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID')  }}"
 
   roles:
     - role: ufw
@@ -18,6 +16,9 @@
       vars:
         directories: [{}]
     - role: docker
+      vars:
+        bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='LAN_BOT_TOKEN') }}"
+        chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID')  }}"
     - role: traefik
       vars:
         servers:

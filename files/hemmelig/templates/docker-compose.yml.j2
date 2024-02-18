@@ -1,7 +1,7 @@
 version: "{{ docker.compose_version }}"
 
 networks:
-  {{ docker.traefik_network }}:
+  {{ docker.expose_network }}:
     external: true
 
 services:
@@ -12,17 +12,15 @@ services:
     security_opt:
       - no-new-privileges
     networks:
-      - {{ docker.traefik_network }}
-    user: 1000:1000
-    tty: true
-    stdin_open: true
+      - {{ docker.expose_network}}
+    volumes:
+      - {{ location.docker_data }}/{{ service_directory }}/uploads:/var/tmp/hemmelig/upload/files
+      - {{ location.docker_data }}/{{ service_directory }}/db:/home/node/hemmelig/database
     environment:
-{% if readeck_options is defined and readeck_options | length > 0 %}
-{% for item in readeck_options %}
+{% if hemmelig_options is defined and hemmelig_options | length > 0 %}
+{% for item in hemmelig_options %}
 {% for key, value in item.items() %}
       {{ key }}: "{{ value }}"
 {% endfor %}
 {% endfor %}
 {% endif %}
-    volumes:
-      - {{ location.docker_data }}/{{ service_directory }}:/readeck

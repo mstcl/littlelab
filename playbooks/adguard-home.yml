@@ -5,15 +5,9 @@
   vars_files:
     - "vars/adguard-home.yml"
   vars:
-    add_persistent_config: true # set this to false if clients have not been configured
     service_directory: "adguard-home"
     image: "adguard/adguardhome:v0.107.44"
     url: "{{ urls['adguard-home'] }}"
-    network: "dns-net"
-    config_file: "AdGuardHome.yaml"
-    # SECRET
-    user: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_USER') }}"
-    password: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_PASSWORD_HASH') }}"
 
   roles:
     - role: ufw

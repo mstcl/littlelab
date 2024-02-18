@@ -1,0 +1,6 @@
+---
+config_file: "settings.yml"
+network: "redis-net"
+
+redis:
+  image: "redis:6.2-alpine"

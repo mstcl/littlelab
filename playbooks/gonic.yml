@@ -23,3 +23,4 @@
           - port: 4747
         middlewares:
          - "internal-ip@file"
+    - role: cron

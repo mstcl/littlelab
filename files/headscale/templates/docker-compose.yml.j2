@@ -1,7 +1,7 @@
 version: "{{ docker.compose_version }}"
 
 networks:
-  {{ docker.traefik_network }}:
+  {{ docker.expose_network }}:
     external: true
 
 services:
@@ -12,7 +12,7 @@ services:
     security_opt:
       - no-new-privileges
     networks:
-      - {{ docker.traefik_network}}
+      - {{ docker.expose_network}}
     user: 3010:971
     volumes:
       - ./{{ config_file }}:/etc/headscale/config.yaml

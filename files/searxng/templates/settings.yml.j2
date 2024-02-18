@@ -33,9 +33,9 @@ search:
 server:
   port: 8888
   bind_address: "127.0.0.1"
-  base_url: "https://{{ urls.searxng }}.{{ base_tld }}"
-  limiter: false
-  public_instance: false
+  base_url: "https://{{ urls.searxng.sub }}.{{ base_tld }}"
+  limiter: true
+  public_instance: true
   secret_key: "{{ searxng_secret }}"
   image_proxy: true
   http_protocol_version: "1.0"
@@ -75,8 +75,8 @@ hostname_replace:
   # '(.*\.)?youtube\.com$': 'invidious.example.com'
   # '(.*\.)?youtu\.be$': 'invidious.example.com'
   # '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
-  '(.*\.)?reddit\.com$': '{{ urls.libreddit + "." + base_tld }}'
-  '(.*\.)?redd\.it$': '{{ urls.libreddit + "." + base_tld }}'
+  '(.*\.)?reddit\.com$': '{{ urls.libreddit.sub + "." + base_tld }}'
+  '(.*\.)?redd\.it$': '{{ urls.libreddit.sub + "." + base_tld }}'
   '(www\.)?twitter\.com$': 'nitter.net'
   # 'spam\.example\.com': false
 
@@ -1029,9 +1029,9 @@ engines:
     categories: videos
     piped_filter: videos
     timeout: 3.0
-    frontend_url: https://{{ urls['piped-frontend']}}.{{ base_tld }}
+    frontend_url: https://{{ urls['piped-frontend'].sub}}.{{ base_tld }}
     backend_url:
-      - https://{{ urls.piped }}.{{ base_tld }}
+      - https://{{ urls.piped.sub }}.{{ base_tld }}
 
   - name: piped.music
     engine: piped
@@ -1918,5 +1918,3 @@ doi_resolvers:
   sci-hub.ru: 'https://sci-hub.ru/'
 
 default_doi_resolver: 'oadoi.org'
-
-

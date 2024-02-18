@@ -2,6 +2,8 @@
 - name: Install readeck
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/readeck.yml
   vars:
     service_directory: "readeck"
     image: "codeberg.org/readeck/readeck:0.12.0"
@@ -18,3 +20,4 @@
         servers: [{}]
         middlewares:
           - "internal-ip@file"
+    - role: cron

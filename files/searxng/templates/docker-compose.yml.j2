@@ -1,7 +1,7 @@
 version: "{{ docker.compose_version }}"
 
 networks:
-  {{ docker.traefik_network }}:
+  {{ docker.expose_network }}:
     external: true
   {{ network }}:
     internal: true
@@ -14,7 +14,7 @@ services:
     security_opt:
       - no-new-privileges
     networks:
-      - {{ docker.traefik_network}}
+      - {{ docker.expose_network}}
       - {{ network }}
     logging:
       driver: "json-file"
@@ -29,5 +29,6 @@ services:
       - SETUID
     volumes:
       - ./{{ config_file }}:/etc/searxng/{{ config_file }}:rw
+      - ./limiter.toml:/etc/searxng/limiter.toml:ro
     depends_on:
       - {{ service_directory }}-redis

@@ -1,0 +1,15 @@
+smtp:
+  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
+  password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+  sender: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
+
+vaultwarden_options:
+  - DOMAIN: "https://{{ expanded_url }}"
+  - SMTP_HOST: "{{ smtp.host }}"
+  - SMTP_PORT: 465
+  - SMTP_FROM: "{{ smtp.sender }}"
+  - SMTP_SECURITY: "force_tls"
+  - SMTP_USERNAME: "{{ smtp.user }}"
+  - SMTP_PASSWORD: "{{ smtp.password }}"
+  - LOG_LEVEL: "error"

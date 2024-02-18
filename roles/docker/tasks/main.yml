@@ -1,21 +1,26 @@
 ---
+- name: Setup docker
+  tags: docker
+  ansible.builtin.include_tasks: setup.yml
+  when: setup
+
 - name: Deploy docker compose file
   tags: docker
   ansible.builtin.template:
     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml.j2"
     dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
     mode: "0644"
-  when: service_directory is defined
+  when: service_directory is defined and not setup
 
 - name: Add redis
   tags: ["docker", "redis"]
   ansible.builtin.include_tasks: add_redis.yml
-  when: attach_redis
+  when: attach_redis and not setup
 
 - name: Add postgres
   tags: ["docker", "postgres"]
   ansible.builtin.include_tasks: add_postgres.yml
-  when: attach_postgres
+  when: attach_postgres and not setup
 
 - name: Start compose file
   tags: ["docker", "deploy"]
@@ -24,8 +29,8 @@
     state: present
     pull: false
     remove_orphans: true
-  when: run and service_directory is defined
+  when: run and service_directory is defined and not setup
 
 - name: Run temporary container
   ansible.builtin.include_tasks: run_temp_container.yml
-  when: image is defined and service_directory is undefined and url is undefined
+  when: image is defined and service_directory is undefined and url is undefined and not setup

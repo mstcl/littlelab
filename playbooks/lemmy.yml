@@ -34,8 +34,20 @@
             server_url: "{{ urls.lemmy.sub }}.{{ base_tld }}"
     - role: traefik
       vars:
-        create_service: false
-        service_name: "nginx-lemmy"
+        servers:
+          - port: 8536
+        rule: "(Host(`{{ expanded_url }}`) && \
+          {% raw %}((HeadersRegexp(`Accept`, `application\\\\/(?:activity|ld)\\\\+json`)){% endraw %} \
+          || (Method(`POST`, `PUT`, `DELETE`, `PATCH`, `CONNECT`)) || (PathPrefix(`/api`) \
+          || PathPrefix(`/pictrs`) || PathPrefix(`/feeds`) || PathPrefix(`/nodeinfo`) \
+          || PathPrefix(`/.well-known`))))"
+    - role: traefik
+      file_name: "lemmy-ui"
+      vars:
+        service_name: "lemmy-ui"
+        servers:
+          - port: 8238
+            url: "lemmy-ui"
 
   post_tasks:
     - name: Fetch lemmy css

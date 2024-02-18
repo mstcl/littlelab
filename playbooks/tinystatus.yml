@@ -47,6 +47,9 @@
         files:
           - template_name: "checks.csv"
             destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+          - template_name: "tinystatus_cron.sh"
+            destination_path: "{{ base_directory }}/scripts"
+            permission: "0555"
     - role: config
       tags: incident
       vars:
@@ -61,11 +64,12 @@
       ansible.builtin.cron:
         name: "Update statuspage"
         minute: "*/2"
-        job: "cd {{ base_directory }}/{{ service_directory }}/tinystatus && \
-          ./tinystatus > {{ location.files }}/data/shared/static/status/index.html"
+        job: "{{ base_directory }}/scripts/tinystatus_cron.sh > /dev/null || \
+          {{ base_directory }}/scripts/alert.sh 'ERROR: tinystatus failed!'"
 
   handlers:
     - name: Regenerate page
       ansible.builtin.command:
-        command: "cd {{ base_directory }}/{{ service_directory }}/tinystatus && \
-          ./tinystatus > {{ location.files }}/data/shared/static/status/index.html"
+        command:
+          "{{ base_directory }}/scripts/tinystatus_cron.sh"
+    - import_tasks: ../roles/docker/handlers/main.yml

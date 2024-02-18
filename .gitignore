@@ -10,3 +10,9 @@ group_vars/*.yml
 !group_vars/example_homelab.yml
 
 debug.yml
+
+docs/.vitepress/dist
+docs/.vitepress/cache
+/node_modules
+
+**/__pycache__

@@ -125,11 +125,11 @@ storage:
 notifier:
   disable_startup_check: true
   smtp:
-    host: {{ smtp_host }}
+    host: {{ smtp.host }}
     port: 465
-    username: "{{ smtp_user }}"
-    password: "{{ smtp_password }}"
-    sender: "{{ smtp_sender }}"
+    username: "{{ smtp.user }}"
+    password: "{{ smtp.password }}"
+    sender: "{{ smtp.sender }}"
     subject: "[Authelia] {title}"
     timeout: 5s
     disable_require_tls: true

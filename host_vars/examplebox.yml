@@ -16,8 +16,8 @@ sshd_port: "22" # The port for sshd
 # in playbooks/traefik.yml and playbooks/unbound.yml have the same
 # IPAM subnet.
 traefik_bouncer_ip: "172.13.13.13" # traefik-bouncer ip
-unbound_dns_ip: "172.12.12.12" # unbound dns
-unbound_dns_port: "1234" # unbound dns port
+unbound_dns_ip: "172.12.12.12" # (OPTIONAL) unbound dns
+unbound_dns_port: "1234" # (OPTIONAL) unbound dns port
 
 # Core locations for storage and media
 location:
@@ -29,17 +29,15 @@ location:
   repos: "/my_repos"
   downloads: "/my_downloads"
 
-# List of private repositories to reroute for cgit
-private_repos:
-  - "passwords"
-  - "secrets"
-
 # Reverse proxy urls for our services
 urls:
   # this format will give plex.example.cats
-  plex: "plex"
+  jellyfin:
+   sub: "plex"
+   public: true # url is public (for DDNS auto configuration), defaults to false
 
   # this format will give admin.example.cats/pihole
   pihole:
     sub: "admin"
     path: "pihole"
+    monitor: true # add to uptime monitoring, defaults to false
