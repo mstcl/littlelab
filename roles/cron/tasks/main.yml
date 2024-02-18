@@ -1,0 +1,10 @@
+---
+- name: Setup cron
+  tags: cron
+  ansible.builtin.include_tasks: setup.yml
+  when: setup
+
+- name: Create backup cronjob
+  tags: cron
+  ansible.builtin.include_tasks: backup.yml
+  when: not setup

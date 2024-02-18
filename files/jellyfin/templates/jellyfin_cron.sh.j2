@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+
+sqlite3 data/jellyfin.db ".backup 'jellyfin-$bt.db'"
+sqlite3 data/library.db ".backup 'library-$bt.db'"
+
+gzip jellyfin-$bt.db
+gzip library-$bt.db
+
+mv jellyfin-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
+mv library-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
+
+# Tars all files excluding databases and db-journal
+tar --exclude="*.db*" -czf jellyfin_files-$bt.tar.gz .
+mv jellyfin_files-$bt.tar.gz {{ location.onsite_backups }}/{{ service_directory }}
