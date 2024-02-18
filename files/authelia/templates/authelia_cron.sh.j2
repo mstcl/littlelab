@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+
+sqlite3 data/db.sqlite3 ".backup 'db-$bt.sqlite3'"
+
+gzip db-$bt.sqlite3
+
+mv db-$bt.sqlite3.gz {{ location.onsite_backups }}/{{ service_directory }}

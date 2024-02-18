@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+latest=$(ls -ht data/gonic.db.*.bak | head -1)
+
+mv $latest {{ location.onsite_backups }}/{{ service_directory }}

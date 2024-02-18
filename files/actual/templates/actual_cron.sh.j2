@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+db_ext=sqlite
+
+for i  in */*$db_ext
+do
+  db_name=$(echo $i | cut -d'/' -f2 | cut -d'.' -f1)
+  sqlite3 $i ".backup '$db_name-$bt.$db_ext"
+  gzip $db_name-$bt.$db_ext
+  mv $db_name-$bt.$db_ext.gz {{ location.onsite_backups }}/{{ service_directory }}
+done

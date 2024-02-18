@@ -1,0 +1,15 @@
+#!/bin/bash
+
+die() {
+    >&1 echo "error: $@"
+    exit 1
+}
+
+token="{{ bot_token }}"
+chat_id="{{ chat_id }}"
+
+[ -z "$token" ] && die "no token"
+[ -z "$chat_id" ] && die "no chat_id"
+
+url="https://api.telegram.org/bot${token}/sendMessage"
+curl -X POST -F "chat_id=${chat_id}" -F "text=$1" "$url"

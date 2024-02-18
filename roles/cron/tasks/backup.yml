@@ -1,0 +1,21 @@
+---
+- name: Template crontab scrip
+  tags: cron
+  ansible.builtin.template:
+    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}\
+      /templates/{{ service_directory }}_cron.sh.j2"
+    dest: "{{ base_directory }}/scripts/{{ service_directory }}_cron.sh"
+    mode: "0555"
+    owner: "1000"
+
+- name: Make crontab for service backup
+  tags: cron
+  ansible.builtin.cron:
+    name: "Backup {{ service_directory }}"
+    weekday: "SAT"
+    minute: "0"
+    hour: "4"
+    disabled: "{{ disabled | default(false) }}"
+    job: "{{ base_directory }}/scripts/{{ service_directory }}_cron.sh > /dev/null || \
+      {{ base_directory }}/scripts/alert.sh \
+      'ERROR: {{ service_directory }} backup failed!'"

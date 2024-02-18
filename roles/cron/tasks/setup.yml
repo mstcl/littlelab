@@ -1,0 +1,26 @@
+---
+- name: Install packages
+  tags: packages
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    native:
+      - cronie
+      - curl
+
+- name: Setup script to notify when a cronjob fails
+  ansible.builtin.template:
+    src: "alert.sh.j2"
+    dest: "{{ base_directory }}/scripts/alert.sh"
+    mode: "0655"
+  vars:
+    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='CRON_BOT_TOKEN') }}"
+    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+
+- name: Enable and start systemd service
+  tags: packages
+  ansible.builtin.include_role:
+    name: systemd
+  vars:
+    services:
+      - "cronie"
