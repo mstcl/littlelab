@@ -6,7 +6,7 @@
     - vars/miniflux.yml
   vars:
     service_directory: "miniflux"
-    image: "miniflux/miniflux:2.0.51"
+    image: "miniflux/miniflux:2.1.0"
     url: "{{ urls.miniflux }}"
 
   roles:
