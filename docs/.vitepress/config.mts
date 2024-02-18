@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "LittleLab",
   description: "An Ansible project to automate your own self-hosted server",
-  base: '/littlelab/'
+  base: '/littlelab/',
   markdown: { theme: { light: 'vitesse-light', dark: 'vitesse-dark'} },
   themeConfig: {
     nav: [
