@@ -2,18 +2,12 @@
 - name: Install qbittorrent
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/qbittorrent.yml
   vars:
     service_directory: "qbittorrent"
     image: "gists/qbittorrent:4.6.3"
-    config_file: "qBittorrent.conf"
     url: "{{ urls.qbittorrent }}"
-    # SECRETS
-    io_port: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PORT') }}"
-    user: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_USERNAME') }}"
-    password: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD') }}"
-    password_encrypted: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD_PBKDF2') }}"
-    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
-    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
 
   roles:
     - role: ufw

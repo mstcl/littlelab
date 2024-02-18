@@ -9,6 +9,7 @@ services:
     security_opt:
       - no-new-privileges
     network_mode: "host"
+    user: 1000:1000
     volumes:
       - {{ location.docker_data }}/{{ service_directory }}:/data
     environment:
@@ -19,4 +20,4 @@ services:
       IGNOREIP: "yes"
       ARP_TIMEOUT: "600"
       TIMEOUT: "300"
-      SHOUTRRR_URL: "telegram://{{ bot_token }}@telegram/?channels={{ chat_id }}"
+      SHOUTRRR_URL: "telegram://{{ bot_token }}@telegram?chats={{ chat_id }}"

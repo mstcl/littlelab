@@ -30,12 +30,21 @@
       ansible.builtin.package_facts:
         manager: "auto"
 
-    - name: "logrotate test result"
-      debug:
-        msg: "logrotate not installed. Run setup_remote.yml again"
-      when: "'logrotate' not in ansible_facts.packages"
-
   roles:
+    - role: packages
+      vars:
+        native:
+          - logrotate
+    - role: systemd
+      vars:
+        services:
+          - "logrotate.timer"
+      when: "'logrotate' not in ansible_facts.packages"
+    - role: users
+      vars:
+        users:
+          - name: "traefik"
+            uid: 2000
     - role: ufw
       vars:
         local: false

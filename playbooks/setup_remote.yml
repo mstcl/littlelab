@@ -2,8 +2,10 @@
   gather_facts: false
   hosts: homelab
   become: true
+  vars:
+    setup: true
 
-  tasks:
+  pre_tasks:
     - name: Make necessary directories
       ansible.builtin.file:
         path: "{{ item.path }}"
@@ -11,6 +13,7 @@
         state: directory
         mode: "0755"
       loop:
+        - { path: "{{ base_directory }}/scripts" }
         - { path: "{{ base_directory }}" }
         - { path: "{{ location.films }}" }
         - { path: "{{ location.books }}" }
@@ -18,69 +21,31 @@
         - { path: "{{ location.cache }}" }
         - { path: "{{ location.docker_data }}" }
         - { path: "{{ location.repos }}", owner: "1001" }
-
+    - name: Make git user
+      ansible.builtin.user:
+        name: "git"
+        group: "git"
+        groups: sshuser
+        shell: /usr/bin/git-shell
+        create_home: true
+        uid: 1001
     - name: Install packages
       tags: packages
       ansible.builtin.include_role:
         name: packages
       vars:
         native:
-          - curl
-          - docker
-          - python-requests
-          - python-websocket-client
-          - logrotate
-          - cronie
-          - tailscale
           - ufw
-          - ctop # (Optional) but useful for quick monitoring
-        pip:
-          - docker==6.1.3
-          - docker-compose
-          - pyyaml==5.3.1
-
-    - name: User configuration
-      tags: user
-      block:
-        - name: Make service users
-          ansible.builtin.user:
-            name: "{{ item.name }}"
-            shell: /usr/sbin/nologin
-            create_home: false
-            uid: "{{ item.uid }}"
-          loop:
-            - name: "traefik"
-              uid: 2000
-            - name: "headscale"
-              uid: 3010
-            - name: "authelia"
-              uid: 4100
-
-        - name: Make git user
-          ansible.builtin.user:
-            name: "git"
-            group: "git"
-            groups: sshuser
-            shell: /usr/bin/git-shell
-            create_home: false
-            uid: 1001
-
-        - name: Add users to Docker group
-          ansible.builtin.user:
-            name: "{{ base_user }}"
-            groups: docker
-            append: true
-
     - name: Enable and start systemd services
       tags: systemd
       become: true
       ansible.builtin.systemd:
-        name: docker
+        name: "{{ item }}"
         enabled: true
         state: started
       loop:
-        - "docker"
-        - "logrotate.timer"
-        - "cronie"
         - "ufw"
-        - "tailscaled"
+
+  roles:
+    - role: docker
+    - role: cron

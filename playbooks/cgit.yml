@@ -6,13 +6,21 @@
   hosts: homelab
   gather_facts: false
   vars:
+    - vars/cgit.yml
+  vars:
     service_directory: "cgit"
     image: "joseluisq/alpine-cgit:2.5"
-    config_file: "cgitrc"
-    css_file: "style.css"
     url: "{{ urls.cgit }}"
 
   roles:
+    - role: users
+      vars:
+        users:
+          - name: "git"
+            uid: 1001
+            group: "git"
+            groups: "sshuser"
+            shell: /usr/bin/git-shell
     - role: urls
     - role: config
       vars:

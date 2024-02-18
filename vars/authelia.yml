@@ -1,0 +1,15 @@
+---
+config_file: "configuration.yml"
+
+smtp:
+  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
+  password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+  sender: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SMTP_SENDER') }}"
+
+secrets:
+  jwt: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_JWT_SECRET') }}"
+  session: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SESSION_SECRET') }}"
+  storage_encryption_key: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_STORAGE_ENCRYPTION_KEY') }}"
+  hmac: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE') }}"
+  oidc_private: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE') }}"

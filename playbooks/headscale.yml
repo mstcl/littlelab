@@ -9,6 +9,19 @@
     config_file: "config.yaml"
 
   roles:
+    - role: packages
+      vars:
+        native:
+          - tailscale
+    - role: systemd
+      vars:
+        services:
+          - tailscaled
+    - role: users
+      vars:
+        users:
+          - name: "headscale"
+            uid: 3010
     - role: urls
     - role: config
       become: true
@@ -36,6 +49,7 @@
                   accessControlAllowOriginListRegex: ["https?://(.*)\\.bim\\.boats"]
                   accessControlMaxAge: 100
                   addVaryHeader: "true"
+    - role: cron
 
   post_tasks:
     - name: Create headscale user for node and join the tailnet

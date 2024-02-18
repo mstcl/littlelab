@@ -1,66 +1,121 @@
 ---
 # ~~ MANDATORY PLAYBOOKS ~~
 
-- name: Setup control node (do this first!!)
+- name: Setup control node
   import_playbook: playbooks/setup_control.yml
 - name: Setup remote nodes
   import_playbook: playbooks/setup_remote.yml
 
-# ~~ PRIMARY HOST PLAYBOOKS ~~
+# ~~ (1) NETWORKING AND SECURITY ~~
 
-# (1) NETWORKING AND SECURITY
+  # TODO: Configure and harden SSHD
 
-# TODO: Configure and harden SSHD
-
-# Configuration in (./files/traefik/templates/traefik.yml.j2)
+  # Configuration in (./files/traefik/templates/traefik.yml.j2)
 - name: Install traefik
-  import_playbook: playbooks/traefik.yml
+  # import_playbook: playbooks/traefik.yml
 
-# NOTE: Edit this playbook to add basic or arbitrary UFW rules
+  # NOTE: Edit this playbook to add basic or arbitrary UFW rules
 - name: Establish some default UFW rules
-  import_playbook: playbooks/base_ufw.yml
+  # import_playbook: playbooks/base_ufw.yml
 
-# TODO: Crowdsec
+  # TODO: Crowdsec
 
 - name: Install traefik bouncer for crowdsec
-  import_playbook: playbooks/traefik-bouncer.yml
+  # import_playbook: playbooks/traefik-bouncer.yml
 
-# Configuration in (./files/unbound/files/unbound.conf)
+  # Configuration in (./files/unbound/files/unbound.conf)
 - name: Install unbound
-  import_playbook: playbooks/unbound.yml
+  # import_playbook: playbooks/unbound.yml
 
-# Configuration in (./files/adguard-home/templates/AdGuardHome.yaml.j2)
-# NOTE: Open vars/adguard-home.yml and configure as needed.
-# NOTE: This runs without client persistent configs. If you want to use this,
-# configure it in the GUI dashboard, copy everything under the key
-# clients.persistent and place it, with the indentation intact,
-# into the file (./files/adguard-home/files/persistent_clients.yml). Run
-# ansible-playbook playbooks/adguard-home.yml --tags=post
-# to apply the changes.
+  # Configuration in (./files/adguard-home/templates/AdGuardHome.yaml.j2)
+  # NOTE: Open vars/adguard-home.yml and configure as needed.
+  # NOTE: This runs without client persistent configs. If you want to use this,
+  #       configure it in the GUI dashboard, copy everything under the key
+  #       clients.persistent and place it, with the indentation intact,
+  #       into the file (./files/adguard-home/files/persistent_clients.yml). To
+  #       apply the changes, run:
+  #
+  #       ansible-playbook playbooks/adguard-home.yml --tags=post \
+  #       -e add_persistent_config=true
+  #
 - name: Install adguard-home
-  import_playbook: playbooks/adguard-home.yml
+  # import_playbook: playbooks/adguard-home.yml
 
-# Configuration in (./files/headscale/templates/config.yaml.j2)
-# NOTE: after this runs, a tailip will be written to stdout
-# save it as base_tailip in `hostvars/<node_name>.yml`
+  # Configuration in (./files/headscale/templates/config.yaml.j2)
+  # NOTE: After this runs, a tailip will be written to stdout
+  #       save it as base_tailip in `hostvars/<node_name>.yml`
 - name: Install headscale and join the tailnet
-  import_playbook: playbooks/headscale.yml
+  # import_playbook: playbooks/headscale.yml
 
-# You will need an API key to access this. To fetch one, run
-# ansible-playbook generate_api_key.yml --tags=headscale
+  # NOTE: You will need an API key to access this. To fetch one, run
+  #
+  #       ansible-playbook generate_keys.yml -e service=headscale_api
+  #
 - name: Install headscale-panel
-  import_playbook: playbooks/headscale-panel.yml
+  # import_playbook: playbooks/headscale-panel.yml
 
-# Configureation in (./files/authelia/templates/configuration.yml.j2)
-# NOTE: To make a user, generate a long password first, save it and run
-# ansible-playbook add_authelia_user.yml
+  # Configuration in (./files/authelia/templates/configuration.yml.j2)
+  # NOTE: To make a user, generate a long password first, save it and run
+  #
+  #       ansible-playbook create_user.yml --tags=authelia -e username=<username> \
+  #       -e password=<password> -e email=<email> -e display_name=<display_name> \
+  #       -e admin=<true/false>
+  #
 - name: Install authelia
-  import_playbook: playbooks/authelia.yml
+  # import_playbook: playbooks/authelia.yml
 
+# ~~ (2) MONITORING ~~
 
-# (2) MONITORING
+  # TODO: Netdata
 
+  # NOTE: Open vars/dozzle.yml and configure as needed.
 - name: Install dozzle
-  import_playbook: playbooks/dozzle.yml
+  # import_playbook: playbooks/dozzle.yml
 
-# TODO: Portainer
+- name: Install watchyourlan
+  # import_playbook: playbooks/watchyourlan.yml
+
+  # NOTE: Open vars/portainer.yml and configure as needed.
+- name: Install portainer
+  # import_playbook: playbooks/portainer.yml
+
+# - name: Install dokemon (ALT)
+  # import_playbook: playbooks/dokemon.yml
+
+# - name: Install dweebui (ALT)
+  # import_playbook: playbooks/dweebui.yml
+
+# ~~ (3) ARRRRRR ~~
+
+  # NOTE: Open vars/qbittorrent.yml and configure as needed.
+- name: Install qbittorrent
+  # import_playbook: playbooks/qbittorrent.yml
+
+  # NOTE: Open vars/nicotine.yml and configure as needed.
+- name: Install nicotine
+  # import_playbook: playbooks/nicotine.yml
+
+  # TODO: slskd
+
+- name: Install prowlarr
+  # import_playbook: playbooks/prowlarr.yml
+
+- name: Install radarr
+  # import_playbook: playbooks/radarr.yml
+
+- name: Install lidarr
+  # import_playbook: playbooks/lidarr.yml
+
+- name: Install reiverr
+  # import_playbook: playbooks/reiverr.yml
+
+# ~~ (3) MEDIA ~~
+
+- name: Install jellyfin
+  # import_playbook: playbooks/jellyfin.yml
+
+- name: Install gonic
+  # import_playbook: playbooks/gonic.yml
+
+- name: Install calibre-web
+  # import_playbook: playbooks/calibre-web.yml

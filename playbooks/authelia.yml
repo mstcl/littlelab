@@ -2,21 +2,12 @@
 - name: Install authelia
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/authelia.yml
   vars:
     service_directory: "authelia"
     image: "docker.io/authelia/authelia:4.37.5"
-    config_file: "configuration.yml"
     url: "{{ urls.authelia }}"
-    # SECRETS
-    smtp_host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
-    smtp_user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
-    smtp_password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
-    smtp_sender: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SMTP_SENDER') }}"
-    jwt_secret: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_JWT_SECRET') }}"
-    session_secret: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SESSION_SECRET') }}"
-    storage_encryption_key: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_STORAGE_ENCRYPTION_KEY') }}"
-    hmac: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE') }}"
-    oidc_private: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE') }}"
     # DEFAULTS
     permissions: &permissions
       owner: "4100"
@@ -26,6 +17,11 @@
       destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
 
   roles:
+    - role: users
+      vars:
+        users:
+          - name: "authelia"
+            uid: 4100
     - role: urls
     - role: config
       become: true
@@ -99,3 +95,4 @@
         service_name: "Sftpgo"
         redirect_uris:
           - https://{{ expanded_url }}
+    - role: cron

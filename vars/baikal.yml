@@ -1,0 +1,6 @@
+---
+config_file: "baikal.yml"
+
+password_hash: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_PASSWORD_HASHED') }}"
+invite_email: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_INVITE_EMAIL') }}"
+db_encryption_key: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_DB_ENCRYPTION_KEY')}}"

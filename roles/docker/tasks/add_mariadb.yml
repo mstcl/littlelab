@@ -1,0 +1,26 @@
+---
+- name: Add mariadb service
+  tags: ["docker", "mariadb"]
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: EOF
+    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
+    prepend_newline: true
+    marker: "  # {mark} MARIADB CONFIGURATION"
+    content: |2
+        {{ service_directory }}-mariadb:
+          image: {{ mariadb.image }}
+          container_name: {{ service_directory }}-mariadb
+          restart: unless-stopped
+          security_opt:
+            - no-new-privileges:true
+          networks:
+            - {{ network }}
+          volumes:
+            - {{ mariadb.location }}:/var/lib/mysql:Z
+          environment:
+              MARIADB_USER: "{{ mariadb.user }}"
+              MARIADB_ROOT_PASSWORD: "{{ mariadb.user }}"
+              MARIADB_PASSWORD: "{{ mariadb.password }}"
+              MARIADB_DATABASE: "{{ mariadb.db }}"
+          command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
