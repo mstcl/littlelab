@@ -1,0 +1,9 @@
+frontendlogin: {{ pydio_options.frontend.user }}
+frontendpassword: {{ pydio_options.frontend.password }}
+
+dbconnectiontype: tcp
+dbtcphostname: {{ service_directory }}-mariadb
+dbtcpport: 3306
+dbtcpname: {{ mariadb.db }}
+dbtcpuser: {{ mariadb.user }}
+dbtcppassword: {{ mariadb.password }}

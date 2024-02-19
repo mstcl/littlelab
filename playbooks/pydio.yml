@@ -1,0 +1,44 @@
+---
+- name: Install pydio
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/pydio.yml
+  vars:
+    service_directory: "pydio"
+    image: "pydio/cells-enterprise:4.3.5"
+    url: "{{ urls.pydio }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        directories:
+          -
+          - path: "{{ data_directory }}"
+        files: [{}]
+    - role: docker
+      vars:
+        attach_mariadb: true
+    - role: traefik
+      vars:
+        create_service: false
+        create_router: false
+        additional_content: |2
+            serversTransports:
+              pydio_transport:
+                insecureSkipVerify: true
+            services:
+              "{{ service_directory }}":
+                loadBalancer:
+                  serversTransport: pydio_transport@file
+                  servers:
+                    - url: "https://pydio:443"
+            routers:
+              "{{ service_directory }}":
+                rule: "Host(`{{ expanded_url }}`)"
+                service: "{{ service_directory }}"
+                tls:
+                  options: modern@file
+                middlewares:
+                  - internal-ip@file
