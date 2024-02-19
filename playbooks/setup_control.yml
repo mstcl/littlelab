@@ -5,6 +5,10 @@
 
   tasks:
     # workaround to make playbooks in subdirectories work
+    - name: Get variables
+      ansible.builtin.include_vars:
+        dir: ../host_vars
+
     - name: Create symbolic link for variables
       tags: config
       ansible.builtin.file:
