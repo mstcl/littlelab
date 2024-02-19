@@ -1,16 +1,20 @@
 ---
-nginx_flavour: "nginx-lemmy" # NGINX flavour
 network: "postgres-net" # Docker network to talk to postgres
 config_file: "config.hjson"
 
+theme_folder: "extra-themes" # (optional) custom css
+css_url: "" # (optional) grab custom css with wget
+css_name: "" # (optional) css theme name
+
 smtp:
-  sender: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_SENDER') }}"
-  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_PASSWORD') }}"
-  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  enabled: true
+  sender: ""
+  password: ""
+  host: ""
 
 pictrs:
   image: "asonix/pictrs:0.5.4"
-  api_key: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_PICTRS_API_KEY') }}"
+  api_key: ""
 
 pictrs_options:
   - PICTRS__SERVER__API_KEY: "{{ pictrs.api_key }}"
@@ -21,11 +25,11 @@ lemmy_ui:
   image: "dessalines/lemmy-ui:0.18.5"
 
 lemmy_ui_options:
-  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
+  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/{{ theme_folder }}" # (optional) use custom css
 
 postgres:
   image: "postgres:16-alpine"
-  user: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_PASSWORD') }}"
+  user: ""
+  password: ""
   db: "{{ service_directory }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"

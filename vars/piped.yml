@@ -11,7 +11,7 @@ piped_proxy:
 
 postgres:
   image: "postgres:15-alpine"
-  user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
+  user: ""
+  password: ""
   db: "{{ service_directory }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"

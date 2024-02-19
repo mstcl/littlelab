@@ -82,14 +82,12 @@
       vars:
         url: "{{ urls.portainer }}"
         service_name: "Portainer"
-        redirect_uris:
-          - https://{{ expanded_url }}
+        vars_file: "vars/portainer.yml"
     - role: authelia
       vars:
         url: "{{ urls.miniflux }}"
         service_name: "Miniflux"
-        redirect_uris:
-          - https://{{ expanded_url }}/oauth2/oidc/callback
+        vars_file: "vars/miniflux.yml"
     - role: authelia
       vars:
         url: "{{ urls.immich }}"
@@ -103,6 +101,5 @@
       vars:
         url: "{{ urls.sftpgo }}"
         service_name: "Sftpgo"
-        redirect_uris:
-          - https://{{ expanded_url }}/web/oidc/redirect
+        vars_file: "vars/sftpgo.yml"
     - role: cron

@@ -1,5 +1,5 @@
 ---
-network: "socket-net" # network for dozzle to talk to the socket
+network: "socket-net"
 
 socket:
   image: wollomatic/socket-proxy:1.1.1

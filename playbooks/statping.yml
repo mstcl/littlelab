@@ -2,15 +2,12 @@
 - name: Install statping
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/statping.yml
   vars:
     service_directory: "statping"
     image: "adamboutcher/statping-ng:v0.90.78"
     url: "{{ urls.statping }}"
-    config_file: "services.yml"
-    instance_name: "BIM status page"
-    api_key: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_API') }}"
-    user: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_USER') }}"
-    password: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_PASSWORD') }}"
 
   pre_tasks:
     - name: Get list of services

@@ -1,6 +1,8 @@
 ---
 config_file: "settings.yml"
 network: "redis-net"
+instance_name: ""
+searxng_secret: ""
 
 redis:
   image: "redis:6.2-alpine"

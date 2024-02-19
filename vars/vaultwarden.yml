@@ -1,8 +1,8 @@
 smtp:
-  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
-  user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
-  password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
-  sender: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
+  host: ""
+  user: ""
+  password: ""
+  sender: ""
 
 vaultwarden_options:
   - DOMAIN: "https://{{ expanded_url }}"

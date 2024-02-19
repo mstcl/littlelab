@@ -9,6 +9,7 @@
     api_key: "{{ pictrs.api_key }}"
   }
 
+{% if smtp.enabled %}
   email: {
     smtp_server: "{{ smtp.host }}:465"
     smtp_login: "{{ smtp.sender }}"
@@ -16,6 +17,7 @@
     smtp_from_address: "{{ smtp.sender }}"
     tls_type: "tls"
   }
+{% endif %}
 
   database: {
     database: "{{ postgres.db }}"

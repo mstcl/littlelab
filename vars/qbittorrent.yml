@@ -1,14 +1,14 @@
 ---
 config_file: "qBittorrent.conf"
 
-io_port: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PORT') }}"
+io_port: ""
 
-user: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_USERNAME') }}"
-password: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD') }}"
-password_encrypted: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD_PBKDF2') }}"
+user: ""
+password: ""
+password_encrypted: ""
 
-bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
-chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+bot_token: ""
+chat_id: ""
 
 qbittorrent_options:
   seed_ratio: 1
