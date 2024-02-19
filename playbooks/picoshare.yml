@@ -2,12 +2,12 @@
 - name: Install picoshare
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/picoshare.yml
   vars:
     service_directory: "picoshare"
     image: "mtlynch/picoshare:1.4.2"
     url: "{{ urls.picoshare }}"
-    # SECRETS
-    picoshare_secret: "{{ lookup('get_secrets', path='/picoshare', secret_name='PS_SHARED_SECRET') }}"
 
   roles:
     - role: urls

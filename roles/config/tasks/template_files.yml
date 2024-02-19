@@ -10,5 +10,5 @@
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
   with_items: "{{ files }}"
-  notify:
-    - Restart compose stack
+  # notify:
+  #   - Restart compose stack

@@ -2,5 +2,12 @@
 network: "socket-net" # network for portainer to talk to the socket
 ipam_subnet: 172.19.0
 
+oidc:
+  client_id:
+  client_secret:
+  digest: ""
+  redirect_uris:
+    - https://{{ expanded_url }}
+
 socket:
   image: wollomatic/socket-proxy:1.1.1

@@ -12,6 +12,7 @@
         mode: "0644"
       with_items: "{{ services }}"
       vars:
+        # Use lookup plugin to programmatically fetch postgres url for each service
         postgres_url: "{{ lookup('get_secrets', path='/'+item, secret_name=item|upper+'_POSTGRES_URL') }}"
         services:
           - "miniflux"

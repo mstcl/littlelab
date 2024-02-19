@@ -19,8 +19,6 @@
         files:
           -
           - template_name: "limiter.toml"
-        instance_name: "BIM SearXNG"
-        searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
     - role: docker
       attach_redis: true
     - role: traefik

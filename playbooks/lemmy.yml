@@ -27,11 +27,6 @@
       vars:
         attach_postgres: true
         run: false
-    - role: nginx
-      vars:
-        configs:
-          - config_name: "lemmy"
-            server_url: "{{ urls.lemmy.sub }}.{{ base_tld }}"
     - role: traefik
       vars:
         servers:
@@ -52,14 +47,15 @@
   post_tasks:
     - name: Fetch lemmy css
       tags: css
+      when: css_url is defined
       ansible.builtin.get_url:
-        url: https://codeberg.org/lckdscl/selfhosted_userstyles/raw/branch/master/jumper/lemmy/{{ item }}
+        url: "{{ css_url }}/{{ item }}"
         dest: "{{ base_directory }}/{{ service_directory }}/css/{{ item }}"
         mode: "0644"
       loop:
-        - "_variables.whiskers_v8.scss"
-        - "whiskers_v8.css"
-        - "whiskers_v8.scss"
+        - "_variables.{{ css_name }}.scss"
+        - "{{ css_name }}.css"
+        - "{{ css_name }}.scss"
 
     - name: Start compose file
       tags: ["docker", "deploy"]

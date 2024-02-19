@@ -51,7 +51,7 @@ totp:
 webauthn:
   disable: false
   timeout: 60s
-  display_name: BimAuth
+  display_name: Authelia WebAuthn
   attestation_conveyance_preference: indirect
   user_verification: preferred
 
@@ -124,6 +124,7 @@ storage:
 
 notifier:
   disable_startup_check: true
+{% if smtp.enabled %}
   smtp:
     host: {{ smtp.host }}
     port: 465
@@ -135,6 +136,10 @@ notifier:
     disable_require_tls: true
     disable_starttls: true
     disable_html_emails: true
+{% else %}
+  filesystem:
+    filename: /config/notification.txt
+{% endif %}
 
 identity_providers:
   oidc:

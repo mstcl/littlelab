@@ -2,19 +2,17 @@
 - name: Install traefik-bouncer
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/traefik-bouncer.yml
   vars:
     service_directory: "traefik-bouncer"
     image: "fbonalair/traefik-crowdsec-bouncer:0.5.0"
 
   pre_tasks:
-    - name: Try and fetch API key
-      tags: api
+    - name: Get api-key
+      when: bouncer_api_key | length == 0
       block:
-        - name: Grab secret
-          ansible.builtin.set_fact:
-            bouncer_api_key: "{{ lookup('get_secrets', path='/traefik', secret_name='TRAEFIK_BOUNCER_API_KEY') }}"
-      rescue:
-        - name: Generate api-key
+        - name: Generate key
           become: true
           ansible.builtin.command:
             argv:
@@ -25,7 +23,7 @@
               - "-o"
               - json
           register: generate_results
-        - name: Set API key
+        - name: Set key
           ansible.builtin.set_fact:
             bouncer_api_key: "{{ (generate_results.stdout | from_json) }}"
         - name: Print API key to save

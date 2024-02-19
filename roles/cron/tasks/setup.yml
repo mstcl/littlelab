@@ -14,8 +14,8 @@
     dest: "{{ base_directory }}/scripts/alert.sh"
     mode: "0655"
   vars:
-    bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='CRON_BOT_TOKEN') }}"
-    chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+    bot_token: "{{ bot_token }}"
+    chat_id: "{{ chat_id }}"
 
 - name: Enable and start systemd service
   tags: packages

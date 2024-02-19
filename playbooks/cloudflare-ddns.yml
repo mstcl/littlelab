@@ -2,10 +2,11 @@
 - name: Install cloudflare-ddns
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/cloudflare-ddns.yml
   vars:
     service_directory: "cloudflare-ddns"
     image: "favonia/cloudflare-ddns:1.11.0"
-    cf_token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_DDNS') }}"
 
   pre_tasks:
     - name: Get list of urls
@@ -20,7 +21,6 @@
     - name: Join urls
       ansible.builtin.set_fact:
         public_urls: "{{ all_urls | join(',') }}"
-    - debug: var=public_urls
 
   roles:
     - role: config

@@ -48,7 +48,9 @@ services:
 {% endif %}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - {{ base_directory }}/{{ service_directory }}/css:/extra-themes
+{% if theme_folder is defined %}
+      - {{ base_directory }}/{{ service_directory }}/css:/{{ theme_folder}}
+{% endif %}
     depends_on:
       - {{ service_directory }}
 

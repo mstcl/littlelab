@@ -10,6 +10,11 @@
   ansible.builtin.include_role:
     name: urls
 
+- name: Get variables
+  tags: ["authelia", "oidc"]
+    ansible.builtin.include_vars:
+      file: "{{ vars_file }}"
+
 - name: Add an OIDC block to Authelia configuration
   tags: ["authelia", "oidc"]
   become: true
@@ -19,13 +24,13 @@
     dest: "{{ base_directory }}/authelia/config/configuration.yml"
     marker: "      # {mark} {{ service_name|upper }} CONFIGURATION"
     content: |2
-            - id: {{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_' + service_name|upper +'_ID') }}
+            - id: {{ oidc.id }}
               description: {{ service_name }}
-              secret: '{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_'+ service_name|upper +'_DIGEST') }}'
+              secret: '{{ oidc.digest }}'
               public: false
               authorization_policy: two_factor
               redirect_uris:
-      {% for uri in redirect_uris %}
+      {% for uri in oidc.redirect_uris %}
                 - {{ uri }}
       {% endfor %}
               scopes:
