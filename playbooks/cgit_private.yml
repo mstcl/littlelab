@@ -6,12 +6,14 @@
 
   tasks:
     - name: Get git url
+      when: private_repos is defined
       ansible.builtin.include_role:
         name: urls
       vars:
         - url: "{{ urls.cgit }}"
 
     - name: Get and format private repos
+      when: private_repos is defined
       set_fact:
         concat_rule:
           "(Host(`{{ expanded_url }}`) && ({% for item in private_repos %}PathPrefix\

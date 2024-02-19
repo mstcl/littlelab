@@ -4,7 +4,7 @@
   community.general.ufw:
     rule: "{{ rule | default('allow') }}"
     port: "{{ port }}"
-    protocol: "{{ protocol | default('tcp') }}"
+    proto: "{{ protocol }}"
     src: "{{ item }}"
     comment: "{{ comment | default(service_directory) }}"
   loop:
