@@ -1,6 +1,11 @@
 inventory/hosts
 files/adguard-home/files/persistent_clients.yml
-vars/adguard-home.yml
+
+files/cgit/files/*.ico
+files/cgit/files/*.css
+
+files/cgit/files/*.html
+!files/cgit/files/header.html
 
 host_vars/*.yml
 !host_vars/examplebox.yml
