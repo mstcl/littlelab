@@ -9,3 +9,8 @@ password_encrypted: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='
 
 bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
 chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
+
+qbittorrent_options:
+  seed_ratio: 1
+  seed_minutes: 600
+  web_ui_enabled: true
