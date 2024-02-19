@@ -1,0 +1,27 @@
+version: "{{ docker.compose_version }}"
+
+networks:
+  {{ docker.traefik_network }}:
+    external: true
+  {{ network }}:
+    internal: true
+
+services:
+  {{ service_directory }}:
+    image: {{ image }}
+    container_name: {{ service_directory }}
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges
+    networks:
+      - {{ docker.traefik_network}}
+      - {{ network }}
+    environment:
+      CELLS_BIND: "0.0.0.0:443"
+      CELLS_INSTALL_YAML: "/pydio/config/install.yml"
+      CELLS_EXTERNAL: "https://{{ expanded_url }}"
+    volumes:
+      - {{ data_directory }}:/var/cells
+      - ./{{ config_file }}:/pydio/config/install.yml:ro
+    depends_on:
+      - {{ service_directory }}-mariadb
