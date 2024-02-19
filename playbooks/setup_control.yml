@@ -4,6 +4,19 @@
   connection: local
 
   tasks:
+    # workaround to make playbooks in subdirectories work
+    - name: Create symbolic link for variables
+      tags: config
+      ansible.builtin.file:
+        src: "{{ base_directory }}/{{ item }}"
+        dest: "{{ base_directory }}/playbooks/{{ item }}"
+        state: link
+      loop:
+        - host_vars
+        - group_vars
+        - vars
+        - requirements.yml
+
     - name: Install collections
       community.general.ansible_galaxy_install:
         type: both
@@ -19,15 +32,3 @@
         native:
           # Useful for scanning for leaked secrets
           - "infisical-bin"
-
-    # workaround to make playbooks in subdirectories work
-    - name: Create symbolic link for variables
-      tags: config
-      ansible.builtin.file:
-        src: "{{ base_directory }}/{{ item }}"
-        dest: "{{ base_directory }}/playbooks/{{ item }}"
-        state: link
-      loop:
-        - host_vars
-        - group_vars
-        - vars
