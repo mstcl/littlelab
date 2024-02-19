@@ -3,9 +3,8 @@ server_url: https://{{ expanded_url }}:443
 listen_addr: 0.0.0.0:8080
 grpc_allow_insecure: false
 
-private_key_path: /data/private.key
 noise:
-  private_key_path: /data/noise_private.key
+  private_key_path: /etc/headscale/data/noise_private.key
 
 ip_prefixes:
   - fd7a:115c:a1e0::/48
@@ -23,19 +22,23 @@ derp:
 disable_check_updates: true
 ephemeral_node_inactivity_timeout: 30m
 node_update_check_interval: 10s
-db_type: sqlite3
-db_path: /data/data/db.sqlite
+
+database:
+  type: sqlite
+
+  sqlite:
+    path: /etc/headscale/data/db.sqlite
 
 
 acme_url: https://acme-v02.api.letsencrypt.org/directory
 acme_email: ""
 tls_letsencrypt_hostname: ""
-tls_letsencrypt_cache_dir: /var/lib/headscale/cache
+tls_letsencrypt_cache_dir: /etc/headscale/cache
 tls_letsencrypt_challenge_type: HTTP-01
 tls_letsencrypt_listen: ":http"
 tls_cert_path: ""
 tls_key_path: ""
-unix_socket: /data/socket/headscale.sock
+unix_socket: /etc/headscale/data/socket/headscale.sock
 unix_socket_permission: "0770"
 
 log:
