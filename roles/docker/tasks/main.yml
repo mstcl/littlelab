@@ -17,6 +17,11 @@
   ansible.builtin.include_tasks: add_redis.yml
   when: attach_redis and not setup
 
+- name: Add mariadb
+  tags: ["docker", "mariadb"]
+  ansible.builtin.include_tasks: add_mariadb.yml
+  when: attach_mariadb and not setup
+
 - name: Add postgres
   tags: ["docker", "postgres"]
   ansible.builtin.include_tasks: add_postgres.yml
