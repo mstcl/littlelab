@@ -5,5 +5,5 @@ Services are deployed from playbooks that live under the subdirectory
 directory nice and clean. To deploy a service:
 
 ```sh
-$ ansible-playbook playbooks/<service_name>.yml
+$ ansible-playbook playbooks/service_name.yml
 ```
