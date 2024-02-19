@@ -20,6 +20,8 @@ program=/data/utils/finish.sh %N
 Session\DefaultSavePath=/data/downloads
 Session\DisableAutoTMMByDefault=false
 Session\ExcludedFileNames=
+Session\GlobalMaxRatio={{ qbittorrent_options.seed_ratio }}
+Session\GlobalMaxSeedingMinutes={{ qbittorrent_options.seed_minutes }}
 Session\Port={{ io_port }}
 Session\QueueingSystemEnabled=true
 
@@ -46,7 +48,7 @@ General\Locale=en
 MailNotification\password={{ password }}
 MailNotification\req_auth=true
 WebUI\AuthSubnetWhitelist=@Invalid()
-WebUI\Enabled=true
+WebUI\Enabled={{ qbittorrent_options.web_ui_enabled }}
 WebUI\Password_PBKDF2="{{ password_encrypted }}"
 WebUI\Port=8080
 WebUI\RootFolder=/data/utils/vuetorrent
