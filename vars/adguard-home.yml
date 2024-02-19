@@ -1,0 +1,19 @@
+---
+add_persistent_config: false # set this to false if clients have not been configured
+
+network: "dns-net"
+config_file: "AdGuardHome.yaml"
+
+user: ""
+password: ""
+
+upstream_dns:
+  - "{{ unbound_dns_ip }}:{{ unbound_dns_port }}" # unbound
+fallback_dns:
+  - 'tls://dns.quad9.net'
+filters:
+  - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt
+    name: Steven Black's List
+    id: 1
+user_rules:
+  - '@@||example.com' # unblock example.com
