@@ -16,6 +16,12 @@
       <<: *permissions
       destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
 
+  pre_tasks:
+    - name: Check for users configuration
+      ansible.builtin.stat:
+        path: "{{ base_directory }}/{{ service_directory }}/config/users.yml"
+      register: config_results
+
   roles:
     - role: users
       vars:
@@ -34,9 +40,6 @@
         files:
           - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
             <<: *permissions
-          - template_name: "users.yml"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-            <<: *permissions
           - template_name: "AUTHELIA_JWT_SECRET"
             <<: *secret_permissions
           - template_name: "AUTHELIA_SESSION_SECRET"
@@ -49,6 +52,13 @@
             <<: *secret_permissions
           - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY"
             <<: *secret_permissions
+    - role: config
+      when: not config_results.stat.exists
+      vars:
+        copy:
+          - file_name: "users.yml"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+            <<: *permissions
     - role: docker
     - role: traefik
       vars:
@@ -94,5 +104,5 @@
         url: "{{ urls.sftpgo }}"
         service_name: "Sftpgo"
         redirect_uris:
-          - https://{{ expanded_url }}
+          - https://{{ expanded_url }}/web/oidc/redirect
     - role: cron
