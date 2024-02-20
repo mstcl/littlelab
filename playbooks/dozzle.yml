@@ -6,7 +6,7 @@
     - vars/dozzle.yml
   vars:
     service_directory: "dozzle"
-    image: "amir20/dozzle:v6.2.4"
+    image: "amir20/dozzle:v6.2.5"
     url: "{{ urls.dozzle }}"
 
   roles:
