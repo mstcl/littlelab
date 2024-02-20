@@ -35,6 +35,7 @@ service-name:
 ```
 
 Here we use the predefined lookup plugin called `get_secrets` and pass in our parameters:
+
     - `path` indicates the path to the secret in your Infisical project
     - `secret_name` is the name of the secret at that path.
 
