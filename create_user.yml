@@ -4,9 +4,9 @@
   gather_facts: false
 
   roles:
-    - role: authelia
+    - role: create_authelia_user
       tags: authelia
-    - role: headscale
+    - role: create_headscale_user
       tags: headscale
-    - role: filebrowser
+    - role: create_filebrowser_user
       tags: filebrowser

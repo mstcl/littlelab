@@ -6,48 +6,14 @@
   tasks:
     - name: Generate API key for headscale
       when: service == "headscale_api"
-      block:
-        - name: Generate API
-          tags: headscale
-          community.docker.docker_container_exec:
-            container: headscale
-            chdir: /
-            argv:
-              - headscale
-              - apikeys
-              - create
-              - "-o"
-              - "json"
-          register: headscale
-        - name: Print result
-          ansible.builtin.debug:
-            msg:
-              ["HEADSCALE API GENERATED:", "{{ headscale.stdout | from_json }}"]
+      ansible.builtin.include_tasks: tasks/generate_headscale_api.yml
 
     - name: Generate PAK for headscale
       when: service == "headscale_pak"
       tags: headscale
-      block:
-        - name: Generate PAK
-          community.docker.docker_container_exec:
-            container: headscale
-            chdir: /
-            argv:
-              - headscale
-              - preauthkeys
-              - create
-              - "-u"
-              - "{{ username }}"
-              - "-o"
-              - "json"
-          register: headscale
-        - name: Print result
-          ansible.builtin.debug:
-            msg:
-              ["HEADSCALE PAK GENERATED:", "{{ headscale.stdout | from_json }}"]
+      ansible.builtin.include_tasks: tasks/generate_headscale_pak.yml
 
     - name: Generate hash pair for Authelia OIDC
       tags: authelia
-      ansible.builtin.include_role:
-        name: authelia
+      ansible.builtin.include_tasks: tasks/generate_oidc_secret_hash_pair.yml
       when: service == "authelia"

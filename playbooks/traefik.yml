@@ -10,27 +10,19 @@
     url: "{{ urls.traefik }}"
 
   pre_tasks:
-    - name: Create docker networks for traefik
-      tags: ["docker", "network"]
-      block:
-        - name: Create docker network for traefik and bouncer
-          community.docker.docker_network:
-            name: "bouncer"
-            ipam_config:
-              - subnet: "{{ ipam_subnet }}.0/24"
-        - name: Create docker network for other services
-          community.docker.docker_network:
-            name: "{{ item }}"
-          loop:
-            - "{{ docker.traefik_network }}"
-            - "{{ docker.expose_network }}"
-
     - name: Check if logrotate is installed
       tags: packages
       ansible.builtin.package_facts:
         manager: "auto"
 
   roles:
+    - role: create_docker_network
+      vars:
+        create_docker_network_networks:
+          - name: "{{ network }}"
+            subnet: "{{ ipam_subnet }}.0/24"
+          - name: "{{ docker.traefik_network }}"
+          - name: "{{ docker.expose_network }}"
     - role: packages
       vars:
         native:

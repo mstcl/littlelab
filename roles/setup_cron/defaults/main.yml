@@ -1,4 +1,3 @@
 ---
-setup: false
 bot_token: "" # required
 chat_id: "" # required

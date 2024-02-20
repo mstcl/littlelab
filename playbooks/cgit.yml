@@ -23,16 +23,27 @@
             shell: /usr/bin/git-shell
     - role: urls
     - role: config
+      when: css_file is defined
+      vars:
+        copies:
+          - file_name: "{{ css_file }}"
+    - role: config
+      when: favicon_file is defined
+      vars:
+        copies:
+          - file_name: "{{ favicon_file }}"
+    - role: config
+      when: about_file is defined
+      vars:
+        copies:
+          - file_name: "{{ about_file }}"
+    - role: config
       vars:
         files: [{}]
         copies:
-          - file_name: "{{ css_file }}"
-          - file_name: "about.html"
           - file_name: "header.html"
           - file_name: "syntax-highlighting.py"
             permission: "0655"
-          - file_name: "favicon.ico"
-        instance_name: "BIM Git Repositories"
     - role: docker
     - role: traefik
       vars:

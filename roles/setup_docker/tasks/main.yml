@@ -1,0 +1,4 @@
+---
+- name: Setup docker
+  tags: docker
+  ansible.builtin.include_tasks: setup.yml

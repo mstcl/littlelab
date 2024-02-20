@@ -1,0 +1,4 @@
+---
+- name: Create backup cronjob
+  tags: cron
+  ansible.builtin.include_tasks: backup.yml

@@ -8,7 +8,7 @@
         state: stopped
     - name: Run a temp container to create the user
       ansible.builtin.include_role:
-        name: docker
+        name: run_temporary_container
       vars:
         image: "filebrowser/filebrowser:v2.27.0"
         entrypoint:

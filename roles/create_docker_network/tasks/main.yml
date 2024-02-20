@@ -1,0 +1,7 @@
+---
+- name: Create docker network for {{ service_directory }}
+  tags: ["network", "docker"]
+  community.docker.docker_network:
+    name: "{{ items.name }}"
+    ipam_config: "{{ items.ipam_config | default(omit) }}"
+  with_items: "{{ create_docker_network_networks }}"
