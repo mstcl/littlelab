@@ -2,8 +2,6 @@
   gather_facts: false
   hosts: homelab
   become: true
-  vars:
-    setup: true
 
   pre_tasks:
     - name: Make necessary directories
@@ -47,5 +45,5 @@
         - "ufw"
 
   roles:
-    - role: docker
-    - role: cron
+    - role: setup_docker
+    - role: setup_cron

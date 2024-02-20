@@ -32,7 +32,7 @@
         name: packages
       vars:
         pip:
-          - "infisical==1.6.0"
+          - "infisical-python"
         native:
           # Useful for scanning for leaked secrets
           - "infisical-bin"
