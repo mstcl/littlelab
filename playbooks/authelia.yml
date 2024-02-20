@@ -78,17 +78,17 @@
                   address: "http://authelia:9091/api/verify?auth=basic"
                   trustForwardHeader: true
                   authResponseHeaders: ["Remote-User","Remote-Groups","Remote-Name","Remote-Email"]
-    - role: authelia
+    - role: authelia_oidc
       vars:
         url: "{{ urls.portainer }}"
         service_name: "Portainer"
         vars_file: "vars/portainer.yml"
-    - role: authelia
+    - role: authelia_oidc
       vars:
         url: "{{ urls.miniflux }}"
         service_name: "Miniflux"
         vars_file: "vars/miniflux.yml"
-    - role: authelia
+    - role: authelia_oidc
       vars:
         url: "{{ urls.immich }}"
         service_name: "Immich"
@@ -97,9 +97,9 @@
           - https://{{ expanded_url }}/user-settings
           - https://{{ expanded_url }}/api/oauth/mobile-redirect
           - app.immich://
-    - role: authelia
+    - role: authelia_oidc
       vars:
         url: "{{ urls.sftpgo }}"
         service_name: "Sftpgo"
         vars_file: "vars/sftpgo.yml"
-    - role: cron
+    - role: backup

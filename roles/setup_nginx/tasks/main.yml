@@ -1,0 +1,27 @@
+---
+- name: Make necessary directories
+  tags: nginx
+  ansible.builtin.file:
+    path: "{{ base_directory }}/{{ service_directory }}/{{ item }}"
+    state: "directory"
+    mode: "0755"
+  loop:
+    - "conf.d"
+    - "snippets"
+
+- name: Copy default config files
+  tags: nginx
+  ansible.builtin.copy:
+    src: "{{ item.file_name }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/{{ item.dir_name }}/\
+      {{ item.dest_file_name | default(item.file_name) }}"
+    mode: "0644"
+    owner: "1000"
+  loop:
+    - file_name: "{{ nginx_config_override | default('nginx.conf') }}"
+      dest_file_name: "nginx.conf"
+      dir_name: ""
+    - file_name: "error.html"
+      dir_name: ""
+    - file_name: "default.conf"
+      dir_name: "conf.d"

@@ -22,4 +22,4 @@
         servers: [{}]
         middlewares:
           - "internal-ip@file"
-    - role: cron
+    - role: backup

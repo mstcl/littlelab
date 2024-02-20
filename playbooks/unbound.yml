@@ -9,15 +9,12 @@
     config_file: "unbound.conf"
     ipam_subnet: "172.27.0"
 
-  pre_tasks:
-    - name: Create docker network for adguard and unbound
-      tags: ["docker", "network"]
-      community.docker.docker_network:
-        name: "{{ network }}"
-        ipam_config:
-          - subnet: "{{ ipam_subnet }}.0/24"
-
   roles:
+    - role: create_docker_network
+      vars:
+        create_docker_network_networks:
+          - name: "{{ network }}"
+            subnet: "{{ ipam_subnet }}.0/24"
     - role: config
       vars:
         directories:

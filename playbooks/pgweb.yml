@@ -27,6 +27,4 @@
           - port: 8081
         middlewares:
          - "internal-ip@file"
-
-- name: Make bookmark links
-  import_playbook: pgweb_bookmarks.yml
+    - role: create_pgweb_bookmarks

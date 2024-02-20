@@ -9,7 +9,7 @@
 
   roles:
     - role: config
-    - role: nginx
+    - role: setup_nginx
     - role: docker
     - role: traefik
       vars:

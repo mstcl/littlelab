@@ -9,7 +9,7 @@
 
   roles:
     - role: config
-    - role: nginx
+    - role: setup_nginx
       vars:
         nginx_config_override: "nginx_lemmy.conf"
     - role: docker

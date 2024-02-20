@@ -21,4 +21,4 @@
           - port: 8096
         middlewares:
          - "internal-ip@file"
-    - role: cron
+    - role: backup

@@ -1,0 +1,19 @@
+---
+- name: Generate API key and print result
+  block:
+    - name: Generate API
+      tags: headscale
+      community.docker.docker_container_exec:
+        container: headscale
+        chdir: /
+        argv:
+          - headscale
+          - apikeys
+          - create
+          - "-o"
+          - "json"
+      register: headscale
+    - name: Print result
+      ansible.builtin.debug:
+        msg:
+          ["HEADSCALE API GENERATED:", "{{ headscale.stdout | from_json }}"]

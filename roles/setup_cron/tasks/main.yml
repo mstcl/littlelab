@@ -1,0 +1,4 @@
+---
+- name: Setup cron
+  tags: cron
+  ansible.builtin.include_tasks: setup.yml

@@ -19,4 +19,4 @@
           - port: 5006
         middlewares:
           - "internal-ip@file"
-    - role: cron
+    - role: backup

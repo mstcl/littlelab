@@ -1,0 +1,4 @@
+---
+- name: Add OIDC block
+  tags: ["authelia", "oidc"]
+  ansible.builtin.include_tasks: add_oidc_block.yml

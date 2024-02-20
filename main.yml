@@ -1,101 +1,69 @@
 ---
-# ~~ MANDATORY PLAYBOOKS ~~
+# ~~ (0) MANDATORY PLAYBOOKS ~~
 
 - name: Setup control node
   import_playbook: playbooks/setup_control.yml
 - name: Setup remote nodes
   import_playbook: playbooks/setup_remote.yml
 
-# ~~ (1) NETWORKING AND SECURITY ~~
+# ~~ (1) CORE NETWORKING & SECURITY ~~
 
-  # TODO: Configure and harden SSHD
-
-  # Configuration in (./files/traefik/templates/traefik.yml.j2)
 - name: Install traefik
   # import_playbook: playbooks/traefik.yml
 
-  # NOTE: Edit this playbook to add basic or arbitrary UFW rules
 - name: Establish some default UFW rules
   # import_playbook: playbooks/base_ufw.yml
-
-  # TODO: Crowdsec
 
 - name: Install traefik bouncer for crowdsec
   # import_playbook: playbooks/traefik-bouncer.yml
 
-  # Configuration in (./files/unbound/files/unbound.conf)
 - name: Install unbound
   # import_playbook: playbooks/unbound.yml
 
-  # Configuration in (./files/adguard-home/templates/AdGuardHome.yaml.j2)
-  # NOTE: Open vars/adguard-home.yml and configure as needed.
-  # NOTE: This runs without client persistent configs. If you want to use this,
-  #       configure it in the GUI dashboard, copy everything under the key
-  #       clients.persistent and place it, with the indentation intact,
-  #       into the file (./files/adguard-home/files/persistent_clients.yml). To
-  #       apply the changes, run:
-  #
-  #       ansible-playbook playbooks/adguard-home.yml --tags=post \
-  #       -e add_persistent_config=true
-  #
 - name: Install adguard-home
   # import_playbook: playbooks/adguard-home.yml
 
-  # Configuration in (./files/headscale/templates/config.yaml.j2)
-  # NOTE: After this runs, a tailip will be written to stdout
-  #       save it as base_tailip in `hostvars/<node_name>.yml`
 - name: Install headscale and join the tailnet
   # import_playbook: playbooks/headscale.yml
 
-  # NOTE: You will need an API key to access this. To fetch one, run
-  #
-  #       ansible-playbook generate_keys.yml -e service=headscale_api
-  #
 - name: Install headscale-panel
   # import_playbook: playbooks/headscale-panel.yml
 
-  # Configuration in (./files/authelia/templates/configuration.yml.j2)
-  # NOTE: To make a user, generate a long password first, save it and run
-  #
-  #       ansible-playbook create_user.yml --tags=authelia -e username=<username> \
-  #       -e password=<password> -e email=<email> -e display_name=<display_name> \
-  #       -e admin=<true/false>
-  #
 - name: Install authelia
   # import_playbook: playbooks/authelia.yml
 
-# ~~ (2) MONITORING ~~
+# ~~ (2) WEB SERVERS ~~
 
-  # TODO: Netdata
+- name: Install nginx (public)
+  # import_playbook: playbooks/nginx.yml
 
-  # NOTE: Open vars/dozzle.yml and configure as needed.
+- name: Install nginx (private)
+  # import_playbook: playbooks/nginx-private.yml
+
+# ~~ (3) MONITORING ~~
+
 - name: Install dozzle
   # import_playbook: playbooks/dozzle.yml
 
 - name: Install watchyourlan
   # import_playbook: playbooks/watchyourlan.yml
 
-  # NOTE: Open vars/portainer.yml and configure as needed.
 - name: Install portainer
   # import_playbook: playbooks/portainer.yml
 
-# - name: Install dokemon (ALT)
+- name: Install dokemon
   # import_playbook: playbooks/dokemon.yml
 
-# - name: Install dweebui (ALT)
+- name: Install dweebui
   # import_playbook: playbooks/dweebui.yml
 
-# ~~ (3) ARRRRRR ~~
+# ~~ (4) ARRRRRR & MEDIA ~~
 
-  # NOTE: Open vars/qbittorrent.yml and configure as needed.
 - name: Install qbittorrent
   # import_playbook: playbooks/qbittorrent.yml
 
-  # NOTE: Open vars/nicotine.yml and configure as needed.
 - name: Install nicotine
   # import_playbook: playbooks/nicotine.yml
-
-  # TODO: slskd
 
 - name: Install prowlarr
   # import_playbook: playbooks/prowlarr.yml
@@ -109,8 +77,6 @@
 - name: Install reiverr
   # import_playbook: playbooks/reiverr.yml
 
-# ~~ (3) MEDIA ~~
-
 - name: Install jellyfin
   # import_playbook: playbooks/jellyfin.yml
 
@@ -119,3 +85,120 @@
 
 - name: Install calibre-web
   # import_playbook: playbooks/calibre-web.yml
+
+# ~~ (5) GENERAL APPS ~~
+
+- name: Install moodist
+  # import_playbook: playbooks/moodist.yml
+
+- name: Install libreddit (redlib)
+  # import_playbook: playbooks/libreddit.yml
+
+- name: Install wikiless
+  # import_playbook: playbooks/wikiless.yml
+
+- name: Install piped
+  # import_playbook: playbooks/piped.yml
+
+- name: Install cgit
+  # import_playbook: playbooks/cgit.yml
+
+- name: Install ladder
+  # import_playbook: playbooks/ladder.yml
+
+- name: Install piped
+  # import_playbook: playbooks/piped.yml
+
+- name: Install mycorrhiza
+  # import_playbook: playbooks/mycorrhiza.yml
+
+- name: Install hemmelig
+  # import_playbook: playbooks/hemmelig.yml
+
+- name: Install picoshare
+  # import_playbook: playbooks/picoshare.yml
+
+- name: Install searxng
+  # import_playbook: playbooks/searxng.yml
+
+- name: Install miniflux
+  # import_playbook: playbooks/miniflux.yml
+
+- name: Install morss
+  # import_playbook: playbooks/morss.yml
+
+- name: Install readeck
+  # import_playbook: playbooks/readeck.yml
+
+- name: Install vaultwarden
+  # import_playbook: playbooks/vaultwarden.yml
+
+- name: Install actual
+  # import_playbook: playbooks/actual.yml
+
+- name: Install baikal
+  # import_playbook: playbooks/baikal.yml
+
+- name: Install lemmy
+  # import_playbook: playbooks/lemmy.yml
+
+# ~~ (6) FILE SERVER & BROWSER ~~
+
+- name: Install sftpgo
+  # import_playbook: playbooks/sftpgo.yml
+
+- name: Install pydio cells
+  # import_playbook: playbooks/pydio.yml
+
+- name: Install filestash
+  # import_playbook: playbooks/filestash.yml
+
+- name: Install filebrowser
+  # import_playbook: playbooks/filebrowser.yml
+
+# ~~ (7) STATUS PAGES / UPTIME MONITORING ~~
+
+- name: Install kener
+  # import_playbook: playbooks/kener.yml
+
+- name: Install statping-ng
+  # import_playbook: playbooks/statping.yml
+
+- name: Install patrol
+  # import_playbook: playbooks/patrol.yml
+
+- name: Install tinystatus
+  # import_playbook: playbooks/tinystatus.yml
+
+- name: Install gatus
+  # import_playbook: playbooks/gatus.yml
+
+# ~~ (8) MATRIX ~~
+
+- name: Install cinny
+  # import_playbook: playbooks/cinny.yml
+
+- name: Install dendrite
+  # import_playbook: playbooks/dendrite.yml
+
+- name: Install sliding-sync
+  # import_playbook: playbooks/sliding-sync.yml
+
+- name: Install whatsapp-bridge
+  # import_playbook: playbooks/whatsapp-bridge.yml
+
+# ~~ (9) OTHER ADMIN TOOLS ~~
+
+- name: Install cloudflare-ddns
+  # import_playbook: playbooks/cloudflare-ddns.yml
+
+- name: Install pgweb
+  # import_playbook: playbooks/pgweb.yml
+
+- name: Install watchyourlan
+  # import_playbook: playbooks/watchyourlan.yml
+
+# ~~ (10) SITES ~~
+
+- name: Install static sites
+  # import_playbook: playbooks/static_sites.yml

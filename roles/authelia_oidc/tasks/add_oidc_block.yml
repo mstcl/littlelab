@@ -1,5 +1,4 @@
 ---
-
 - name: Clear facts
   tags: ["authelia", "oidc"]
   ansible.builtin.set_fact:
@@ -12,8 +11,8 @@
 
 - name: Get variables
   tags: ["authelia", "oidc"]
-    ansible.builtin.include_vars:
-      file: "{{ vars_file }}"
+  ansible.builtin.include_vars:
+    file: "{{ vars_file }}"
 
 - name: Add an OIDC block to Authelia configuration
   tags: ["authelia", "oidc"]
