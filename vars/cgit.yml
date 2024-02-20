@@ -1,3 +1,6 @@
 ---
 config_file: "cgitrc"
-css_file: "style.css"
+# favicon_file: "favicon.ico" # (optional) place in files/cgit/files
+# css_file: "style.css" # (optional) place in files/cgit/files
+# about_file: "about.html" # (optional) place in files/cgit/files
+instance_name: ""
