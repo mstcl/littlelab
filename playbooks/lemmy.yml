@@ -22,7 +22,9 @@
           - path: "{{ location.docker_data }}/{{ service_directory }}/pictrs"
             owner: "991"
           - path: "{{ base_directory }}/{{ service_directory}}/css"
-        files: [{}]
+        files:
+          -
+          - template_name: "{{ postgres_config }}"
     - role: docker
       vars:
         attach_postgres: true
@@ -59,6 +61,8 @@
 
     - name: Start compose file
       tags: ["docker", "deploy"]
-      ansible.builtin.include_tasks: roles/docker/tasks/down_and_up.yml
+      ansible.builtin.include_role:
+        name: docker
+        tasks_from: down_and_up.yml
       vars:
         force_up: true

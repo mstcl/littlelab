@@ -1,9 +1,4 @@
 ---
-- name: Setup docker
-  tags: docker
-  ansible.builtin.include_tasks: setup.yml
-  when: setup
-
 - name: Deploy docker compose file
   tags: docker
   ansible.builtin.template:
@@ -35,7 +30,3 @@
     pull: false
     remove_orphans: true
   when: run and service_directory is defined and not setup
-
-- name: Run temporary container
-  ansible.builtin.include_tasks: run_temp_container.yml
-  when: image is defined and service_directory is undefined and url is undefined and not setup

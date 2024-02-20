@@ -25,7 +25,7 @@
             - {{ postgres.location }}:/var/lib/postgresql/data
       {% if postgres_config is defined %}
             - ./{{ postgres_config }}:/etc/postgresql.conf
-      {% end %}
+      {% endif %}
           environment:
               POSTGRES_USER: "{{ postgres.user }}"
               POSTGRES_PASSWORD: "{{ postgres.password }}"
