@@ -1,0 +1,18 @@
+---
+network: "postgres-net"  # Docker network to talk to postgres, will be affixed with name of the compose stack, so no need to mention it.
+machine_learning:
+  enabled: false
+  image: ""
+
+typesense:
+  api_key: ""
+
+postgres:
+  image: "tensorchord/pgvecto-rs:pg14-v0.1.11"
+  user: ""
+  password: ""
+  db: "{{ service_directory }}"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"
+
+redis:
+  image: "redis:6.2-alpine"
