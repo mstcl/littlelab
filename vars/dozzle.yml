@@ -5,6 +5,6 @@ socket:
   image: wollomatic/socket-proxy:1.1.1
 
 dozzle_options:
-  DOZZLE_BASE: "{{ urls.dozzle.sub }}"
-  DOZZLE_AUTH_PROVIDER: "forward-proxy"
-  DOZZLE_NO_ANALYTICS: 1
+  - DOZZLE_BASE: "{{ urls.dozzle.sub }}"
+  - DOZZLE_AUTH_PROVIDER: "forward-proxy"
+  - DOZZLE_NO_ANALYTICS: 1
