@@ -17,8 +17,10 @@
           networks:
             - {{ network }}
           read_only: true
+      {% if add_redis_volume %}
           volumes:
             - {{ location.docker_data }}/{{ service_directory }}_redis:/data
+      {% endif %}
           cap_drop:
             - ALL
           cap_add:

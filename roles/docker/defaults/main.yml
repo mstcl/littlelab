@@ -1,6 +1,7 @@
 ---
 run: true
 attach_redis: false
+add_redis_volume: false
 attach_mariadb: false
 attach_postgres: false
 print_output: false
