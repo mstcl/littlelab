@@ -1,0 +1,31 @@
+---
+- name: Install immich
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/immich.yml
+  vars:
+    service_directory: "immich"
+    image: "ghcr.io/immich-app/immich-server:v1.92.1"
+    url: "{{ urls.immich }}"
+
+  roles:
+    - role: urls
+    - role: config
+      become: true
+      vars:
+        directories:
+          - path: "{{ location.pictures }}"
+          - path: "{{ postgres.location }}"
+            owner: "999"
+            permission: "0700"
+    - role: docker
+      attach_postgres: true
+      attach_redis: true
+    - role: traefik
+      vars:
+        servers:
+          - port: 3001
+            url: "immich-server"
+        middlewares:
+          - "internal-ip@file"
