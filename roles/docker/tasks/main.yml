@@ -5,22 +5,22 @@
     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml.j2"
     dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
     mode: "0644"
-  when: service_directory is defined and not setup
+  when: service_directory is defined
 
 - name: Add redis
   tags: ["docker", "redis"]
   ansible.builtin.include_tasks: add_redis.yml
-  when: attach_redis and not setup
+  when: attach_redis
 
 - name: Add mariadb
   tags: ["docker", "mariadb"]
   ansible.builtin.include_tasks: add_mariadb.yml
-  when: attach_mariadb and not setup
+  when: attach_mariadb
 
 - name: Add postgres
   tags: ["docker", "postgres"]
   ansible.builtin.include_tasks: add_postgres.yml
-  when: attach_postgres and not setup
+  when: attach_postgres
 
 - name: Start compose file
   tags: ["docker", "deploy"]
@@ -29,4 +29,4 @@
     state: present
     pull: false
     remove_orphans: true
-  when: run and service_directory is defined and not setup
+  when: run and service_directory is defined
