@@ -1,0 +1,5 @@
+---
+photon_options:
+  - PUBLIC_INSTANCE_URL: "{{ urls.lemmy.sub }}.{{ base_tld }}"
+  - PUBLIC_DEFAULT_FEED: "All"
+  - PUBLIC_HIDE_DELETED: "false"
