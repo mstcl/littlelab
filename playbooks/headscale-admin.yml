@@ -5,7 +5,7 @@
   vars:
     service_directory: "headscale-admin"
     image: "goodieshq/headscale-admin:0.1.10b"
-    url: "{{ urls.['headscale-admin'] }}"
+    url: "{{ urls['headscale-admin'] }}"
 
   roles:
     - role: urls
