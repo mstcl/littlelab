@@ -9,7 +9,7 @@ pydio_options:
     password: ""
 
 mariadb:
-  image: mariadb:11.2.3
+  image: mariadb:11.3.2
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
   user: ""
   password: ""
