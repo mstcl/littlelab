@@ -1,5 +1,6 @@
 ---
 - name: Set url
+  tags: ["urls", "traefik"]
   when: urls_url is not defined
   ansible.builtin.set_fact:
     urls_url: "{{ url }}"
