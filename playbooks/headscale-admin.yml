@@ -1,0 +1,19 @@
+---
+- name: Install headscale-admin
+  hosts: homelab
+  gather_facts: false
+  vars:
+    service_directory: "headscale-admin"
+    image: "goodieshq/headscale-admin:0.1.10b"
+    url: "{{ urls.['headscale-admin'] }}"
+
+  roles:
+    - role: urls
+    - role: config
+    - role: docker
+    - role: traefik
+      vars:
+        traefik_servers:
+          - port: 80
+        traefik_middlewares:
+          - "internal-ip@file"
