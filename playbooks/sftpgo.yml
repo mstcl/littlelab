@@ -12,28 +12,28 @@
   roles:
     - role: ufw
       vars:
-        port: 2022
+        ufw_port: 2022
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ location.files }}"
-        copies:
+        config_copies:
           - file_name: "files.html"
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
+        traefik_servers: [{}]
+        traefik_middlewares:
           - "internal-ip@file"
     - role: traefik
       vars:
-        file_name: "webdav"
-        service_name: "webdav"
-        rule: "Host(`{{ urls.webdav.sub }}.{{ base_tld }}`)"
-        servers:
+        traefik_file_name: "webdav"
+        traefik_service_name: "webdav"
+        traefik_rule: "Host(`{{ urls.webdav.sub }}.{{ base_tld }}`)"
+        traefik_servers:
           - port: 10080
             url: "sftpgo"
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"

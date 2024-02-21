@@ -10,57 +10,57 @@
     url: "{{ urls.piped }}"
     # ANCHORS
     traefik: &traefik_defaults
-      create_service: false
-      service_name: "nginx"
+      traefik_create_service: false
+      traefik_service_name: "nginx"
 
   roles:
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ socket_location }}"
           - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
-        files: [{}]
-        copies:
+        config_files: [{}]
+        config_copies:
           - file_name: "ytproxy.conf"
             destination_path: "{{ base_directory }}/{{ nginx_flavour }}/snippets"
     - role: nginx
       vars:
-        configs:
+        nginx_configs:
           - config_name: "piped"
             server_url: "{{ urls.piped.sub }}.{{ base_tld }}"
           - config_name: "piped-proxy"
             server_url: "{{ urls['piped-proxy'].sub }}.{{ base_tld }}"
           - config_name: "piped-frontend"
             server_url: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"
-        mounts:
+        nginx_mounts:
           - reference: "Piped socket"
             host_location: "{{ socket_location }}"
             container_location: "/var/run/ytproxy"
     - role: docker
       vars:
-        attach_postgres: true
-        run: false
+        docker_attach_postgres: true
+        docker_run: false
     - role: traefik
       vars:
         <<: *traefik_defaults
-        file_name: "piped-proxy"
-        router_name: "{{ file_name }}"
-        rule: "Host(`{{ urls['piped-proxy'].sub }}.{{ base_tld }}`)"
+        traefik_file_name: "piped-proxy"
+        traefik_router_name: "{{ file_name }}"
+        traefik_rule: "Host(`{{ urls['piped-proxy'].sub }}.{{ base_tld }}`)"
     - role: traefik
       vars:
         <<: *traefik_defaults
-        file_name: "piped-frontend"
-        router_name: "{{ file_name }}"
-        rule: "Host(`{{ urls['piped-frontend'].sub }}.{{ base_tld }}`)"
+        traefik_file_name: "piped-frontend"
+        traefik_router_name: "{{ file_name }}"
+        traefik_rule: "Host(`{{ urls['piped-frontend'].sub }}.{{ base_tld }}`)"
     - role: traefik
       vars:
         <<: *traefik_defaults
-        file_name: "piped"
-        router_name: "{{ file_name }}"
-        rule: "Host(`{{ urls.piped.sub }}.{{ base_tld }}`)"
+        traefik_file_name: "piped"
+        traefik_router_name: "{{ file_name }}"
+        traefik_rule: "Host(`{{ urls.piped.sub }}.{{ base_tld }}`)"
 
   post_tasks:
     - name: Check for actix socket

@@ -9,7 +9,6 @@ services:
     security_opt:
       - no-new-privileges
     network_mode: "host"
-    user: 1000:1000
     volumes:
       - {{ location.docker_data }}/{{ service_directory }}:/data
     environment:

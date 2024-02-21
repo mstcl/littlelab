@@ -4,7 +4,7 @@
   ansible.builtin.include_role:
     name: packages
   vars:
-    native:
+    packages_native:
       - cronie
       - curl
 
@@ -14,13 +14,13 @@
     dest: "{{ base_directory }}/scripts/alert.sh"
     mode: "0655"
   vars:
-    bot_token: "{{ bot_token }}"
-    chat_id: "{{ chat_id }}"
+    bot_token: "{{ cron_bot_token }}"
+    chat_id: "{{ cron_chat_id }}"
 
 - name: Enable and start systemd service
   tags: packages
   ansible.builtin.include_role:
     name: systemd
   vars:
-    services:
+    systemd_services:
       - "cronie"

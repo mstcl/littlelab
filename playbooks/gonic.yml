@@ -11,7 +11,7 @@
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/playlists"
           - path: "{{ location.docker_data }}/{{ service_directory }}/podcasts"
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
@@ -19,8 +19,8 @@
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 4747
-        middlewares:
-         - "internal-ip@file"
+        traefik_middlewares:
+          - "internal-ip@file"
     - role: backup

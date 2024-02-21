@@ -8,11 +8,13 @@
   tags: ["authelia", "oidc"]
   ansible.builtin.include_role:
     name: urls
+  vars:
+    urls_url: "{{ authelia_oidc_url }}"
 
 - name: Get variables
   tags: ["authelia", "oidc"]
   ansible.builtin.include_vars:
-    file: "{{ vars_file }}"
+    file: "{{ authelia_oidc_vars_file }}"
 
 - name: Add an OIDC block to Authelia configuration
   tags: ["authelia", "oidc"]
@@ -21,10 +23,10 @@
     state: present
     insertafter: "    clients:"
     dest: "{{ base_directory }}/authelia/config/configuration.yml"
-    marker: "      # {mark} {{ service_name|upper }} CONFIGURATION"
+    marker: "      # {mark} {{ authelia_oidc_service_name | upper }} CONFIGURATION"
     content: |2
             - id: {{ oidc.id }}
-              description: {{ service_name }}
+              description: {{ authelia_oidc_service_name }}
               secret: '{{ oidc.digest }}'
               public: false
               authorization_policy: two_factor

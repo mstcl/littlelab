@@ -11,10 +11,10 @@
     - role: config
     - role: setup_nginx
       vars:
-        nginx_config_override: "nginx_lemmy.conf"
+        setup_nginx_config_override: "nginx_lemmy.conf"
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 80
-        create_router: false
+        traefik_create_router: false

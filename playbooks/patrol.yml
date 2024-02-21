@@ -12,7 +12,7 @@
     - name: Get list of services
       tags: urls
       ansible.builtin.set_fact:
-        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key | capitalize] }}{% else %}{{ all_names | default([]) }}{% endif %}"
       vars:
         url: "{{ item.value }}"
       loop: "{{ urls | dict2items }}"
@@ -21,9 +21,9 @@
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item.value }}"
-        accumulate: true
-        type: "monitor"
+        urls_url: "{{ item.value }}"
+        urls_accumulate: true
+        urls_type: "monitor"
       loop: "{{ urls | dict2items }}"
 
 
@@ -31,13 +31,13 @@
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
           - path: "{{ location.docker_data }}/{{ service_directory }}/data/data.db"
             state: "touch"
             permission: "0666"
-        files: [{}]
+        config_files: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
+        traefik_servers: [{}]

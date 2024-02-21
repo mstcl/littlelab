@@ -1,8 +1,8 @@
 ---
-run: true
-attach_redis: false
-add_redis_volume: false
-attach_mariadb: false
-attach_postgres: false
-print_output: false
-force_up: false
+docker_run: true
+docker_attach_redis: false
+docker_add_redis_volume: false
+docker_attach_mariadb: false
+docker_attach_postgres: false
+docker_print_output: false
+docker_force_up: false

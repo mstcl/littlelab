@@ -17,13 +17,13 @@
             subnet: "{{ ipam_subnet }}.0/24"
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ base_directory }}/{{ service_directory }}/config"
-        copies:
+        config_copies:
           - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
     - role: docker
       vars:
-        run: false
+        docker_run: false
 
   post_tasks:
     - name: Fetch root hints
@@ -40,4 +40,4 @@
         name: docker
         tasks_from: down_and_up.yml
       vars:
-        force_up: true
+        docker_force_up: true

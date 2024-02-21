@@ -12,9 +12,9 @@
     - role: urls
     - role: config
       vars:
-        files: [{}]
+        config_files: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 80

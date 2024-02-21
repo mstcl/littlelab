@@ -12,7 +12,7 @@
   pre_tasks:
     - name: Get list of services
       ansible.builtin.set_fact:
-        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key | capitalize] }}{% else %}{{ all_names | default([]) }}{% endif %}"
       vars:
         url: "{{ item.value }}"
       loop: "{{ urls | dict2items }}"
@@ -20,18 +20,18 @@
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item.value }}"
-        accumulate: true
-        type: "monitor"
+        urls_url: "{{ item.value }}"
+        urls_accumulate: true
+        urls_type: "monitor"
       loop: "{{ urls | dict2items }}"
 
   roles:
     - role: urls
     - role: config
       vars:
-        directories: [{}]
-        files: [{}]
+        config_directories: [{}]
+        config_files: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
+        traefik_servers: [{}]

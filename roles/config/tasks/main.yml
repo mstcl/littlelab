@@ -10,14 +10,14 @@
 - name: Make additional files/directories
   tags: config
   ansible.builtin.include_tasks: make_directories.yml
-  when: directories is defined
+  when: config_directories is defined
 
 - name: Template configuration files
   tags: ["config", "template"]
   ansible.builtin.include_tasks: template_files.yml
-  when: files is defined
+  when: config_files is defined
 
 - name: Copy other files
   tags: config
   ansible.builtin.include_tasks: copy_files.yml
-  when: copies is defined
+  when: config_copies is defined

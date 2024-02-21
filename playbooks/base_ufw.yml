@@ -6,8 +6,8 @@
   vars:
     # DEFAULTS
     dns_defaults: &dns_defaults
-      rule: "allow"
-      comment: "systemd-resolved"
+      ufw_rule: "allow"
+      ufw_comment: "systemd-resolved"
 
   pre_tasks:
     - name: Block IP ranges
@@ -23,19 +23,19 @@
   roles:
     - role: ufw
       vars:
-        rule: "limit"
-        port: "{{ sshd_port }}"
-        comment: "sshd"
+        ufw_rule: "limit"
+        ufw_port: "{{ sshd_port }}"
+        ufw_comment: "sshd"
     - role: ufw
       vars:
         <<: *dns_defaults
-        port: "5355"
+        ufw_port: "5355"
     - role: ufw
       vars:
         <<: *dns_defaults
-        port: "5355"
-        protocol: "udp"
+        ufw_port: "5355"
+        ufw_protocol: "udp"
     - role: ufw
       vars:
         <<: *dns_defaults
-        port: "5353"
+        ufw_port: "5353"

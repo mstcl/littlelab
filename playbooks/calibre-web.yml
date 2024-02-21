@@ -11,16 +11,16 @@
     - role: urls
     - role: config
       vars:
-        directories: [{}]
+        config_directories: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 8083
-        middlewares:
+        traefik_middlewares:
           - "authelia@file"
           - "internal-ip@file"
-        additional_content: |2
+        traefik_additional_content: |2
               calibre-web-opds:
                 rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/opds`))"
                 service: "{{ service_directory }}"

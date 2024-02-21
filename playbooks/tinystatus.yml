@@ -9,7 +9,7 @@
   pre_tasks:
     - name: Get list of services
       ansible.builtin.set_fact:
-        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key | capitalize] }}{% else %}{{ all_names | default([]) }}{% endif %}"
       vars:
         url: "{{ item.value }}"
       loop: "{{ urls | dict2items }}"
@@ -17,9 +17,9 @@
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item.value }}"
-        accumulate: true
-        type: "monitor"
+        urls_url: "{{ item.value }}"
+        urls_accumulate: true
+        urls_type: "monitor"
       loop: "{{ urls | dict2items }}"
 
     - name: Check for tinystatus repo
@@ -32,19 +32,19 @@
       ansible.builtin.include_role:
         name: packages
       vars:
-        native:
+        packages_native:
           - gnu-netcat
 
   roles:
     - role: git
       vars:
-        repo: https://github.com/mstcl/tinystatus.git
-        destination: "{{ base_directory }}/{{ service_directory }}/tinystatus"
-        branch: master
+        git_repo: https://github.com/mstcl/tinystatus.git
+        git_destination: "{{ base_directory }}/{{ service_directory }}/tinystatus"
+        git_branch: master
       when: not clone_results.stat.exists
     - role: config
       vars:
-        files:
+        config_files:
           - template_name: "checks.csv"
             destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
           - template_name: "tinystatus_cron.sh"
@@ -53,10 +53,9 @@
     - role: config
       tags: incident
       vars:
-        copies:
+        config_copies:
           - file_name: "incidents.txt"
             destination_path: "{{ base_directory }}/{{ service_directory }}/tinystatus"
-      notify: Regenerate page
 
   post_tasks:
     - name: Make crontab for tinystatus
@@ -68,8 +67,5 @@
           {{ base_directory }}/scripts/alert.sh 'ERROR: tinystatus failed!'"
 
   handlers:
-    - name: Regenerate page
-      ansible.builtin.command:
-        command:
-          "{{ base_directory }}/scripts/tinystatus_cron.sh"
-    - import_tasks: ../roles/docker/handlers/main.yml
+    - name: Restart compose stack
+      ansible.builtin.import_tasks: ../roles/docker/handlers/main.yml

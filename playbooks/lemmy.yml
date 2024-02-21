@@ -14,7 +14,7 @@
     - role: config
       become: true
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ postgres.location }}"
             owner: "70"
@@ -22,27 +22,27 @@
           - path: "{{ location.docker_data }}/{{ service_directory }}/pictrs"
             owner: "991"
           - path: "{{ base_directory }}/{{ service_directory}}/css"
-        files:
+        config_files:
           -
           - template_name: "{{ postgres_config }}"
     - role: docker
       vars:
-        attach_postgres: true
-        run: false
+        docker_attach_postgres: true
+        docker_run: false
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 8536
-        rule: "(Host(`{{ expanded_url }}`) && \
+        traefik_rule: "(Host(`{{ expanded_url }}`) && \
           {% raw %}((HeadersRegexp(`Accept`, `application\\\\/(?:activity|ld)\\\\+json`)){% endraw %} \
           || (Method(`POST`, `PUT`, `DELETE`, `PATCH`, `CONNECT`)) || (PathPrefix(`/api`) \
           || PathPrefix(`/pictrs`) || PathPrefix(`/feeds`) || PathPrefix(`/nodeinfo`) \
           || PathPrefix(`/.well-known`))))"
     - role: traefik
-      file_name: "lemmy-ui"
       vars:
-        service_name: "lemmy-ui"
-        servers:
+        traefik_file_name: "lemmy-ui"
+        traefik_service_name: "lemmy-ui"
+        traefik_servers:
           - port: 8238
             url: "lemmy-ui"
 
@@ -65,4 +65,4 @@
         name: docker
         tasks_from: down_and_up.yml
       vars:
-        force_up: true
+        docker_force_up: true

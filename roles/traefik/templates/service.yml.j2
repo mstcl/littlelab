@@ -1,42 +1,42 @@
-{{ protocol }}:
-{% if create_service %}
+{{ traefik_protocol }}:
+{% if traefik_create_service %}
   services:
-    {{ service_name | default(service_directory) }}:
+    {{ traefik_service_name | default(service_directory) }}:
       loadBalancer:
         servers:
-{% for server in servers %}
-{% if protocol == 'http' %}
+{% for server in traefik_servers %}
+{% if traefik_protocol == 'http' %}
           - url: "http://{{ server.url | default(service_directory) }}:{{ server.port | default('8080')}}"
 {% else %}
           - address: "{{ server.url | default(service_directory) }}:{{ server.port | default('8080') }}"
 {% endif %}
 {% endfor %}
 {% endif %}
-{% if create_router %}
+{% if traefik_create_router %}
   routers:
-{% if router_name is defined %}
-    {{ router_name }}:
+{% if traefik_router_name is defined %}
+    {{ traefik_router_name }}:
 {% else %}
-    {{ service_name | default(service_directory) }}:
+    {{ traefik_service_name | default(service_directory) }}:
 {% endif %}
-{% if rule is defined %}
-      rule: "{{ rule }}"
+{% if traefik_rule is defined %}
+      rule: "{{ traefik_rule }}"
 {% elif url.path is undefined %}
       rule: "Host(`{{ expanded_url }}`)"
 {% else  %}
       rule: "Host(`{{ url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ url.path }}`)"
 {% endif %}
-      service: "{{ service_name | default(service_directory) }}"
+      service: "{{ traefik_service_name | default(service_directory) }}"
       tls: &modern
         options: modern@file
-{% if protocol == 'http' %}
+{% if traefik_protocol == 'http' %}
       middlewares:
-{% if redirect == True %}
+{% if traefik_redirect == True %}
         - {{ service_directory }}-strip
         - {{ service_directory }}-redirect
 {% endif %}
-{% if middlewares is defined %}
-{% for middleware in middlewares %}
+{% if traefik_middlewares is defined %}
+{% for middleware in traefik_middlewares %}
         - {{ middleware }}
 {% endfor %}
 {% endif %}

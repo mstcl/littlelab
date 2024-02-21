@@ -11,36 +11,36 @@
   roles:
     - role: packages
       vars:
-        native:
+        packages_native:
           - tailscale
     - role: systemd
       vars:
-        services:
+        systemd_services:
           - tailscaled
-    - role: users
+    - role: create_host_users
       vars:
-        users:
+        create_host_users_users:
           - name: "headscale"
             uid: 3010
     - role: urls
     - role: config
       become: true
       vars:
-        directories:
+        config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}/socket"
             owner: "3010"
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
             owner: "3010"
-        files:
+        config_files:
           - owner: "3010"
             permission: "0640"
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
+        traefik_servers: [{}]
+        traefik_middlewares:
           - "cors@file"
-        additional_content: |2
+        traefik_additional_content: |2
             middlewares:
               cors:
                 headers:

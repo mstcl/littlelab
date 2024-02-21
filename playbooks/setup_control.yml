@@ -31,8 +31,8 @@
       ansible.builtin.include_role:
         name: packages
       vars:
-        pip:
+        packages_pip:
           - "infisical-python"
-        native:
+        packages_native:
           # Useful for scanning for leaked secrets
           - "infisical-bin"

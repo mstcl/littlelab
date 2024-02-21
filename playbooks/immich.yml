@@ -14,18 +14,19 @@
     - role: config
       become: true
       vars:
-        directories:
+        config_directories:
           - path: "{{ location.pictures }}"
           - path: "{{ postgres.location }}"
             owner: "999"
             permission: "0700"
     - role: docker
-      attach_postgres: true
-      attach_redis: true
+      vars:
+        docker_attach_postgres: true
+        docker_attach_redis: true
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 3001
             url: "immich-server"
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"

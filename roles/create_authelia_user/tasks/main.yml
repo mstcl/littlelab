@@ -4,15 +4,15 @@
   ansible.builtin.include_role:
     name: run_temporary_container
   vars:
-    image: "authelia/authelia:4.37.5"
-    entrypoint:
+    run_temporary_container_image: "authelia/authelia:4.37.5"
+    run_temporary_container_entrypoint:
       - authelia
       - crypto
       - hash
       - generate
       - argon2
       - "--password"
-      - "{{ password }}"
+      - "{{ create_authelia_user_password }}"
 - name: Save password hash
   ansible.builtin.set_fact:
     hash: "{{ result.container.Output[8:-1] }}"
@@ -20,21 +20,21 @@
   block:
     - name: Set admin to boolean
       ansible.builtin.set_fact:
-        admin: "{{ admin | bool }}"
+        admin: "{{ create_authelia_user_admin | bool }}"
 - name: Append to users.yml
   become: true
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
     dest: "{{ base_directory }}/authelia/config/users.yml"
-    marker: "  # {mark} {{ username | upper }} CONFIGURATION"
+    marker: "  # {mark} {{ create_authelia_user_username | upper }} CONFIGURATION"
     content: |2
-        {{ username }}:
+        {{ create_authelia_user_username }}:
           disabled: false
-          displayname: "{{ display_name }}"
+          displayname: "{{ create_authelia_user_display_name }}"
           password: "{{ hash }}"
-          email: {{ email }}
-      {% if admin %}
+          email: {{ create_authelia_user_email }}
+      {% if create_authelia_user_admin %}
           groups:
             - admin
       {% else %}

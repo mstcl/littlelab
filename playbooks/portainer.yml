@@ -13,13 +13,13 @@
     - role: urls
     - role: config
       vars:
-        directories: [{}]
+        config_directories: [{}]
     - role: docker
     - role: traefik
       vars:
-        redirect: true
-        trailing_slash: false
-        servers:
+        traefik_redirect: true
+        traefik_trailing_slash: false
+        traefik_servers:
           - port: 9000
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"
