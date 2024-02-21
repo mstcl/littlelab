@@ -27,6 +27,7 @@ services:
       - {{ service_directory }}-postgres
       - pictrs
 
+{% if default_frontend %}
   {{ service_directory }}-ui:
     image: {{ lemmy_ui.image }}
     container_name: {{ service_directory }}-ui
@@ -53,6 +54,7 @@ services:
 {% endif %}
     depends_on:
       - {{ service_directory }}
+{% endif %}
 
   pictrs:
     image: {{ pictrs.image }}

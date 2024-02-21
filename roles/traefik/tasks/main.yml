@@ -13,8 +13,8 @@
     insertafter: EOF
     dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name | default(service_directory) }}.yml"
     marker: "  # {mark} ADDITIONAL CONFIGURATION"
-    content: "{{ additional_content }}"
-  when: additional_content is defined
+    content: "{{ traefik_additional_content }}"
+  when: traefik_additional_content is defined
 
 - name: Configure path redirect
   tags: traefik
@@ -32,4 +32,4 @@
             redirectregex:
               regex: "^(.*)/{{ url.path }}$"
               replacement: "$1/{{ url.path }}/"
-  when: redirect
+  when: traefik_redirect
