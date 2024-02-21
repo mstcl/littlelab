@@ -2,6 +2,7 @@
 network: "postgres-net" # Docker network to talk to postgres
 config_file: "config.hjson"
 postgres_config: "customPostgresql.conf"
+default_frontend: false # Enable this to run lemmy-ui
 
 theme_folder: "extra-themes" # (optional) custom css
 css_url: "" # (optional) grab custom css with wget
