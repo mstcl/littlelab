@@ -1,17 +1,23 @@
 ---
+- name: Set url
+  when: urls_url is not defined
+  ansible.builtin.set_fact:
+    urls_url: "{{ url }}"
+
 - name: Parse URL
   tags: ["urls", "traefik"]
   ansible.builtin.set_fact:
-    expanded_url: "{%if url != base_tld %}{{ url.sub + '.' + base_tld }}{% if url.path is defined %}/{{ url.path }}{% endif %}{% else %}{{base_tld}}{% endif %}"
+    expanded_url: "{%if urls_url != base_tld %}{{ urls_url.sub + '.' + base_tld }}\
+      {% if urls_url.path is defined %}/{{ urls_url.path }}{% endif %}{% else %}{{ base_tld }}{% endif %}"
 
 - name: Get accumulate paths
   tags: urls
   ansible.builtin.set_fact:
-    iter: "{{ url[type] | default('false') }}"
-  when: accumulate
+    iter: "{{ urls_url[type] | default('false') }}"
+  when: urls_accumulate
 
 - name: Append urls
   tags: urls
-  set_fact:
-    all_urls: "{% if iter %}{{ all_urls | default([]) + [expanded_url]}}{%else%}{{ all_urls | default([]) }}{% endif %}"
-  when: accumulate
+  ansible.builtin.set_fact:
+    all_urls: "{% if iter %}{{ all_urls | default([]) + [expanded_url] }}{% else %}{{ all_urls | default([]) }}{% endif %}"
+  when: urls_accumulate

@@ -2,11 +2,28 @@
 - name: Create a user for certain services
   hosts: homelab
   gather_facts: false
+  vars:
+    username: ""
+    display_name: ""
+    password: ""
+    admin: ""
+    email: ""
 
   roles:
     - role: create_authelia_user
       tags: authelia
+      vars:
+        create_authelia_user_username: "{{ username }}"
+        create_authelia_user_password: "{{ password }}"
+        create_authelia_user_display_name: "{{ display_name }}"
+        create_authelia_user_email: "{{ email }}"
+        create_authelia_user_admin: "{{ admin }}"
     - role: create_headscale_user
       tags: headscale
+      vars:
+        create_headscale_user_username: "{{ username }}"
     - role: create_filebrowser_user
       tags: filebrowser
+      vars:
+        create_filebrowser_user_username: "{{ username }}"
+        create_filebrowser_user_password: "{{ password }}"

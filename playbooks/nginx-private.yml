@@ -13,6 +13,6 @@
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 80
-        create_router: false
+        traefik_create_router: false

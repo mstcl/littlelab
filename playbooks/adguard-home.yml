@@ -12,40 +12,40 @@
   roles:
     - role: ufw
       vars: &ufw_defaults
-        port: 53
-        local: false
+        ufw_port: 53
+        ufw_local: false
     - role: ufw
       vars:
         <<: *ufw_defaults
-        protocol: "udp"
+        ufw_protocol: "udp"
     - role: urls
     - role: config
       become: true
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ base_directory }}/{{ service_directory }}/config"
           - path: "/etc/systemd/resolved.conf.d"
             owner: "0"
-        files:
+        config_files:
           - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-        copies:
+        config_copies:
           - file_name: "disable_dnsstublistener.conf"
             destination_path: "/etc/systemd/resolved.conf.d"
             owner: "0"
     - role: docker
       vars:
-        run: false
+        docker_run: false
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 3000
-        trailing_slash: false
-        middlewares:
+        traefik_trailing_slash: false
+        traefik_middlewares:
           - "adguard-home-strip@file"
           - "adguard-home-redirect@file"
           - "internal-ip@file"
-        additional_content: |2
+        traefik_additional_content: |2
             middlewares:
               adguard-home-strip:
                 stripprefix:
@@ -88,4 +88,4 @@
         name: docker
         tasks_from: down_and_up.yml
       vars:
-        force_up: true
+        docker_force_up: true

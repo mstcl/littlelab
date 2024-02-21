@@ -8,11 +8,11 @@
         detach: false
         output_logs: true
         cleanup: true
-        entrypoint: "{{ entrypoint | default('') }}"
-        image: "{{ image }}"
-        mounts: "{{ mounts | default(omit) }}"
-      register: result
+        entrypoint: "{{ run_temp_container_entrypoint | default('') }}"
+        image: "{{ run_temp_container_image }}"
+        mounts: "{{ run_temp_container_mounts | default(omit) }}"
+      register: run_temp_container_result
     - name: Result of user creation
       ansible.builtin.debug:
-        msg: "{{ result.container.Output }}"
+        msg: "{{ run_temp_container_result.container.Output }}"
       when: print_output

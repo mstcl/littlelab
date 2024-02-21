@@ -4,6 +4,7 @@
   check_mode: false
   block:
     - name: Check tailscale connection
+      changed_when: false
       ansible.builtin.command:
         argv: &status
           - tailscale
@@ -11,6 +12,7 @@
           - "--json"
       register: tailscale_result
     - name: Connect to tailnet
+      changed_when: false
       become: true
       ansible.builtin.command:
         argv:
@@ -22,10 +24,12 @@
           - "{{ pak }}"
       when: (tailscale_result.stdout | from_json).BackendState == "NeedsLogin"
     - name: Get status to fetch tailip
+      changed_when: false
       ansible.builtin.command:
         argv: *status
       register: tailscale_result
-    - debug:
+    - name: Print result
+      ansible.builtin.debug:
         msg:
           [
             "TAILIP FOR THIS NODE:",

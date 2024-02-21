@@ -1,56 +1,59 @@
 ---
-- name: Gather private routes
-  import_playbook: cgit_private.yml
-
 - name: Install cgit
   hosts: homelab
   gather_facts: false
-  vars:
+  vars_files:
     - vars/cgit.yml
   vars:
     service_directory: "cgit"
     image: "joseluisq/alpine-cgit:2.5"
     url: "{{ urls.cgit }}"
 
+  pre_tasks:
+    - name: Get full url
+      ansible.builtin.include_role:
+        name: urls
+    - name: Gather private routes
+      ansible.builtin.include_tasks: ../tasks/get_private_repos.yml
+
   roles:
-    - role: users
+    - role: create_host_users
       vars:
-        users:
+        create_host_users_users:
           - name: "git"
             uid: 1001
             group: "git"
             groups: "sshuser"
             shell: /usr/bin/git-shell
-    - role: urls
     - role: config
       when: css_file is defined
       vars:
-        copies:
+        config_copies:
           - file_name: "{{ css_file }}"
     - role: config
       when: favicon_file is defined
       vars:
-        copies:
+        config_copies:
           - file_name: "{{ favicon_file }}"
     - role: config
       when: about_file is defined
       vars:
-        copies:
+        config_copies:
           - file_name: "{{ about_file }}"
     - role: config
       vars:
-        files: [{}]
-        copies:
+        config_files: [{}]
+        config_copies:
           - file_name: "header.html"
           - file_name: "syntax-highlighting.py"
             permission: "0655"
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 80
-        rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
-        additional_content: |2
+        traefik_rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
+        traefik_additional_content: |2
                 priority: 1
               cgit-private-repos:
                 rule: "{{ concat_rule }}"

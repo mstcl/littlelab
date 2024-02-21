@@ -10,13 +10,12 @@
 
   pre_tasks:
     - name: Get list of urls
-      tags: urls
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item.value }}"
-        accumulate: true
-        type: "public"
+        urls_url: "{{ item.value }}"
+        urls_accumulate: true
+        urls_type: "public"
       loop: "{{ urls | dict2items }}"
     - name: Join urls
       ansible.builtin.set_fact:
@@ -24,6 +23,4 @@
 
   roles:
     - role: config
-      tags: config
     - role: docker
-      tags: docker

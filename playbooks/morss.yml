@@ -13,6 +13,6 @@
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
-         - "internal-ip@file"
+        traefik_servers: [{}]
+        traefik_middlewares:
+          - "internal-ip@file"

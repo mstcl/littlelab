@@ -12,15 +12,15 @@
   roles:
     - role: ufw
       vars:
-        local: false
-        port: 50300
+        ufw_local: false
+        ufw_port: 50300
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ base_directory }}/{{ service_directory }}/utils"
-        files:
+        config_files:
           -
           - template_name: "finish.sh"
             destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
@@ -28,8 +28,8 @@
     - role: docker
     - role: traefik
       vars:
-        redirect: true
-        servers:
+        traefik_redirect: true
+        traefik_servers:
           - port: 6565
-        middlewares:
-         - "internal-ip@file"
+        traefik_middlewares:
+          - "internal-ip@file"

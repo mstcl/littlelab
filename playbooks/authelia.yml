@@ -23,21 +23,21 @@
       register: config_results
 
   roles:
-    - role: users
+    - role: create_host_users
       vars:
-        users:
+        create_host_users_users:
           - name: "authelia"
             uid: 4100
     - role: urls
     - role: config
       become: true
       vars:
-        directories:
+        config_directories:
           - path: "{{ base_directory }}/{{ service_directory }}/config"
           - path: "{{ base_directory }}/{{ service_directory }}/secrets"
           - path: "{{ location.docker_data }}/{{ service_directory }}/data"
             owner: "4100"
-        files:
+        config_files:
           - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
             <<: *permissions
           - template_name: "AUTHELIA_JWT_SECRET"
@@ -55,18 +55,18 @@
     - role: config
       when: not config_results.stat.exists
       vars:
-        copy:
+        config_copy:
           - file_name: "users.yml"
             destination_path: "{{ base_directory }}/{{ service_directory }}/config"
             <<: *permissions
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 9091
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"
-        additional_content: |2
+        traefik_additional_content: |2
             middlewares:
               authelia:
                 forwardAuth:
@@ -80,26 +80,26 @@
                   authResponseHeaders: ["Remote-User","Remote-Groups","Remote-Name","Remote-Email"]
     - role: authelia_oidc
       vars:
-        url: "{{ urls.portainer }}"
-        service_name: "Portainer"
-        vars_file: "vars/portainer.yml"
+        authelia_oidc_url: "{{ urls.portainer }}"
+        authelia_oidc_service_name: "Portainer"
+        authelia_oidc_vars_file: "vars/portainer.yml"
     - role: authelia_oidc
       vars:
-        url: "{{ urls.miniflux }}"
-        service_name: "Miniflux"
-        vars_file: "vars/miniflux.yml"
+        authelia_oidc_url: "{{ urls.miniflux }}"
+        authelia_oidc_service_name: "Miniflux"
+        authelia_oidc_vars_file: "vars/miniflux.yml"
     - role: authelia_oidc
       vars:
-        url: "{{ urls.immich }}"
-        service_name: "Immich"
-        redirect_uris:
+        authelia_oidc_url: "{{ urls.immich }}"
+        authelia_oidc_service_name: "Immich"
+        authelia_oidc_redirect_uris:
           - https://{{ expanded_url }}/auth/login
           - https://{{ expanded_url }}/user-settings
           - https://{{ expanded_url }}/api/oauth/mobile-redirect
           - app.immich://
     - role: authelia_oidc
       vars:
-        url: "{{ urls.sftpgo }}"
-        service_name: "Sftpgo"
-        vars_file: "vars/sftpgo.yml"
+        authelia_oidc_url: "{{ urls.sftpgo }}"
+        authelia_oidc_service_name: "Sftpgo"
+        authelia_oidc_vars_file: "vars/sftpgo.yml"
     - role: backup

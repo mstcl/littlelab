@@ -13,13 +13,13 @@
     - role: urls
     - role: config
       vars:
-        directories: [{}]
-        files:
+        config_directories: [{}]
+        config_files:
           - permission: "0666"
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
+        traefik_servers: [{}]
+        traefik_middlewares:
           - "internal-ip@file"
     - role: backup

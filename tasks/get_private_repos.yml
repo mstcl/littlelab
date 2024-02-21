@@ -1,0 +1,7 @@
+---
+- name: Get and format private repos
+  when: private_repos is defined
+  ansible.builtin.set_fact:
+    concat_rule:
+      "(Host(`{{ expanded_url }}`) && ({% for item in private_repos %}PathPrefix\
+        (`/{{ item }}`){{ ' || ' if not loop.last else '))' }}{% endfor %}"

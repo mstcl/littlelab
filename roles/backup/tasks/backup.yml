@@ -15,7 +15,7 @@
     weekday: "SAT"
     minute: "0"
     hour: "4"
-    disabled: "{{ disabled | default(false) }}"
+    disabled: "{{ cron_disabled | default(false) }}"
     job: "{{ base_directory }}/scripts/{{ service_directory }}_cron.sh > /dev/null || \
       {{ base_directory }}/scripts/alert.sh \
       'ERROR: {{ service_directory }} backup failed!'"

@@ -10,17 +10,17 @@
 - name: Add redis
   tags: ["docker", "redis"]
   ansible.builtin.include_tasks: add_redis.yml
-  when: attach_redis
+  when: docker_attach_redis
 
 - name: Add mariadb
   tags: ["docker", "mariadb"]
   ansible.builtin.include_tasks: add_mariadb.yml
-  when: attach_mariadb
+  when: docker_attach_mariadb
 
 - name: Add postgres
   tags: ["docker", "postgres"]
   ansible.builtin.include_tasks: add_postgres.yml
-  when: attach_postgres
+  when: docker_attach_postgres
 
 - name: Start compose file
   tags: ["docker", "deploy"]
@@ -29,4 +29,4 @@
     state: present
     pull: false
     remove_orphans: true
-  when: run and service_directory is defined
+  when: docker_run and service_directory is defined

@@ -2,11 +2,11 @@
 - name: Rule with only trusted IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ rule | default('allow') }}"
-    port: "{{ port }}"
-    proto: "{{ protocol }}"
+    rule: "{{ ufw_rule | default('allow') }}"
+    port: "{{ ufw_port }}"
+    proto: "{{ ufw_protocol }}"
     src: "{{ item }}"
-    comment: "{{ comment | default(service_directory) }}"
+    comment: "{{ ufw_comment | default(service_directory) }}"
   loop:
     - 10.0.0.0/8
     - 172.16.0.0/12
@@ -15,16 +15,16 @@
     - 127.0.0.0/8
     - fd7a:115c:a1e0::/48
   become: true
-  when: local
+  when: ufw_local
   notify: Reload firewall
 
 - name: Rule with all IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ rule }}"
-    port: "{{ port }}"
-    protocol: "{{ protocol | default('tcp') }}"
-    comment: "{{ comment | default(service_directory) }}"
+    rule: "{{ ufw_rule }}"
+    port: "{{ ufw_port }}"
+    protocol: "{{ ufw_protocol }}"
+    comment: "{{ ufw_comment | default(service_directory) }}"
   become: true
-  when: not local
+  when: not ufw_local
   notify: Reload firewall

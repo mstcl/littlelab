@@ -4,12 +4,12 @@
   ansible.builtin.include_role:
     name: packages
   vars:
-    native:
+    packages_native:
       - docker
       - python-requests
       - python-websocket-client
       - ctop # (Optional) but useful for quick monitoring
-    pip:
+    packages_pip:
       - docker==6.1.3
       - docker-compose
       - pyyaml==5.3.1
@@ -19,7 +19,7 @@
   ansible.builtin.include_role:
     name: systemd
   vars:
-    services:
+    systemd_services:
       - "docker"
 
 - name: Add users to Docker group

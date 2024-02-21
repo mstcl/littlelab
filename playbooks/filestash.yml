@@ -10,15 +10,12 @@
   roles:
     - role: urls
     - role: config
-      tags: config
       vars:
-        directories: [{}]
+        config_directories: [{}]
     - role: docker
-      tags: docker
     - role: traefik
-      tags: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 8334
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"

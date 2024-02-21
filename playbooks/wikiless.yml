@@ -13,13 +13,13 @@
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
             owner: "999"
-        files: [{}]
+        config_files: [{}]
     - role: docker
       vars:
-        attach_redis: true
+        docker_attach_redis: true
     - role: traefik
       vars:
-        servers: [{}]
+        traefik_servers: [{}]

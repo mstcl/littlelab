@@ -13,7 +13,7 @@
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 80
-        middlewares:
-         - "internal-ip@file"
+        traefik_middlewares:
+          - "internal-ip@file"

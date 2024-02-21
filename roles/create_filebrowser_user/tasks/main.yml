@@ -17,8 +17,8 @@
           - "/.filebrowser.yml"
           - users
           - add
-          - "{{ username }}"
-          - "{{ password }}"
+          - "{{ create_filebrowser_user_username }}"
+          - "{{ create_filebrowser_user_password }}"
         mounts:
           - target: /database.db
             type: "bind"

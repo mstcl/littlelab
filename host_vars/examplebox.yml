@@ -31,13 +31,10 @@ location:
 
 # Reverse proxy urls for our services
 urls:
-  # this format will give plex.example.cats
-  jellyfin:
-   sub: "plex"
-   public: true # url is public (for DDNS auto configuration), defaults to false
-
-  # this format will give admin.example.cats/pihole
-  pihole:
+  jellyfin: # this format will give plex.example.cats
+    sub: "plex"
+    public: true # url is public (for DDNS auto configuration), defaults to false
+  pihole: # this format will give admin.example.cats/pihole
     sub: "admin"
     path: "pihole"
     monitor: true # add to uptime monitoring, defaults to false

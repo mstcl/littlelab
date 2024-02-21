@@ -39,7 +39,7 @@
               security_opt:
                 - no-new-privileges
               networks:
-                - {{ docker.traefik_network}}{% endraw %}
+                - {{ docker.traefik_network }}{% endraw %}
     - name: Create playbook
       ansible.builtin.copy:
         mode: "0644"
@@ -53,21 +53,21 @@
             vars:
               service_directory: "{{ service_directory }}"
               image: ""
-              {% raw %}url: "{{ urls.{% endraw %}{{ service_directory}}{% raw %} }}"{% endraw %}
+              {% raw %}url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
 
             {% raw %}
             roles:
               - role: urls
               - role: config
                 vars:
-                  directories:
+                  config_directories:
                     - path: ""
                       owner: "1000"
                       permission: "0755"
               - role: docker
               - role: traefik
                 vars:
-                  servers:
+                  traefik_servers:
                     - port: 8080
-                  middlewares:
+                  traefik_middlewares:
                     - "internal-ip@file"{% endraw %}

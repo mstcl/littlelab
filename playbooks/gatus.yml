@@ -12,7 +12,7 @@
     - name: Get list of services
       tags: urls
       ansible.builtin.set_fact:
-        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key|capitalize]}}{% else %}{{ all_names | default([]) }}{% endif %}"
+        all_names: "{% if url.monitor is defined %}{{ all_names | default([]) + [item.key | capitalize] }}{% else %}{{ all_names | default([]) }}{% endif %}"
       vars:
         url: "{{ item.value }}"
       loop: "{{ urls | dict2items }}"
@@ -21,25 +21,25 @@
       ansible.builtin.include_role:
         name: urls
       vars:
-        url: "{{ item.value }}"
-        accumulate: true
-        type: "monitor"
+        urls_url: "{{ item.value }}"
+        urls_accumulate: true
+        urls_type: "monitor"
       loop: "{{ urls | dict2items }}"
 
   roles:
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ base_directory}}/{{ service_directory }}/config"
             owner: "1000"
             permission: "0755"
-        files:
+        config_files:
           - destination_path: "{{ base_directory}}/{{ service_directory }}/config"
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
+        traefik_servers: [{}]
+        traefik_middlewares:
           - "internal-ip@file"

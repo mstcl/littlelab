@@ -15,4 +15,4 @@
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
+        traefik_servers: [{}]

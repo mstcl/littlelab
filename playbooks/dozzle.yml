@@ -13,11 +13,11 @@
     - role: urls
     - role: config
       vars:
-        directories: [{}]
+        config_directories: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers: [{}]
-        middlewares:
+        traefik_servers: [{}]
+        traefik_middlewares:
           - "authelia@file"
           - "internal-ip@file"

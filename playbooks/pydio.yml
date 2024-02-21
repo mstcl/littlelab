@@ -13,18 +13,18 @@
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           -
           - path: "{{ data_directory }}"
-        files: [{}]
+        config_files: [{}]
     - role: docker
       vars:
-        attach_mariadb: true
+        docker_attach_mariadb: true
     - role: traefik
       vars:
-        create_service: false
-        create_router: false
-        additional_content: |2
+        traefik_create_service: false
+        traefik_create_router: false
+        traefik_additional_content: |2
             serversTransports:
               pydio_transport:
                 insecureSkipVerify: true

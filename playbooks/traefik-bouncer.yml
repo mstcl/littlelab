@@ -14,6 +14,7 @@
       block:
         - name: Generate key
           become: true
+          changed_when: false
           ansible.builtin.command:
             argv:
               - cscli
@@ -39,9 +40,9 @@
     - role: docker
     - role: traefik
       vars:
-        create_service: false
-        create_router: false
-        additional_content: |2
+        traefik_create_service: false
+        traefik_create_router: false
+        traefik_additional_content: |2
             middlewares:
               crowdsec-bouncer:
                 forwardAuth:

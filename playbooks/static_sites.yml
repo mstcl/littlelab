@@ -7,23 +7,24 @@
     nginx_defaults: &nginx_defaults
       config_src: "site"
     dashboard: &dashboard
-      - config_name: "homepage"
+      - nginx_config_name: "homepage"
         <<: *nginx_defaults
-        server_url: "{{ base_tld }}"
+        nginx_server_url: "{{ base_tld }}"
 
   handlers:
-    - import_tasks: ../roles/docker/handlers/main.yml
+    - name: Restart compose stack
+      ansible.builtin.import_tasks: ../roles/docker/handlers/main.yml
 
   roles:
     - role: nginx
       vars:
         nginx_flavour: "nginx"
-        configs:
+        nginx_configs:
           - *dashboard
           - config_name: "status"
             <<: *nginx_defaults
             server_url: "{{ urls.tinystatus.sub }}.{{ base_tld }}"
-        mounts:
+        nginx_mounts:
           - reference: "status page"
             host_location: "{{ static_path }}/status"
             container_location: "/status"
@@ -33,23 +34,23 @@
     - role: nginx
       vars:
         nginx_flavour: "nginx-private"
-        configs:
+        nginx_configs:
           - *dashboard
-        mounts:
+        nginx_mounts:
           - reference: "homepage"
             host_location: "{{ static_path }}/dashboard"
             container_location: "/homepage"
     - role: traefik
       vars:
-        file_name: "dashboard"
-        service_name: "nginx-private"
-        create_service: false
-        router_name: "private-dashboard"
-        rule: "Host(`{{ base_tld }}`)"
-        middlewares:
+        traefik_file_name: "dashboard"
+        traefik_service_name: "nginx-private"
+        traefik_create_service: false
+        traefik_router_name: "private-dashboard"
+        traefik_rule: "Host(`{{ base_tld }}`)"
+        traefik_middlewares:
           - "public-dashboard@file"
           - "internal-ip@file"
-        additional_content: |2
+        traefik_additional_content: |2
             middlewares:
               public-dashboard:
                 errors:
@@ -58,8 +59,8 @@
                   query: "/index.html"
     - role: traefik
       vars:
-        file_name: "status"
-        service_name: "nginx"
-        create_service: false
-        router_name: "status"
-        rule: "Host(`{{ urls.tinystatus.sub }}.{{ base_tld }}`)"
+        traefik_file_name: "status"
+        traefik_service_name: "nginx"
+        traefik_create_service: false
+        traefik_router_name: "status"
+        traefik_rule: "Host(`{{ urls.tinystatus.sub }}.{{ base_tld }}`)"

@@ -6,4 +6,4 @@
     name: "{{ item }}"
     enabled: true
     state: started
-  with_items: "{{ services }}"
+  with_items: "{{ systemd_services }}"

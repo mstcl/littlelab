@@ -11,7 +11,7 @@
           - headscale
           - users
           - create
-          - "{{ username }}"
+          - "{{ create_headscale_user_username }}"
       register: user_result
     - name: Result of user creation
       ansible.builtin.debug:

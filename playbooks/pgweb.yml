@@ -18,13 +18,22 @@
     - role: urls
     - role: config
       vars:
-        directories:
+        config_directories:
           - path: "{{ base_directory }}/{{ service_directory }}/bookmarks"
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 8081
-        middlewares:
-         - "internal-ip@file"
+        traefik_middlewares:
+          - "internal-ip@file"
     - role: create_pgweb_bookmarks
+      vars:
+        create_pgweb_bookmarks_services:
+          - "miniflux"
+          - "dendrite"
+          - "sliding-sync"
+          - "wa-bridge"
+          - "lemmy"
+          - "immich"
+          - "piped"

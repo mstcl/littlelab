@@ -11,11 +11,11 @@
     - role: urls
     - role: config
       vars:
-        directories: [{}]
+        config_directories: [{}]
     - role: docker
     - role: traefik
       vars:
-        servers:
+        traefik_servers:
           - port: 3000
-        middlewares:
+        traefik_middlewares:
           - "internal-ip@file"

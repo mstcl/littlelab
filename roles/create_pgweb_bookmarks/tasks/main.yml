@@ -5,15 +5,7 @@
     src: "bookmark.toml.j2"
     dest: "{{ base_directory }}/pgweb/bookmarks/{{ item }}.toml"
     mode: "0644"
-  with_items: "{{ services }}"
+  with_items: "{{ create_pgweb_bookmarks_services }}"
   vars:
     # Use lookup plugin to programmatically fetch postgres url for each service
-    postgres_url: "{{ lookup('get_secrets', path='/'+item, secret_name=item|upper+'_POSTGRES_URL') }}"
-    services:
-      - "miniflux"
-      - "dendrite"
-      - "sliding-sync"
-      - "wa-bridge"
-      - "lemmy"
-      - "immich"
-      - "piped"
+    postgres_url: "{{ lookup('get_secrets', path='/' + item, secret_name=item | upper + '_POSTGRES_URL') }}"
