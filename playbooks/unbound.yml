@@ -2,12 +2,12 @@
 - name: Install unbound
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/unbound.yml
   vars:
     service_directory: "unbound"
     image: "mvance/unbound:latest"
     network: "dns-net"
-    config_file: "unbound.conf"
-    ipam_subnet: "172.27.0"
 
   roles:
     - role: create_docker_network

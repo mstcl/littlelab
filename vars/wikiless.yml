@@ -1,0 +1,3 @@
+---
+config_file: "wikiless.config"
+network: "redis-net"

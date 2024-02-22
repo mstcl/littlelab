@@ -2,11 +2,12 @@
 - name: Install filebrowser
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/filebrowser.yml
   vars:
     service_directory: "filebrowser"
     image: "filebrowser/filebrowser:v2.27.0"
     url: "{{ urls.filebrowser }}"
-    config_file: "filebrowser.yml"
 
   roles:
     - role: urls

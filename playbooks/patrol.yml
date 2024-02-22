@@ -2,11 +2,12 @@
 - name: Install patrol
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/patrol.yml
   vars:
     service_directory: "patrol"
     image: "ghcr.io/karimsa/patrol:latest"
     url: "{{ urls.patrol }}"
-    config_file: "config.yml"
 
   pre_tasks:
     - name: Get list of services

@@ -2,11 +2,11 @@
 - name: Install wikiless
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/wikiless.yml
   vars:
     service_directory: "wikiless"
     image: "ghcr.io/metastem/wikiless:latest"
-    config_file: "wikiless.config"
-    network: "redis-net"
     url: "{{ urls.wikiless}}"
 
   roles:

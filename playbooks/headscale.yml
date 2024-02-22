@@ -2,11 +2,12 @@
 - name: Install headscale
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/headscale.yml
   vars:
     service_directory: "headscale"
     image: "headscale/headscale:v0.23.0-alpha5"
     url: "{{ urls.headscale }}"
-    config_file: "config.yaml"
 
   roles:
     - role: packages
