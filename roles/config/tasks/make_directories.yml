@@ -6,4 +6,4 @@
     owner: "{{ item.owner | default('1000') }}"
     state: "{{ item.state | default('directory') }}"
     mode: "{{ item.permission | default('0755') }}"
-  with_items: "{{ directories }}"
+  with_items: "{{ config_directories }}"
