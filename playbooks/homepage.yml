@@ -1,0 +1,41 @@
+---
+- name: Install homepage
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/homepage.yml
+  vars:
+    service_directory: "homepage"
+    image: "ghcr.io/gethomepage/homepage:v0.8.8"
+    url: "{{ urls.homepage }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        config_directories:
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: docker
+    - role: config
+      vars:
+        config_files:
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+          - template_name: "docker.yaml"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: traefik
+      vars:
+        traefik_servers:
+          - port: 3000
+        traefik_middlewares:
+          - "internal-ip@file"
+
+  post_tasks:
+    - name: Fetch homepage css
+      tags: css
+      when: css_url is defined
+      ansible.builtin.get_url:
+        url: "{{ css_url }}/{{ item }}"
+        dest: "{{ base_directory }}/{{ service_directory }}/config/{{ item }}"
+        mode: "0644"
+      loop:
+        - custom.css

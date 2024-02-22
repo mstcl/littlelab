@@ -1,0 +1,11 @@
+---
+instance_name: "" # the title of the page, for more configuration: see template
+css_url: "https://raw.githubusercontent.com/mstcl/wardrobe/master/jumper/homepage" # (optional) grab custom css with wget
+config_file: "settings.yaml"
+network: "socket-net"
+
+volumes: # declare extra mounts
+  - /mnt
+
+socket:
+  image: "tecnativa/docker-socket-proxy:0.1"
