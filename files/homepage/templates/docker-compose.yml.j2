@@ -28,8 +28,7 @@ services:
       - ./config:/app/config
 {% if volumes is defined and volumes | length > 0 %}
 {% for item in volumes %}
-{% for key, value in item.items() %}
-      - {{ key }}:{{ value }}:ro
+      - {{ item }}:ro
 {% endfor %}
 {% endfor %}
 {% endif %}
