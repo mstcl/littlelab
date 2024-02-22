@@ -30,7 +30,6 @@ services:
 {% for item in volumes %}
       - {{ item }}:ro
 {% endfor %}
-{% endfor %}
 {% endif %}
 
   {{ service_directory }}-socket-proxy:
