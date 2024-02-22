@@ -45,6 +45,7 @@
         traefik_servers:
           - port: 8238
             url: "lemmy-ui"
+    - role: homepage
 
   post_tasks:
     - name: Fetch lemmy css

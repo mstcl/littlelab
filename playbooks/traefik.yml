@@ -75,6 +75,7 @@
         traefik_rule: "(Host(`{{ url.sub + '.' + base_tld }}`) && (PathPrefix(`/{{ url.path }}`) || PathPrefix(`/api`)))"
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage
 
   post_tasks:
     - name: Restrict traefik certificates and logs

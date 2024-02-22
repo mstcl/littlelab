@@ -2,6 +2,8 @@
 - name: Install lidarr
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/lidarr.yml
   vars:
     service_directory: "lidarr"
     image: "linuxserver/lidarr:2.1.7"
@@ -19,3 +21,4 @@
           - port: 8686
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

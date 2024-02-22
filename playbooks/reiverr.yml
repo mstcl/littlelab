@@ -2,6 +2,8 @@
 - name: Install reiverr
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/reiverr.yml
   vars:
     service_directory: "reiverr"
     image: "ghcr.io/aleksilassila/reiverr:v0.8.0"
@@ -19,3 +21,4 @@
           - port: 9494
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

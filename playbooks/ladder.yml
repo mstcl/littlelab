@@ -2,6 +2,8 @@
 - name: Install ladder
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/ladder.yml
   vars:
     service_directory: "ladder"
     image: "ghcr.io/everywall/ladder:v0.0.21"
@@ -16,3 +18,4 @@
         traefik_servers: [{}]
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

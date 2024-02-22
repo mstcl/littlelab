@@ -30,3 +30,4 @@
             url: "immich-server"
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

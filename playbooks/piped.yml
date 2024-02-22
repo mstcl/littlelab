@@ -61,6 +61,7 @@
         traefik_file_name: "piped"
         traefik_router_name: "{{ file_name }}"
         traefik_rule: "Host(`{{ urls.piped.sub }}.{{ base_tld }}`)"
+    - role: homepage
 
   post_tasks:
     - name: Check for actix socket

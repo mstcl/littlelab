@@ -2,6 +2,8 @@
 - name: Install mycorrhiza
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/mycorrhiza.yml
   vars:
     service_directory: "mycorrhiza"
     image: "thecoopcloud/mycorrhiza:v1.14.0"
@@ -19,3 +21,4 @@
           - port: 1737
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

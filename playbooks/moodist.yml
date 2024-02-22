@@ -2,6 +2,8 @@
 - name: Install moodist
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/moodist.yml
   vars:
     service_directory: "moodist"
     image: "ghcr.io/remvze/moodist:v1.3.1"
@@ -14,3 +16,4 @@
     - role: traefik
       vars:
         traefik_servers: [{}]
+    - role: homepage

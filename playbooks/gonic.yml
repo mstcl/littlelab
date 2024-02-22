@@ -2,6 +2,8 @@
 - name: Install gonic
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/gonic.yml
   vars:
     service_directory: "gonic"
     image: "sentriz/gonic:v0.16.2"
@@ -24,3 +26,4 @@
         traefik_middlewares:
           - "internal-ip@file"
     - role: backup
+    - role: homepage

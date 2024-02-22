@@ -2,6 +2,8 @@
 - name: Install actual
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/actual.yml
   vars:
     service_directory: "actual"
     image: "actualbudget/actual-server:24.2.0-alpine"
@@ -20,3 +22,4 @@
         traefik_middlewares:
           - "internal-ip@file"
     - role: backup
+    - role: homepage

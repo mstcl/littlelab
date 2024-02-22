@@ -11,6 +11,7 @@
 
   pre_tasks:
     - name: Get full url
+      tags: ["urls", "traefik", "homepage"]
       ansible.builtin.include_role:
         name: urls
     - name: Gather private routes
@@ -75,3 +76,4 @@
                 redirectRegex:
                   regex: "^https://{{ expanded_url }}/(.*)"
                   replacement: "https://private-{{ expanded_url }}/${1}"
+    - role: homepage

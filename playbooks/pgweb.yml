@@ -2,6 +2,8 @@
 - name: Install pgweb
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/pgweb.yml
   vars:
     service_directory: "pgweb"
     image: "sosedoff/pgweb:0.14.3"
@@ -37,3 +39,4 @@
           - "lemmy"
           - "immich"
           - "piped"
+    - role: homepage

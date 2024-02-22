@@ -28,3 +28,4 @@
         traefik_servers: [{}]
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage
