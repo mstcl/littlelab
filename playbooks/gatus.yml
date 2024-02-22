@@ -2,11 +2,12 @@
 - name: Install gatus
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/gatus.yml
   vars:
     service_directory: "gatus"
     image: "twinproduction/gatus:v5.7.0"
     url: "{{ urls.gatus }}"
-    config_file: "config.yaml"
 
   pre_tasks:
     - name: Get list of services
