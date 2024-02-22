@@ -1,0 +1,15 @@
+---
+- name: Add a service block to services.yaml
+  tags: homepage
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: "{{ homepage_config.category }}:"
+    dest: "{{ base_directory }}/homepage/config/services.yaml"
+    marker: "  # {mark} {{ homepage_config.service_name | default(service_directory | capitalize) | upper }} CONFIGURATION"
+    content: |2
+        - {{ homepage_config.service_name | default(service_directory | capitalize) }}:
+            href: "https://{{ expanded_url }}"
+            description: "{{ homepage_config.description | default('') }}"
+            icon: "{{ homepage_config.icon | default('') }}"
+            server: docker
+            container: "{{ service_directory }}"
