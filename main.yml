@@ -29,6 +29,9 @@
 - name: Install headscale-panel
   # import_playbook: playbooks/headscale-panel.yml
 
+# - name: Install headscale-admin
+  # import_playbook: playbooks/headscale-admin.yml
+
 - name: Install authelia
   # import_playbook: playbooks/authelia.yml
 
@@ -142,6 +145,9 @@
 - name: Install lemmy
   # import_playbook: playbooks/lemmy.yml
 
+- name: Install photon (frontend for lemmy)
+  # import_playbook: playbooks/photon.yml
+
 # ~~ (6) FILE SERVER & BROWSER ~~
 
 - name: Install sftpgo
@@ -202,3 +208,6 @@
 
 - name: Install static sites
   # import_playbook: playbooks/static_sites.yml
+
+- name: Install homepage
+  # import_playbook: playbooks/homepage.yml
