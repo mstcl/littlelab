@@ -22,3 +22,4 @@
         traefik_servers:
           - port: 3000
     - role: backup
+    - role: homepage

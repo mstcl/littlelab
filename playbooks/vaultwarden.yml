@@ -22,3 +22,4 @@
         traefik_middlewares:
           - "internal-ip@file"
     - role: backup
+    - role: homepage

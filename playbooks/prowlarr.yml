@@ -2,6 +2,8 @@
 - name: Install prowlarr
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/prowlarr.yml
   vars:
     service_directory: "prowlarr"
     image: "linuxserver/prowlarr:1.13.3"
@@ -19,3 +21,4 @@
           - port: 9696
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

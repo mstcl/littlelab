@@ -2,6 +2,8 @@
 - name: Install jellyfin
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/jellyfin.yml
   vars:
     service_directory: "jellyfin"
     image: "jellyfin/jellyfin:10.8.13"

@@ -6,7 +6,7 @@
     - vars/nicotine.yml
   vars:
     service_directory: "nicotine"
-    image: "sirjmann92/nicotineplus-proper:3.2.9"
+    image: "sirjmann92/nicotineplus-proper:3.3.1rc1"
     url: "{{ urls.nicotine }}"
 
   roles:
@@ -33,3 +33,4 @@
           - port: 6565
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

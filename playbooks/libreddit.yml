@@ -16,3 +16,4 @@
     - role: traefik
       vars:
         traefik_servers: [{}]
+    - role: homepage

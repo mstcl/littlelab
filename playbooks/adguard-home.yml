@@ -57,6 +57,7 @@
                       - header: "Location"
                         regex: "^/(.*)"
                         replacement: "/{{ url.path }}/$1"
+    - role: homepage
 
   post_tasks:
     - name: Append client list to config

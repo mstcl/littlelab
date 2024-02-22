@@ -21,3 +21,4 @@
         traefik_middlewares:
           - "authelia@file"
           - "internal-ip@file"
+    - role: homepage

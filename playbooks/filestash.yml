@@ -2,6 +2,8 @@
 - name: Install filestash
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/filestash.yml
   vars:
     service_directory: "filestash"
     image: "machines/filestash:latest"
@@ -19,3 +21,4 @@
           - port: 8334
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

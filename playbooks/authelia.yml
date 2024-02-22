@@ -103,3 +103,4 @@
         authelia_oidc_service_name: "Sftpgo"
         authelia_oidc_vars_file: "vars/sftpgo.yml"
     - role: backup
+    - role: homepage

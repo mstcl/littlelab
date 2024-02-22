@@ -37,3 +37,4 @@
             url: "sftpgo"
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage

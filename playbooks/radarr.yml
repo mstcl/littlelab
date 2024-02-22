@@ -2,6 +2,8 @@
 - name: Install radarr
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/radarr.yml
   vars:
     service_directory: "radarr"
     image: "linuxserver/radarr:5.2.6"
@@ -19,3 +21,4 @@
           - port: 7878
         traefik_middlewares:
           - "internal-ip@file"
+    - role: homepage
