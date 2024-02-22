@@ -9,6 +9,6 @@
       /{{ item.file_name | default(item.template_name | default(config_file)) }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
-  with_items: "{{ files }}"
+  with_items: "{{ config_files }}"
   # notify:
   #   - Restart compose stack

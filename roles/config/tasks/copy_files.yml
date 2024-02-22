@@ -9,4 +9,4 @@
            /{{ item.file_name }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
-  with_items: "{{ copies }}"
+  with_items: "{{ config_copies }}"
