@@ -14,7 +14,7 @@
 - name: Get accumulate paths
   tags: urls
   ansible.builtin.set_fact:
-    iter: "{{ urls_url[type] | default('false') }}"
+    iter: "{{ urls_url[urls_type] | default('false') }}"
   when: urls_accumulate
 
 - name: Append urls

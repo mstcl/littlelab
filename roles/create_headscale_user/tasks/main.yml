@@ -1,7 +1,6 @@
 ---
 - name: Create user and print result
   tags: ["headscale", "user"]
-  check_mode: false
   block:
     - name: Create user
       community.docker.docker_container_exec:
@@ -12,7 +11,11 @@
           - users
           - create
           - "{{ create_headscale_user_username }}"
+          - "-o"
+          - "json"
       register: user_result
+      changed_when: (user_result.stdout | from_json)['error'] | length == 0
     - name: Result of user creation
+      when: "(user_result.stdout | from_json)['error'] != 'rpc error: code = Unknown desc = user already exists'"
       ansible.builtin.debug:
-        msg: "{{ user_result.stdout }}"
+        msg: "{{ (user_result.stdout | from_json) }}"
