@@ -21,6 +21,7 @@ services:
       - SETGID
     read_only: true
     environment:
+      QUITE: "true"
       PUID: 1000
       CF_API_TOKEN: "{{ cf_token }}"
       DOMAINS: "{{ public_urls }}"
