@@ -3,6 +3,7 @@
   hosts: homelab
   gather_facts: false
   vars:
+    service: ""
     username: ""
     display_name: ""
     password: ""
@@ -11,7 +12,7 @@
 
   roles:
     - role: create_authelia_user
-      tags: authelia
+      when: service == "authelia"
       vars:
         create_authelia_user_username: "{{ username }}"
         create_authelia_user_password: "{{ password }}"
@@ -19,11 +20,11 @@
         create_authelia_user_email: "{{ email }}"
         create_authelia_user_admin: "{{ admin }}"
     - role: create_headscale_user
-      tags: headscale
+      when: service == "headscale"
       vars:
         create_headscale_user_username: "{{ username }}"
     - role: create_filebrowser_user
-      tags: filebrowser
+      when: service == "filebrowser"
       vars:
         create_filebrowser_user_username: "{{ username }}"
         create_filebrowser_user_password: "{{ password }}"
