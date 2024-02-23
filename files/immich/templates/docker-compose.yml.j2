@@ -1,5 +1,11 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 networks:
   {{ network }}:
     internal: true
@@ -15,6 +21,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     entrypoint: ["/bin/sh", "./start-server.sh"]
     volumes:
       - {{ location.pictures }}:/usr/src/app/upload
@@ -44,6 +51,7 @@ services:
     restart: always
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     volumes:
       - {{ location.pictures }}:/usr/src/app/upload
     environment:

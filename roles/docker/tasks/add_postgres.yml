@@ -21,10 +21,12 @@
             {{ network }}:
               aliases:
                 - {{ postgres.alias | default(service_directory + '-postgres') }}
+          logging: *default-logging
           volumes:
             - {{ postgres.location }}:/var/lib/postgresql/data
       {% if postgres_config is defined %}
             - ./{{ postgres_config }}:/etc/postgresql.conf
+          command: command: postgres -c config_file=/etc/postgresql.conf
       {% endif %}
           environment:
               POSTGRES_USER: "{{ postgres.user }}"

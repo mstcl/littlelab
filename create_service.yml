@@ -27,6 +27,12 @@
         content: |
           {% raw %}version: "{{ docker.compose_version }}"
 
+          x-logging: &default-logging
+            driver: "json-file"
+            options:
+              max-size: "50m"
+              max-file: "4"
+
           networks:
             {{ docker.traefik_network }}:
               external: true
@@ -38,6 +44,7 @@
               restart: unless-stopped
               security_opt:
                 - no-new-privileges
+              logging: *default-logging
               networks:
                 - {{ docker.traefik_network }}{% endraw %}
     - name: Create playbook

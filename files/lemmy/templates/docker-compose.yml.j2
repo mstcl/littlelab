@@ -1,5 +1,11 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 networks:
   {{ network }}:
     internal: true
@@ -15,8 +21,9 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     networks:
-      - {{ docker.expose_network}}
+      - {{ docker.expose_network }}
       - {{ network }}
     environment:
       - RUST_LOG="warn,lemmy_server=warn,lemmy_api=warn,lemmy_api_common=warn,lemmy_api_crud=warn,lemmy_apub=warn,lemmy_db_schema=warn,lemmy_db_views=warn,lemmy_db_views_actor=warn,lemmy_db_views_moderator=warn,lemmy_routes=warn,lemmy_utils=warn,lemmy_websocket=warn"
@@ -34,8 +41,9 @@ services:
     restart: always
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     networks:
-      - {{ docker.expose_network}}
+      - {{ docker.expose_network }}
       - {{ network }}
     environment:
       LEMMY_UI_LEMMY_INTERNAL_HOST: "{{ service_directory }}:8536"
@@ -62,6 +70,7 @@ services:
     restart: always
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     hostname: pictrs
     networks:
       - {{ network }}

@@ -13,7 +13,8 @@
           container_name: {{ service_directory }}-mariadb
           restart: unless-stopped
           security_opt:
-            - no-new-privileges:true
+            - no-new-privileges
+          logging: *default-logging
           networks:
             - {{ network }}
           volumes:
