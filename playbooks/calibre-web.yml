@@ -2,6 +2,8 @@
 - name: Install calibre-web
   hosts: homelab
   gather_facts: false
+  vars_files:
+    - vars/calibre-web.yml
   vars:
     service_directory: "calibre-web"
     image: "linuxserver/calibre-web:nightly"
@@ -28,3 +30,4 @@
                 middlewares:
                   - "internal-ip@file"
     - role: backup
+    - role: homepage
