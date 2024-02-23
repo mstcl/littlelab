@@ -2,10 +2,10 @@
 # TODO: MAKE SURE users.yml is there
 - name: Run a temp container to generate the password hash
   ansible.builtin.include_role:
-    name: run_temporary_container
+    name: run_temp_container
   vars:
-    run_temporary_container_image: "authelia/authelia:4.37.5"
-    run_temporary_container_entrypoint:
+    run_temp_container_image: "authelia/authelia:4.37.5"
+    run_temp_container_entrypoint:
       - authelia
       - crypto
       - hash

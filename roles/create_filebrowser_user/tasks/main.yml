@@ -8,10 +8,10 @@
         state: stopped
     - name: Run a temp container to create the user
       ansible.builtin.include_role:
-        name: run_temporary_container
+        name: run_temp_container
       vars:
-        image: "filebrowser/filebrowser:v2.27.0"
-        entrypoint:
+        run_temp_container_image: "filebrowser/filebrowser:v2.27.0"
+        run_temp_container_entrypoint:
           - "/filebrowser"
           - "-c"
           - "/.filebrowser.yml"
@@ -19,7 +19,7 @@
           - add
           - "{{ create_filebrowser_user_username }}"
           - "{{ create_filebrowser_user_password }}"
-        mounts:
+        run_temp_container_mounts:
           - target: /database.db
             type: "bind"
             source: "{{ location.docker_data }}/filebrowser/database.db"
