@@ -1,5 +1,11 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 networks:
   {{ network }}:
     external: true
@@ -11,8 +17,9 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     networks:
-      {{ network}}:
+      {{ network }}:
         ipv4_address: {{ unbound_dns_ip }}
     volumes:
       - ./config:/opt/unbound/etc/unbound

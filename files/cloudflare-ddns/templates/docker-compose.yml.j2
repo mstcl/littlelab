@@ -1,5 +1,11 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 services:
   {{ service_directory }}:
     image: {{ image }}
@@ -7,6 +13,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     cap_drop:
       - ALL
     cap_add:

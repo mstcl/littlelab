@@ -1,8 +1,15 @@
 version: "{{ docker.compose_version }}"
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
 x-function: &function
   restart: unless-stopped
   security_opt:
     - no-new-privileges
+    logging: *default-logging
 
 networks:
   {{ network }}:
@@ -29,7 +36,7 @@ services:
     volumes:
       - ./{{ config_file }}:/app/config.properties:ro
     networks: &network_default
-      - {{ docker.expose_network}}
+      - {{ docker.expose_network }}
       - {{ network }}
     depends_on:
       - {{ service_directory }}-postgres

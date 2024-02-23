@@ -1,5 +1,11 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 services:
   {{ service_directory }}:
     image: {{ image }}
@@ -8,6 +14,7 @@ services:
     privileged: true
     security_opt:
       - no-new-privileges
+    logging: *default-logging
     network_mode: "host"
     volumes:
       - {{ location.docker_data }}/{{ service_directory }}:/data
