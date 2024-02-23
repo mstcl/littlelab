@@ -6,7 +6,7 @@
     - vars/headscale.yml
   vars:
     service_directory: "headscale"
-    image: "headscale/headscale:v0.23.0-alpha5"
+    image: "headscale/headscale:0.23.0-alpha3"
     url: "{{ urls.headscale }}"
 
   roles:
