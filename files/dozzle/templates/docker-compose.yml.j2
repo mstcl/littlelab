@@ -32,6 +32,7 @@ services:
       - {{ location.docker_data }}/{{ service_directory }}:/data
     cap_drop:
       - ALL
+    user: 1000:1000
     environment:
       DOZZLE_REMOTE_HOST: "tcp://dozzle-socket-proxy:2375|{{ base_hostname }}"
 {% if dozzle_options is defined and dozzle_options | length > 0 %}
