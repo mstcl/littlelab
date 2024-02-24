@@ -15,9 +15,9 @@
 - name: Template harden config file
   ansible.builtin.template:
     src: "harden.conf.j2"
-    dest: "/etc/ssh/sshd_config.d"
-    mode: "0555"
-    owner: "1000"
+    dest: "/etc/ssh/sshd_config.d/harden.conf"
+    mode: "0644"
+    owner: "0"
 
 - name: Install libpam-google-authenticator
   tags: packages
@@ -32,7 +32,7 @@
     state: present
     insertafter: "EOF"
     path: "/etc/pam.d/sshd"
-    marker:"# {mark} PAM SSHD CONFIGURATION"
+    marker: "# {mark} PAM SSHD CONFIGURATION"
     block: "auth       required     pam_google_authenticator.so nullok"
 
 - name: Configure the systemd unit file
@@ -40,7 +40,7 @@
     - name: Reload systemd daemons
       ansible.builtin.systemd:
         daemon_reload: true
-    - name: Restart systemd-resolved
+    - name: Restart sshd
       ansible.builtin.systemd:
         name: sshd
         state: restarted
