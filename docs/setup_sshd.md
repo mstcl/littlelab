@@ -1,4 +1,4 @@
-# setup-sshd
+# setup_sshd
 
 ## Usage
 
