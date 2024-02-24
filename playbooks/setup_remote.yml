@@ -2,6 +2,9 @@
   gather_facts: false
   hosts: homelab
   become: true
+  vars_prompt:
+    - name: setup_default_user_password
+      prompt: Enter the user's password
 
   pre_tasks:
     - name: Make necessary directories
@@ -16,34 +19,16 @@
         - { path: "{{ location.films }}" }
         - { path: "{{ location.books }}" }
         - { path: "{{ location.music }}" }
+        - { path: "{{ location.pictures }}" }
         - { path: "{{ location.cache }}" }
+        - { path: "{{ location.files }}" }
+        - { path: "{{ location.onsite_backups }}" }
         - { path: "{{ location.docker_data }}" }
         - { path: "{{ location.repos }}", owner: "1001" }
-    - name: Make git user
-      ansible.builtin.user:
-        name: "git"
-        group: "git"
-        groups: sshuser
-        shell: /usr/bin/git-shell
-        create_home: true
-        uid: 1001
-    - name: Install packages
-      tags: packages
-      ansible.builtin.include_role:
-        name: packages
-      vars:
-        packages_native:
-          - ufw
-    - name: Enable and start systemd services
-      tags: systemd
-      become: true
-      ansible.builtin.systemd:
-        name: "{{ item }}"
-        enabled: true
-        state: started
-      loop:
-        - "ufw"
 
   roles:
+    - role: setup_default_user
+    - role: setup_sshd
+    - role: setup_ufw
     - role: setup_docker
     - role: setup_cron

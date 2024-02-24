@@ -1,0 +1,51 @@
+---
+- name: Install packages
+  tags: packages
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    packages_native:
+      - ufw
+
+- name: Open the SSH port
+  ansible.legacy.include_role:
+    role: ufw
+    vars:
+      ufw_port: "{{ sshd_port }}"
+      ufw_rule: "limit"
+      ufw_comment: "sshd"
+
+- name: Open systemd resolved ports
+  ansible.legacy.include_role:
+    role: ufw
+    vars:
+      ufw_port: "5355"
+      ufw_protocol: "udp"
+      ufw_rule: "allow"
+      ufw_comment: "systemd-resolved"
+
+- name: Open systemd resolved ports
+  ansible.legacy.include_role:
+    role: ufw
+    vars:
+      ufw_port: "5355"
+      ufw_rule: "allow"
+      ufw_comment: "systemd-resolved"
+
+- name: Open systemd resolved ports
+  ansible.legacy.include_role:
+    role: ufw
+    vars:
+      ufw_port: "5353"
+      ufw_rule: "allow"
+      ufw_comment: "systemd-resolved"
+
+- name: Enable and start systemd services
+  tags: systemd
+  become: true
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - "ufw"
