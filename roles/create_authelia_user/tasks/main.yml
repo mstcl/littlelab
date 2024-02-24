@@ -11,11 +11,13 @@
       - hash
       - generate
       - argon2
+      - "-m"
+      - "6553"
       - "--password"
       - "{{ create_authelia_user_password }}"
 - name: Save password hash
   ansible.builtin.set_fact:
-    hash: "{{ result.container.Output[8:-1] }}"
+    hash: "{{ run_temp_container_result.container.Output[8:-1] }}"
 - name: Try and set admin to boolean
   block:
     - name: Set admin to boolean

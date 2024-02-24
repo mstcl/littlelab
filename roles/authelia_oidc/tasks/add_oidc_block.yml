@@ -25,7 +25,7 @@
     dest: "{{ base_directory }}/authelia/config/configuration.yml"
     marker: "      # {mark} {{ authelia_oidc_service_name | upper }} CONFIGURATION"
     content: |2
-            - id: {{ oidc.id }}
+            - id: {{ oidc.client_id }}
               description: {{ authelia_oidc_service_name }}
               secret: '{{ oidc.digest }}'
               public: false
