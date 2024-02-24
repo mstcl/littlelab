@@ -29,6 +29,7 @@ services:
       - SETFCAP
       - SYS_PTRACE
       - SYS_ADMIN
+    mem_limit: 100mb
     environment:
       AUTHELIA_JWT_SECRET_FILE: /secrets/jwt
       AUTHELIA_SESSION_SECRET_FILE: /secrets/session

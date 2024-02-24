@@ -92,11 +92,8 @@
       vars:
         authelia_oidc_url: "{{ urls.immich }}"
         authelia_oidc_service_name: "Immich"
+        authelia_oidc_vars_file: "vars/immich.yml"
         authelia_oidc_redirect_uris:
-          - https://{{ expanded_url }}/auth/login
-          - https://{{ expanded_url }}/user-settings
-          - https://{{ expanded_url }}/api/oauth/mobile-redirect
-          - app.immich://
     - role: authelia_oidc
       vars:
         authelia_oidc_url: "{{ urls.sftpgo }}"

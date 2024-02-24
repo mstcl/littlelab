@@ -3,7 +3,7 @@
   hosts: homelab
   gather_facts: false
   vars_files:
-    - vars/slskd.ml
+    - vars/slskd.yml
   vars:
     service_directory: "slskd"
     image: "slskd/slskd:0.19.5.65534-df0ec986"
@@ -14,6 +14,7 @@
     - role: config
       vars:
         config_directories: [{}]
+        config_files: [{}]
     - role: docker
     - role: traefik
       vars:

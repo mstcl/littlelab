@@ -24,6 +24,7 @@ services:
       - {{ io_port }}:{{ io_port }}
     environment:
       SLSKD_CONFIG: /config/slskd.yml
+    user: 1000:1000
     volumes:
       - {{ location.downloads }}/music:/downloads
       - {{ location.downloads }}:/incomplete
