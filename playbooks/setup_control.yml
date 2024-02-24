@@ -36,3 +36,9 @@
         packages_native:
           # Useful for scanning for leaked secrets
           - "infisical-bin"
+
+    - name: Generate keypair
+      tags: ssh
+      community.crypto.openssh_keypair:
+        path: "/home/{{ lookup('env', 'USER') }}/.ssh/id_ed25519"
+        type: "ed25519"

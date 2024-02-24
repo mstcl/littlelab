@@ -15,6 +15,7 @@
       vars:
         config_directories:
           - path: "{{ base_directory }}/{{ service_directory }}/config"
+          - path: "{{ base_directory }}/{{ service_directory }}/icons"
     - role: docker
     - role: config
       vars:

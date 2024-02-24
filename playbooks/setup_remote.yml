@@ -1,10 +1,9 @@
 - name: Setup homelab
   gather_facts: false
   hosts: homelab
-  become: true
   vars_prompt:
     - name: setup_default_user_password
-      prompt: Enter the user's password
+      prompt: Enter the base user's password (not root user's password)
 
   pre_tasks:
     - name: Make necessary directories
