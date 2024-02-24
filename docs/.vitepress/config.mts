@@ -26,7 +26,7 @@ export default defineConfig({
       {
         text: 'Running',
         items: [
-          { text: 'Initial run as root', link: '/initial' },
+          { text: 'Initial setup', link: '/initial' },
           { text: 'Using the main playbook', link: '/main-playbook' },
           { text: 'Deploying specific services', link: '/playbooks' },
           { text: 'Creating new services', link: '/new-service' },
@@ -43,8 +43,9 @@ export default defineConfig({
       {
         text: 'Roles',
         items: [
-          { text: 'NGINX', link: '/nginx'},
-          { text: 'Updating container images', link: '/container-update' },
+          { text: 'nginx', link: '/nginx'},
+          { text: 'setup_nginx', link: '/setup_nginx'},
+          { text: 'setup_sshd', link: '/setup_sshd'},
         ]
       },
     ],
