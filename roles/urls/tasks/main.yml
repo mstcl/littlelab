@@ -1,12 +1,12 @@
 ---
 - name: Set url
-  tags: ["urls", "traefik", "homepage"]
+  tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker"]
   when: urls_url is not defined
   ansible.builtin.set_fact:
     urls_url: "{{ url }}"
 
 - name: Parse URL
-  tags: ["urls", "traefik", "homepage"]
+  tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker"]
   ansible.builtin.set_fact:
     expanded_url: "{%if urls_url != base_tld %}{{ urls_url.sub + '.' + base_tld }}\
       {% if urls_url.path is defined %}/{{ urls_url.path }}{% endif %}{% else %}{{ base_tld }}{% endif %}"
