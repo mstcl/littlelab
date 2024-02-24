@@ -15,4 +15,4 @@
     - name: Result of user creation
       ansible.builtin.debug:
         msg: "{{ run_temp_container_result.container.Output }}"
-      when: print_output
+      when: run_temp_container_print_output
