@@ -23,12 +23,39 @@ Clone the repository:
 $ git clone https://github.com/mstcl/littlelab
 ```
 
-### Ignore tracked files that will be modified
+### Version control
 
-Variable files in `vars/`, the `main.yml` playbook, and some roles' default
-variable files are used to customize configuration. They are tracked by
-default, but we can ignore it locally to prevent it from showing up in git
-status.
+There are two things one can do:
+
+1. Don't version control and just write straight into cloned repository.
+2. Make a new branch and work from there.
+
+The first option will create a mess. It is recommended to go with the second option.
+
+Do something like:
+
+```sh
+$ git checkout -b prod
+```
+
+When updating:
+
+```sh
+$ git checkout master; git pull; git checkout prod; git merge master
+```
+
+#### Ignore tracked files that will be modified
+
+Nevertheless, for the first option, it might be very annoying to see modified
+tracked files in git status.
+
+You can either delete the `.git` folder and forget about it, or fudge the local
+repo.
+
+This applies to variable files in `vars/`, the `main.yml` playbook, and some
+roles' default variable files are used to customize configuration. They are
+tracked by default, but we can ignore it locally to prevent it from showing up
+in git status without deleting the `.git` folder.
 
 For this, we can use `.git/info/exclude`, which can contain something like:
 

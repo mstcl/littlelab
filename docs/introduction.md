@@ -32,9 +32,11 @@ opinionated tool and there is no one true way for doing things.
 ## Roadmap
 
 - Deploy from fresh installation
-- Apply hardening practices
+  - Networking
+  - ~~SSH~~
+- ~~Apply hardening practices~~
 - Services
-  - Immich
+  - ~~Immich~~
   - Dendrite
   - Netdata
   - Crowdsec

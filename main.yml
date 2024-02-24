@@ -1,11 +1,4 @@
 ---
-# ~~ (0) MANDATORY PLAYBOOKS ~~
-
-- name: Setup control node
-  import_playbook: playbooks/setup_control.yml
-- name: Setup remote nodes
-  import_playbook: playbooks/setup_remote.yml
-
 # ~~ (1) CORE NETWORKING & SECURITY ~~
 
 - name: Install traefik
