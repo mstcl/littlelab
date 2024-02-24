@@ -3,11 +3,6 @@
   hosts: homelab
   gather_facts: false
   become: true
-  vars:
-    # DEFAULTS
-    dns_defaults: &dns_defaults
-      ufw_rule: "allow"
-      ufw_comment: "systemd-resolved"
 
   pre_tasks:
     - name: Block IP ranges
@@ -19,23 +14,3 @@
         - src: "47.128.0.0/14"
           comment: "AWS"
       notify: Reload firewall
-
-  roles:
-    - role: ufw
-      vars:
-        ufw_rule: "limit"
-        ufw_port: "{{ sshd_port }}"
-        ufw_comment: "sshd"
-    - role: ufw
-      vars:
-        <<: *dns_defaults
-        ufw_port: "5355"
-    - role: ufw
-      vars:
-        <<: *dns_defaults
-        ufw_port: "5355"
-        ufw_protocol: "udp"
-    - role: ufw
-      vars:
-        <<: *dns_defaults
-        ufw_port: "5353"

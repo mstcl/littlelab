@@ -1,0 +1,46 @@
+---
+- name: Make groups for ssh users
+  ansible.builtin.group:
+    name: sshuser
+    state: present
+
+- name: Ensure sshd config directory exists
+  tags: config
+  ansible.builtin.file:
+    path: "/etc/ssh/sshd_config.d"
+    owner: "0"
+    state: "directory"
+    mode: "0775"
+
+- name: Template harden config file
+  ansible.builtin.template:
+    src: "harden.conf.j2"
+    dest: "/etc/ssh/sshd_config.d"
+    mode: "0555"
+    owner: "1000"
+
+- name: Install libpam-google-authenticator
+  tags: packages
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    packages_native:
+      - libpam-google-authenticator
+
+- name: Append client list to config
+  ansible.builtin.blockinfile:
+    state: present
+    insertafter: "EOF"
+    path: "/etc/pam.d/sshd"
+    marker:"# {mark} PAM SSHD CONFIGURATION"
+    block: "auth       required     pam_google_authenticator.so nullok"
+
+- name: Configure the systemd unit file
+  block:
+    - name: Reload systemd daemons
+      ansible.builtin.systemd:
+        daemon_reload: true
+    - name: Restart systemd-resolved
+      ansible.builtin.systemd:
+        name: sshd
+        state: restarted

@@ -10,6 +10,14 @@
     url: "{{ urls.cgit }}"
 
   pre_tasks:
+    - name: Make git user
+      ansible.builtin.user:
+        name: "git"
+        group: "git"
+        groups: sshuser
+        shell: /usr/bin/git-shell
+        create_home: true
+        uid: 1001
     - name: Get full url
       tags: ["urls", "traefik", "homepage"]
       ansible.builtin.include_role:

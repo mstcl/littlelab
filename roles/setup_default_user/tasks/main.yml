@@ -1,0 +1,10 @@
+---
+- name: Make base user {{ base_user }}
+  ansible.builtin.user:
+    name: "{{ base_user }}"
+    group: "{{ base_user }}"
+    groups: sudo,sshuser
+    shell: /bin/bash
+    create_home: true
+    password: "{{ setup_default_user_password | password_hash('sha512') }}"
+    uid: 1000
