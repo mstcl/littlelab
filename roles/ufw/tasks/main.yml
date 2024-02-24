@@ -14,7 +14,7 @@
     - "{{ base_tailnet }}/10"
     - 127.0.0.0/8
     - fd7a:115c:a1e0::/48
-  become: true
+  become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   when: ufw_local
   notify: Reload firewall
 
@@ -25,6 +25,6 @@
     port: "{{ ufw_port }}"
     protocol: "{{ ufw_protocol }}"
     comment: "{{ ufw_comment | default(service_directory) }}"
-  become: true
+  become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   when: not ufw_local
   notify: Reload firewall

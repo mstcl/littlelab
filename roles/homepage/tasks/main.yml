@@ -1,15 +1,28 @@
 ---
+- name: Grab service name
+  tags: homepage
+  ansible.builtin.set_fact:
+    service_name: "{{ homepage_config.service_name | default('service_directory') }}"
+
+- name: Save the icon
+  tags: homepage
+  when: (homepage_config.icon | length > 0) and (homepage_config.icon[:3] == 'http')
+  ansible.builtin.get_url:
+    url: "{{ homepage_config.icon }}"
+    dest: "{{ base_directory }}/homepage/icon/{{ service_name }}{{ homepage_config.icon | basename | splitext | last }}"
+    mode: "0644"
+
 - name: Add a service block to services.yaml
   tags: homepage
   ansible.builtin.blockinfile:
     state: present
     insertafter: "{{ homepage_config.category }}:"
     dest: "{{ base_directory }}/homepage/config/services.yaml"
-    marker: "  # {mark} {{ homepage_config.service_name | default(service_directory | capitalize) | upper }} CONFIGURATION"
+    marker: "  # {mark} {{ service_name | upper }} CONFIGURATION"
     content: |2
-        - {{ homepage_config.service_name | default(service_directory | capitalize) }}:
+        - {{ service_name | capitalize }}:
             href: "https://{{ homepage_config.url | default(expanded_url) }}"
             description: "{{ homepage_config.description | default('') }}"
-            icon: "{{ homepage_config.icon | default('') }}"
+            icon: "{% if homepage_config.icon | length > 0 %}/icons/{{ service_name }}{{ homepage_config.icon | basename | splitext | last }}{% endif %}"
             server: docker
             container: "{{ homepage_config.container | default(service_directory) }}"

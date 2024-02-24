@@ -1,4 +1,29 @@
 ---
-- name: Setup docker
-  tags: docker
-  ansible.builtin.include_tasks: setup.yml
+- name: Install packages
+  tags: packages
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    packages_native:
+      - docker
+      - python-requests
+      - python-websocket-client
+      - ctop # (Optional) but useful for quick monitoring
+    packages_pip:
+      - docker==6.1.3
+      - docker-compose
+      - pyyaml==5.3.1
+
+- name: Enable and start systemd service
+  tags: packages
+  ansible.builtin.include_role:
+    name: systemd
+  vars:
+    systemd_services:
+      - "docker"
+
+- name: Add users to Docker group
+  ansible.builtin.user:
+    name: "{{ base_user }}"
+    groups: docker
+    append: true
