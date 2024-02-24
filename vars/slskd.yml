@@ -1,0 +1,9 @@
+---
+config_file: "slskd.yml"
+io_port: ""
+
+web_user: ""
+web_password: ""
+
+slsk_user: ""
+slsk_password: ""

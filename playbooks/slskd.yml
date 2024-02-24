@@ -1,0 +1,23 @@
+---
+- name: Install slskd
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/slskd.ml
+  vars:
+    service_directory: "slskd"
+    image: "slskd/slskd:0.19.5.65534-df0ec986"
+    url: "{{ urls.slskd }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        config_directories: [{}]
+    - role: docker
+    - role: traefik
+      vars:
+        traefik_servers: [{}]
+        traefik_middlewares:
+          - "internal-ip@file"
+    - role: homepage
