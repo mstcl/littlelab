@@ -44,7 +44,7 @@ This will:
   variable file `host_vars/<host_name>.yml`.
 - Create all the directories for services later on.
 - Create our base user.
-- Setup sshd. Refer to the role documentation of [setup-sshd](./setup-sshd) for
+- Setup sshd. Refer to the role documentation of [setup_sshd](./setup_sshd) for
   a full description of what it does.
 - Setup the firewall with ufw.
 - Setup docker
