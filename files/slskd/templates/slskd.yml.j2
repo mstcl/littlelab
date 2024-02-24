@@ -1,0 +1,176 @@
+debug: false
+remote_configuration: false
+remote_file_management: false
+instance_name: default
+flags:
+  no_logo: true
+  no_start: false
+  no_config_watch: false
+  no_connect: false
+  no_share_scan: false
+  force_share_scan: false
+  no_version_check: false
+  log_sql: false
+  experimental: false
+  volatile: false
+  case_sensitive_reg_ex: false
+relay:
+  enabled: false
+directories:
+  incomplete: /incomplete
+  downloads: /downloads
+shares:
+  directories:
+    - /shares
+  filters:
+    - \.ini$
+    - Thumbs.db$
+    - \.DS_Store$
+  cache:
+    storage_mode: memory
+    workers: 1
+    retention: 10080
+rooms: []
+global:
+  upload:
+    slots: 20
+    speed_limit: 2000
+  limits:
+    queued:
+      files: 500
+      megabytes: 5000
+    daily:
+      files: 1000
+      megabytes: 10000
+      failures: 200
+    weekly:
+      files: 5000
+      megabytes: 50000
+      failures: 1000
+  download:
+    slots: 500
+    speed_limit: 1000
+groups:
+  default:
+    upload:
+      priority: 500
+      strategy: roundrobin
+      slots: 10
+    limits:
+      queued:
+        files: 150
+        megabytes: 1500
+      daily: ~ # no daily limits (weekly still apply)
+      weekly:
+        files: 1500
+        megabytes: 15000
+        failures: 150
+  leechers:
+    thresholds:
+      files: 1
+      directories: 1
+    upload:
+      priority: 999
+      strategy: roundrobin
+      slots: 1
+      speed_limit: 100
+    limits:
+      queued:
+        files: 15
+        megabytes: 150
+      daily:
+        files: 30
+        megabytes: 300
+        failures: 10
+      weekly:
+        files: 150
+        megabytes: 1500
+        failures: 30
+  blacklisted:
+    members: []
+    cidrs: []
+  user_defined:
+    my_buddies:
+      upload:
+        priority: 250
+        strategy: firstinfirstout
+        slots: 10
+      limits:
+        queued:
+          files: 1000
+      members: []
+filters:
+  search:
+    request:
+      - ^.{1,2}$
+web:
+  port: 8080
+  https:
+    disabled: false
+    port: 5031
+    force: false
+    certificate:
+      pfx: ~
+      password: ~
+  url_base: /slsk
+  content_path: wwwroot
+  logging: false
+  authentication:
+    disabled: false
+    username: {{ web_user }}
+    password: {{ web_password }}
+    jwt:
+      key: ~
+      ttl: 604800000
+    api_keys: []
+retention:
+  transfers:
+    upload:
+      succeeded: 1440
+      errored: 30
+      cancelled: 5
+    download:
+      succeeded: 1440
+      errored: 20160
+      cancelled: 5
+  files:
+    complete: 20160
+    incomplete: 43200
+  logs: 1440
+logger:
+  disk: false
+metrics:
+  enabled: false
+feature:
+  swagger: false
+soulseek:
+  address: vps.slsknet.org
+  port: 2271
+  username: {{ slsk_user }}
+  password: {{ slsk_password }}
+  description: |
+    Happy seeding!
+  listen_ip_address: 0.0.0.0
+  listen_port: {{ io_port }}
+  diagnostic_level: Info
+  distributed_network:
+    disabled: false
+    disable_children: false
+    child_limit: 25
+    logging: false
+  connection:
+    timeout:
+      connect: 10000
+      inactivity: 15000
+    buffer:
+      read: 16384
+      write: 16384
+      transfer: 262144
+      write_queue: 250
+    proxy:
+      enabled: false
+integration:
+  ftp:
+    enabled: false
+  pushbullet:
+    enabled: false

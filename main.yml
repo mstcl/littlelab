@@ -68,6 +68,9 @@
 - name: Install nicotine
   # import_playbook: playbooks/nicotine.yml
 
+- name: Install slskd
+  # import_playbook: playbooks/slskd.yml
+
 - name: Install prowlarr
   # import_playbook: playbooks/prowlarr.yml
 
