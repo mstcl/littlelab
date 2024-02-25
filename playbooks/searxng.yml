@@ -16,9 +16,13 @@
         config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
             owner: "999"
+          - path: "{{ base_directory }}/{{ service_directory }}/config"
         config_files:
-          -
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
           - template_name: "limiter.toml"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+          - template_name: "uwsgi.ini"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
     - role: docker
       vars:
         docker_attach_redis: true

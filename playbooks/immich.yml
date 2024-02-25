@@ -23,6 +23,7 @@
       vars:
         docker_attach_postgres: true
         docker_attach_redis: true
+        docker_attach_redis_volume: false
     - role: traefik
       vars:
         traefik_servers:

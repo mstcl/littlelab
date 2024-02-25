@@ -19,7 +19,6 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
-    logging: *default-logging
     networks:
       - {{ docker.expose_network }}
       - {{ network }}
@@ -35,7 +34,6 @@ services:
       - SETGID
       - SETUID
     volumes:
-      - ./{{ config_file }}:/etc/searxng/{{ config_file }}:rw
-      - ./limiter.toml:/etc/searxng/limiter.toml:ro
+      - ./config:/etc/searxng/:rw
     depends_on:
       - {{ service_directory }}-redis

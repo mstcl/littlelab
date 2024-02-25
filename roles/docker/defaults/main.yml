@@ -1,7 +1,7 @@
 ---
 docker_run: true
 docker_attach_redis: false
-docker_add_redis_volume: false
+docker_add_redis_volume: true
 docker_attach_mariadb: false
 docker_attach_postgres: false
 docker_print_output: false
