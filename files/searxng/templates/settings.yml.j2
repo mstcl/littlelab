@@ -72,12 +72,8 @@ outgoing:
   enable_http2: true
 
 hostname_replace:
-  # '(.*\.)?youtube\.com$': 'invidious.example.com'
-  # '(.*\.)?youtu\.be$': 'invidious.example.com'
-  # '(.*\.)?youtube-noocookie\.com$': 'yotter.example.com'
   '(.*\.)?reddit\.com$': '{{ urls.libreddit.sub + "." + base_tld }}'
   '(.*\.)?redd\.it$': '{{ urls.libreddit.sub + "." + base_tld }}'
-  '(www\.)?twitter\.com$': 'nitter.net'
   # 'spam\.example\.com': false
 
 checker:
@@ -149,7 +145,6 @@ engines:
     shortcut: aps
     disabled: true
 
-  # Requires Tor
   - name: ahmia
     engine: ahmia
     categories: onions
@@ -344,6 +339,7 @@ engines:
   - name: currency
     engine: currency_convert
     categories: general
+    disabled: true
     shortcut: cc
 
   - name: deezer
@@ -363,7 +359,6 @@ engines:
     disabled: true
     tests: *tests_infobox
 
-  # cloudflare protected
   # - name: digbt
   #   engine: digbt
   #   shortcut: dbt
@@ -394,20 +389,6 @@ engines:
       use_official_api: false
       require_api_key: false
       results: HTML
-
-  # - name: elasticsearch
-  #   shortcut: es
-  #   engine: elasticsearch
-  #   base_url: http://localhost:9200
-  #   username: elastic
-  #   password: changeme
-  #   index: my-index
-  #   # available options: match, simple_query_string, term, terms, custom
-  #   query_type: match
-  #   # if query_type is set to custom, provide your query here
-  #   #custom_query_json: {"query":{"match_all": {}}}
-  #   #show_metadata: false
-  #   disabled: true
 
   - name: wikidata
     engine: wikidata
@@ -465,12 +446,12 @@ engines:
       require_api_key: false
       results: HTML
 
-  # - name: ebay
-  #   engine: ebay
-  #   shortcut: eb
-  #   base_url: 'https://www.ebay.com'
-  #   disabled: true
-  #   timeout: 5
+  - name: ebay
+    engine: ebay
+    shortcut: eb
+    base_url: 'https://www.ebay.com'
+    disabled: true
+    timeout: 5
 
   - name: 1x
     engine: www1x
@@ -551,10 +532,6 @@ engines:
     engine: github
     shortcut: gh
 
-    # This a Gitea service. If you would like to use a different instance,
-    # change codeberg.org to URL of the desired Gitea host. Or you can create a
-    # new engine by copying this and changing the name, shortcut and search_url.
-
   - name: codeberg
     engine: json_engine
     search_url: https://codeberg.org/api/v1/repos/search?q={query}&limit=10
@@ -575,33 +552,19 @@ engines:
   - name: google
     engine: google
     shortcut: go
-    disabled: true
-    # additional_tests:
-    #   android: *test_android
+    disabled: false
 
   - name: google images
     engine: google_images
     shortcut: goi
-    # additional_tests:
-    #   android: *test_android
-    #   dali:
-    #     matrix:
-    #       query: ['Dali Christ']
-    #       lang: ['en', 'de', 'fr', 'zh-CN']
-    #     result_container:
-    #       - ['one_title_contains', 'Salvador']
 
   - name: google news
     engine: google_news
     shortcut: gon
-    # additional_tests:
-    #   android: *test_android
 
   - name: google videos
     engine: google_videos
     shortcut: gov
-    # additional_tests:
-    #   android: *test_android
 
   - name: google scholar
     engine: google_scholar
@@ -705,8 +668,6 @@ engines:
 
   - name: invidious
     engine: invidious
-    # Instanes will be selected randomly, see https://api.invidious.io/ for
-    # instances that are stable (good uptime) and close to you.
     base_url:
       - https://invidious.io.lol
       - https://invidious.fdn.fr
@@ -787,6 +748,7 @@ engines:
   - name: lingva
     engine: lingva
     shortcut: lv
+    disabled: true
     # set lingva instance in url, by default it will use the official instance
     # url: https://lingva.ml
 
@@ -846,36 +808,15 @@ engines:
     disabled: true
     number_of_results: 20
 
-  # - name: meilisearch
-  #   engine: meilisearch
-  #   shortcut: mes
-  #   enable_http: true
-  #   base_url: http://localhost:7700
-  #   index: my-index
-
   - name: mixcloud
     engine: mixcloud
     shortcut: mc
-
-  # MongoDB engine
-  # Required dependency: pymongo
-  # - name: mymongo
-  #   engine: mongodb
-  #   shortcut: md
-  #   exact_match_only: false
-  #   host: '127.0.0.1'
-  #   port: 27017
-  #   enable_http: true
-  #   results_per_page: 20
-  #   database: 'business'
-  #   collection: 'reviews'  # name of the db collection
-  #   key: 'name'  # key in the collection to search for
 
   - name: mwmbl
     engine: mwmbl
     # api_url: https://api.mwmbl.org
     shortcut: mwm
-    disabled: false
+    disabled: true
 
   - name: npm
     engine: json_engine
@@ -965,11 +906,6 @@ engines:
       require_api_key: false
       results: JSON
 
-  # - name: opensemanticsearch
-  #   engine: opensemantic
-  #   shortcut: oss
-  #   base_url: 'http://localhost:8983/solr/opensemanticsearch/'
-
   - name: openstreetmap
     engine: openstreetmap
     shortcut: osm
@@ -1044,20 +980,8 @@ engines:
   - name: piratebay
     engine: piratebay
     shortcut: tpb
-    # You may need to change this URL to a proxy if piratebay is blocked in your
-    # country
     url: https://thepiratebay.org/
     timeout: 3.0
-
-  # Required dependency: psychopg2
-  #  - name: postgresql
-  #    engine: postgresql
-  #    database: postgres
-  #    username: postgres
-  #    password: postgres
-  #    limit: 10
-  #    query_str: 'SELECT * from my_table WHERE my_column = %(query)s'
-  #    shortcut : psql
 
   - name: pub.dev
     engine: xpath
@@ -1165,18 +1089,6 @@ engines:
     shortcut: re
     page_size: 25
 
-  # Required dependency: redis
-  # - name: myredis
-  #   shortcut : rds
-  #   engine: redis_server
-  #   exact_match_only: false
-  #   host: '127.0.0.1'
-  #   port: 6379
-  #   enable_http: true
-  #   password: ''
-  #   db: 0
-
-  # tmp suspended: bad certificate
   #  - name: scanr structures
   #    shortcut: scs
   #    engine: scanr_structures
@@ -1236,7 +1148,6 @@ engines:
     disabled: true
     shortcut: se
 
-  # Spotify needs API credentials
   # - name: spotify
   #   engine: spotify
   #   shortcut: stf
@@ -1256,8 +1167,6 @@ engines:
 
   # - name: springer nature
   #   engine: springer
-  #   # get your API key from: https://dev.springernature.com/signup
-  #   # working API key, for test & debug: "a69685087d07eca9f13db62f65b8f601"
   #   api_key: 'unset'
   #   shortcut: springer
   #   timeout: 15.0
@@ -1266,7 +1175,7 @@ engines:
     engine: startpage
     shortcut: sp
     timeout: 6.0
-    disabled: false
+    disabled: true
     additional_tests:
       rosebud: *test_rosebud
 
@@ -1283,25 +1192,6 @@ engines:
     base_url:
       - https://solidtorrents.to
       - https://bitsearch.to
-
-  # For this demo of the sqlite engine download:
-  #   https://liste.mediathekview.de/filmliste-v2.db.bz2
-  # and unpack into searx/data/filmliste-v2.db
-  # Query to test: "!demo concert"
-  #
-  # - name: demo
-  #   engine: sqlite
-  #   shortcut: demo
-  #   categories: general
-  #   result_template: default.html
-  #   database: searx/data/filmliste-v2.db
-  #   query_str:  >-
-  #     SELECT title || ' (' || time(duration, 'unixepoch') || ')' AS title,
-  #            COALESCE( NULLIF(url_video_hd,''), NULLIF(url_video_sd,''), url_video) AS url,
-  #            description AS content
-  #       FROM film
-  #      WHERE title LIKE :wildcard OR description LIKE :wildcard
-  #      ORDER BY duration DESC
 
   - name: tagesschau
     engine: tagesschau
@@ -1320,7 +1210,6 @@ engines:
     shortcut: tm
     disabled: true
 
-  # Requires Tor
   - name: torch
     engine: xpath
     paging: true
@@ -1334,11 +1223,6 @@ engines:
     enable_http: true
     shortcut: tch
 
-  # torznab engine lets you query any torznab compatible indexer.  Using this
-  # engine in combination with Jackett opens the possibility to query a lot of
-  # public and private indexers directly from SearXNG. More details at:
-  # https://docs.searxng.org/dev/engines/online/torznab.html
-  #
   # - name: Torznab EZTV
   #   engine: torznab
   #   shortcut: eztv
@@ -1351,15 +1235,6 @@ engines:
   #   torznab_categories:  # optional
   #     - 2000
   #     - 5000
-
-  # tmp suspended - too slow, too many errors
-  #  - name: urbandictionary
-  #    engine      : xpath
-  #    search_url  : https://www.urbandictionary.com/define.php?term={query}
-  #    url_xpath   : //*[@class="word"]/@href
-  #    title_xpath : //*[@class="def-header"]
-  #    content_xpath: //*[@class="meaning"]
-  #    shortcut: ud
 
   - name: unsplash
     engine: unsplash
@@ -1376,13 +1251,8 @@ engines:
 
   - name: youtube
     shortcut: yt
-    # You can use the engine using the official stable API, but you need an API
-    # key See: https://console.developers.google.com/project
-    #
     # engine: youtube_api
     # api_key: 'apikey' # required!
-    #
-    # Or you can use the html non-stable engine, activated by default
     engine: youtube_noapi
 
   - name: dailymotion
@@ -1527,13 +1397,8 @@ engines:
 
   - name: wolframalpha
     shortcut: wa
-    # You can use the engine using the official stable API, but you need an API
-    # key.  See: https://products.wolframalpha.com/api/
-    #
     # engine: wolframalpha_api
     # api_key: ''
-    #
-    # Or you can use the html non-stable engine, activated by default
     engine: wolframalpha_noapi
     timeout: 6.0
     categories: general
@@ -1541,25 +1406,14 @@ engines:
 
   - name: dictzone
     engine: dictzone
+    disabled: true
     shortcut: dc
 
   - name: mymemory translated
     engine: translated
     shortcut: tl
     timeout: 5.0
-    # You can use without an API key, but you are limited to 1000 words/day
-    # See: https://mymemory.translated.net/doc/usagelimits.php
     # api_key: ''
-
-  # Required dependency: mysql-connector-python
-  #  - name: mysql
-  #    engine: mysql_server
-  #    database: mydatabase
-  #    username: user
-  #    password: pass
-  #    limit: 10
-  #    query_str: 'SELECT * from mytable WHERE fieldname=%(query)s'
-  #    shortcut: mysql
 
   - name: 1337x
     engine: 1337x
@@ -1575,15 +1429,6 @@ engines:
     shortcut: szn
     engine: seznam
     disabled: true
-
-  # - name: deepl
-  #   engine: deepl
-  #   shortcut: dpl
-  #   # You can use the engine using the official stable API, but you need an API key
-  #   # See: https://www.deepl.com/pro-api?cta=header-pro-api
-  #   api_key: ''  # required!
-  #   timeout: 5.0
-  #   disabled: true
 
   - name: mojeek
     shortcut: mjk
@@ -1668,16 +1513,6 @@ engines:
     engine: mediathekviewweb
     shortcut: mvw
     disabled: true
-
-  # - name: yacy
-  #   engine: yacy
-  #   shortcut: ya
-  #   base_url: http://localhost:8090
-  #   # required if you aren't using HTTPS for your local yacy instance'
-  #   enable_http: true
-  #   timeout: 3.0
-  #   # Yacy search mode. 'global' or 'local'.
-  #   search_mode: 'global'
 
   - name: rumble
     engine: rumble
@@ -1771,9 +1606,6 @@ engines:
     # api_key: abcdefghijklmnopqrstuvwxyz
     shortcut: wh
 
-    # wikimini: online encyclopedia for children
-    # The fulltext and title parameter is necessary for Wikimini because
-    # sometimes it will not show the results and redirect instead
   - name: wikimini
     engine: xpath
     shortcut: wkmn
@@ -1808,7 +1640,7 @@ engines:
     paging: true
     categories: [general, web]
     brave_category: search
-    # brave_spellcheck: true
+    disabled: true
 
   - name: brave.images
     engine: brave
