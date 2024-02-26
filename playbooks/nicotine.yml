@@ -6,7 +6,7 @@
     - vars/nicotine.yml
   vars:
     service_directory: "nicotine"
-    image: "sirjmann92/nicotineplus-proper:3.3.1"
+    image: "sirjmann92/nicotineplus-proper:3.3.2"
     url: "{{ urls.nicotine }}"
 
   roles:
