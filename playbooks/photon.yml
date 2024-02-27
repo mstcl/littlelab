@@ -6,7 +6,7 @@
     - vars/photon.yml
   vars:
     service_directory: "photon"
-    image: "ghcr.io/xyphyn/photon:v1.27.1"
+    image: "ghcr.io/xyphyn/photon:v1.27.3"
     url: "{{ urls.photon }}"
 
   roles:
