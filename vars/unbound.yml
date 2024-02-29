@@ -1,3 +1,4 @@
 ---
+network: "dns-net"
 config_file: "unbound.conf"
 ipam_subnet: "172.27.0"

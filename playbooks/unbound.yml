@@ -7,7 +7,6 @@
   vars:
     service_directory: "unbound"
     image: "mvance/unbound:latest"
-    network: "dns-net"
 
   roles:
     - role: create_docker_network
