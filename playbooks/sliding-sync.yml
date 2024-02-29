@@ -1,0 +1,30 @@
+---
+- name: Install sliding-sync
+  hosts: homelab
+  gather_facts: false
+  vars_files: "vars/sliding-sync.yml"
+  vars:
+    service_directory: "sliding-sync"
+    image: "ghcr.io/matrix-org/sliding-sync:v0.99.14"
+    url: "{{ urls.sliding-sync }}"
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        config_directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/db"
+            owner: "70"
+            permission: "0700"
+    - role: docker
+      vars:
+        docker_attach_postgres: true
+    - role: traefik
+      vars:
+        traefik_servers:
+          - port: 8008
+        traefik_middlewares:
+          - "internal-ip@file"

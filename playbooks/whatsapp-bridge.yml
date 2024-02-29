@@ -1,0 +1,44 @@
+---
+- name: Install whatsapp-bridge
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+  - "vars/whatsapp-bridge.yml"
+  vars:
+    service_directory: "whatsapp-bridge"
+    image: "dock.mau.dev/mautrix/whatsapp:v0.10.5"
+    url: "{{ urls.whatsapp-bridge }}"
+
+  pre_tasks:
+    name: Check if wa.yaml registration config already exists
+    stat:
+      path: "{{ registration.destination }}"
+      get_checksum: false
+      get_mime: false
+      get_attributes: false
+    register: stat_registration
+
+  roles:
+    - role: urls
+    - role: config
+      vars:
+        config_directories:
+          - path: "{{ location.docker_data }}/{{ service_directory }}"
+            owner: "1000"
+            permission: "0755"
+          - path: "{{ location.docker_data }}/{{ service_directory }}/db"
+            owner: "70"
+            permission: "0700"
+    - role: config
+      vars:
+        config_files:
+          - file_name: "registration.yaml"
+            destination_path: "{{ registration.destination }}"
+      when: not stat_registration.stat.exists
+    - role: docker
+      vars:
+        - docker_attach_postgres: true
+    - role: traefik
+      vars:
+        traefik_servers:
+          - port: 8008

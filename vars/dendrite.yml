@@ -1,0 +1,8 @@
+---
+network: dendrite-net
+config_file: "dendrite.yaml"
+
+postgres:
+  user: ""
+  password: ""
+  database: "dendrite"

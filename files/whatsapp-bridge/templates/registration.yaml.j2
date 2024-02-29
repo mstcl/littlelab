@@ -1,0 +1,15 @@
+id: whatsapp
+url: http://{{ service_directory }}:29318
+as_token: "{{ registration.as_token }}"
+hs_token: "{{ registration.hs_token }}"
+sender_localpart: "{{ registration.sender_localpart }}"
+rate_limited: false
+namespaces:
+    users:
+{% set tld_list = base_tld.split('.') %}
+        - regex: ^@whatsappbot:{{ urls.dendrite }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
+          exclusive: true
+        - regex: ^@whatsapp_.*:{{ urls.dendrite }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
+          exclusive: true
+de.sorunome.msc2409.push_ephemeral: true
+push_ephemeral: true

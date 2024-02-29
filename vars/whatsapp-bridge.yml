@@ -1,0 +1,15 @@
+---
+network: dendrite-net
+
+postgres:
+  image: "postgres:15-alpine"
+  user: ""
+  password: ""
+  db: "wabridge"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db:/var/lib/postgresql/data"
+
+registration:
+  as_token: "{{ lookup('ansible.builtin.password', './tmp/as_token_file', chars=['ascii_letters', digits], length=64) }}"
+  hs_token: "{{ lookup('ansible.builtin.password', './tmp/hs_token_file', chars=['ascii_letters', digits], length=64) }}"
+  sender_localpart: "whatsapp_bridge_bot"
+  destination: "{{ base_directory }}/dendrite/config/wa.yaml"
