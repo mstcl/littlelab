@@ -5,7 +5,7 @@
   vars_files: "vars/dendrite.yml"
   vars:
     service_directory: "dendrite"
-    image: "matrixdotorg/dendrite-monolith:v0.13.5"
+    image: "matrixdotorg/dendrite-monolith:v0.13.6"
 
   roles:
     - role: urls
