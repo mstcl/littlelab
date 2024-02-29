@@ -6,7 +6,7 @@
     - vars/moodist.yml
   vars:
     service_directory: "moodist"
-    image: "ghcr.io/remvze/moodist:v1.3.1"
+    image: "ghcr.io/remvze/moodist:v1.4.0"
     url: "{{ urls.moodist }}"
 
   roles:
