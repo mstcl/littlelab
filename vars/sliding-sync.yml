@@ -1,0 +1,10 @@
+---
+network: "ssync-net"
+
+postgres:
+  image: "postgres:15-alpine"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"
+  user: ""
+  password: ""
+  db: ssync
+  link: ""
