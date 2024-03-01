@@ -6,6 +6,7 @@
   vars:
     service_directory: "dendrite"
     image: "matrixdotorg/dendrite-monolith:v0.13.6"
+    url: "{{ urls.dendrite }}"
 
   roles:
     - role: urls
@@ -24,11 +25,11 @@
           - path: "{{ location.docker_data }}/{{ service_directory }}/search"
             owner: "1000"
             permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/db"
+          - path: "{{ db_location }}"
             owner: "70"
             permission: "0700"
         config_files:
-          -
+          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
     - role: docker
       vars:
         docker_attach_postgres: true
