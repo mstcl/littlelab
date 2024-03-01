@@ -6,7 +6,7 @@ postgres:
   user: ""
   password: ""
   db: "wabridge"
-  location: "{{ location.docker_data }}/{{ service_directory }}/db:/var/lib/postgresql/data"
+  location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
 registration:
   as_token: "{{ lookup('ansible.builtin.password', './tmp/as_token_file', chars=['ascii_letters', digits], length=64) }}"
