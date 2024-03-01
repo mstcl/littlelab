@@ -1,0 +1,34 @@
+[uwsgi]
+uid = searxng
+gid = searxng
+
+workers = 1
+
+threads = 4
+
+chmod-socket = 666
+
+single-interpreter = true
+master = true
+plugin = python3
+lazy-apps = true
+enable-threads = 4
+
+module = searx.webapp
+
+pythonpath = /usr/local/searxng/
+chdir = /usr/local/searxng/searx/
+
+auto-procname = true
+
+disable-logging = true
+log-5xx = true
+
+buffer-size = 8192
+
+add-header = Connection: close
+
+static-map = /static=/usr/local/searxng/searx/static
+static-expires = /* 86400
+static-gzip-all = True
+offload-threads = 4
