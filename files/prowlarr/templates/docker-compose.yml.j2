@@ -9,6 +9,8 @@ x-logging: &default-logging
 networks:
   {{ docker.traefik_network }}:
     external: true
+  {{ network }}:
+    internal: true
 
 services:
   {{ service_directory }}:
@@ -20,6 +22,7 @@ services:
     logging: *default-logging
     networks:
       - {{ docker.traefik_network }}
+      - {{ network }}
     volumes:
       - {{ location.docker_data }}/{{ service_directory }}:/config
     environment:
@@ -33,3 +36,19 @@ services:
           memory: 1gb
         reservations:
           memory: 100mb
+
+  flaresolverr:
+    image: {{ flaresolverr.image }}
+    container_name: flaresolverr
+    restart: unless-stopped
+    logging: *default-logging
+    networks:
+      - {{ docker.traefik_network }}
+      - {{ network }}
+    security_opt:
+      - no-new-privileges
+    environment:
+      LOG_LEVEL: error
+      TZ: "Europe/London"
+    cpus: '0.50'
+    mem_limit: 400mb
