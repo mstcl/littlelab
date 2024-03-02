@@ -2,7 +2,7 @@
 - name: Grab service name
   tags: homepage
   ansible.builtin.set_fact:
-    service_name: "{{ homepage_config.service_name | default('service_directory') }}"
+    service_name: "{{ homepage_config.service_name | default(service_directory) }}"
 
 - name: Save the icon
   tags: homepage
@@ -24,5 +24,3 @@
             href: "https://{{ homepage_config.url | default(expanded_url) }}"
             description: "{{ homepage_config.description | default('') }}"
             icon: "{% if homepage_config.icon | length > 0 %}/icons/{{ service_name }}{{ homepage_config.icon | basename | splitext | last }}{% endif %}"
-            server: docker
-            container: "{{ homepage_config.container | default(service_directory) }}"
