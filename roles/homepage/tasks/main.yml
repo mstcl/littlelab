@@ -1,12 +1,13 @@
 ---
 - name: Grab service name
   tags: homepage
+  when: homepage_config is defined
   ansible.builtin.set_fact:
     service_name: "{{ homepage_config.service_name | default(service_directory) }}"
 
 - name: Save the icon
   tags: homepage
-  when: (homepage_config.icon | length > 0) and (homepage_config.icon[:3] == 'http')
+  when: homepage_config is defined and homepage_config.icon | length > 0) and (homepage_config.icon[:3] == 'http')
   ansible.builtin.get_url:
     url: "{{ homepage_config.icon }}"
     dest: "{{ base_directory }}/homepage/icon/{{ service_name }}{{ homepage_config.icon | basename | splitext | last }}"
@@ -14,6 +15,7 @@
 
 - name: Add a service block to services.yaml
   tags: homepage
+  when: homepage_config is defined
   ansible.builtin.blockinfile:
     state: present
     insertafter: "{{ homepage_config.category }}:"
