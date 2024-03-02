@@ -29,6 +29,12 @@
         traefik_servers:
           - port: 3001
             url: "immich-server"
-        traefik_middlewares:
-          - "internal-ip@file"
+        traefik_rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
+        traefik_additional_content: |2
+                  - "internal-ip@file"
+              immich-public:
+                rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/share`) || PathPrefix(`/api`) || PathPrefix(`/_app`)))"
+                service: "immich"
+                tls: *modern
+
     - role: homepage
