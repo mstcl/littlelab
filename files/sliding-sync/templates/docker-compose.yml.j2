@@ -22,7 +22,7 @@ services:
     logging: *default-logging
     environment:
       - SYNCV3_SERVER=https://{{ urls.dendrite.sub}}.{{ base_tld }}
-      - SYNCV3_SECRET=${SS_SYNCV3_SECRET}
+      - SYNCV3_SECRET={{ ss_syncv3_secret }}
       - SYNCV3_BINDADDR=:8008
       - SYNCV3_DB={{ postgres.url }}
     networks:
