@@ -19,6 +19,7 @@
 
   roles:
     - role: config
+      become: true
       vars:
         config_directories:
           - path: "{{ config_location }}"
