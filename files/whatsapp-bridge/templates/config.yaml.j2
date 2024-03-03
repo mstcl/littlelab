@@ -100,6 +100,7 @@ whatsapp:
 
 # Bridge config
 bridge:
+{% raw %}
     # Localpart template of MXIDs for WhatsApp users.
     # {{.}} is replaced with the phone number of the WhatsApp user.
     username_template: whatsapp_{{.}}
@@ -111,6 +112,7 @@ bridge:
     # {{.FullName}}  - full name from contact list
     # {{.FirstName}} - first name from contact list
     displayname_template: "{{or .BusinessName .PushName .JID}} (WA)"
+{% endraw %}
     # Should the bridge create a space for each logged-in user and add bridged rooms to it?
     # Users who logged in before turning this on should run `!wa sync space` to create and fill the space for the first time.
     personal_filtering_spaces: false
@@ -417,7 +419,7 @@ bridge:
         prefix: /_matrix/provision
         # Shared secret for authentication. If set to "generate", a random secret will be generated,
         # or if set to "disable", the provisioning API will be disabled.
-        shared_secret: {{ whatsapp-bridge_shared_secret }}
+        shared_secret: {{ wab_shared_secret }}
         # Enable debug API at /debug with provisioning authentication.
         debug_endpoints: false
 
@@ -443,6 +445,7 @@ bridge:
         # Should only admins be allowed to set themselves as relay users?
         admin_only: true
         # The formats to use when sending messages to WhatsApp via the relaybot.
+{% raw %}
         message_formats:
             m.text: "<b>{{ .Sender.Displayname }}</b>: {{ .Message }}"
             m.notice: "<b>{{ .Sender.Displayname }}</b>: {{ .Message }}"
@@ -452,10 +455,11 @@ bridge:
             m.audio: "<b>{{ .Sender.Displayname }}</b> sent an audio file"
             m.video: "<b>{{ .Sender.Displayname }}</b> sent a video"
             m.location: "<b>{{ .Sender.Displayname }}</b> sent a location"
+{% endraw %}
 
 # Logging config. See https://github.com/tulir/zeroconfig for details.
 logging:
-    min_level: debug
+    min_level: warn
     writers:
         - type: stdout
           format: pretty-colored
