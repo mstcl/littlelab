@@ -2,7 +2,13 @@
 network: dendrite-net
 config_file: "dendrite.yaml"
 
+dendrite_registration_shared_secret: ""
+db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
 postgres:
+  db: dendrite
+  image: "postgres:15-alpine"
   user: ""
   password: ""
+  url: ""
   database: "dendrite"
+  location: "{{ db_location }}"

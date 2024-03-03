@@ -1,24 +1,31 @@
 version: "{{ docker.compose_version }}"
 
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "4"
+
 networks:
   {{ docker.expose_network }}:
     external: true
-  {{ network }}
+  {{ network }}:
     external: true
-
 
 services:
   {{ service_directory }}:
     image: {{ image }}
     container_name: {{ service_directory }}
     restart: unless-stopped
-    depends_on:
-      - {{ service_directory }}
+    security_opt:
+      - no-new-privileges
+    logging: *default-logging
+    environment:
       - SYNCV3_SERVER=https://{{ urls.dendrite.sub}}.{{ base_tld }}
       - SYNCV3_SECRET=${SS_SYNCV3_SECRET}
       - SYNCV3_BINDADDR=:8008
       - SYNCV3_DB={{ postgres.link }}
-    security_opt:
-      - no-new-privileges
     networks:
       - {{ docker.expose_network }}
+    depends_on:
+      - {{ service_directory }}
