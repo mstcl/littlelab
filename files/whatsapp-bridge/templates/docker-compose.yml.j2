@@ -19,9 +19,16 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
+    logging: *default-logging
+    networks:
+      - {{ network }}
+    volumes:
     networks:
       - {{ network }}
     depends_on:
       - {{ service_directory }}-postgres
     volumes:
       - {{ config_location }}:/data:z
+      - {{ config_location }}:/data:z
+    depends_on:
+      - {{ service_directory }}-postgres
