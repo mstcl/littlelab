@@ -3,7 +3,7 @@ homeserver:
     # The address that this appservice can use to connect to the homeserver.
     address: http://dendrite:8008
     # The domain of the homeserver (also known as server_name, used for MXIDs, etc).
-    domain: {{ urls.dendrite }}.{{ base_tld }}
+    domain: {{ urls.dendrite.sub }}.{{ base_tld }}
 
     # What software is the homeserver running?
     # Standard Matrix homeservers like Synapse, Dendrite and Conduit should just use "standard" here.
@@ -434,8 +434,8 @@ bridge:
     #     mxid - Specific user
     permissions:
         "*": relay
-        "{{ urls.dendrite }}.{{ base_tld }}": user
-        "@admin:{{ urls.dendrite }}.{{ base_tld }}": admin
+        "{{ urls.dendrite.sub }}.{{ base_tld }}": user
+        "@admin:{{ urls.dendrite.sub }}.{{ base_tld }}": admin
 
     # Settings for relay mode
     relay:

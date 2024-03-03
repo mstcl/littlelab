@@ -7,9 +7,9 @@ rate_limited: false
 namespaces:
     users:
 {% set tld_list = base_tld.split('.') %}
-        - regex: ^@whatsappbot:{{ urls.dendrite }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
+        - regex: ^@whatsappbot:{{ urls.dendrite.sub }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
           exclusive: true
-        - regex: ^@whatsapp_.*:{{ urls.dendrite }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
+        - regex: ^@whatsapp_.*:{{ urls.dendrite.sub }}\.{{ tld_list[0] }}\.{{ tld_list[1] }}$
           exclusive: true
 de.sorunome.msc2409.push_ephemeral: true
 push_ephemeral: true
