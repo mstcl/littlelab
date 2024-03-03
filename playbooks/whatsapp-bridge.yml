@@ -7,7 +7,6 @@
   vars:
     service_directory: "whatsapp-bridge"
     image: "dock.mau.dev/mautrix/whatsapp:v0.10.5"
-    url: "{{ urls.whatsapp-bridge }}"
 
   pre_tasks:
     - name: Check if wa.yaml registration config already exists
@@ -19,7 +18,6 @@
       register: stat_registration
 
   roles:
-    - role: urls
     - role: config
       vars:
         config_directories:
