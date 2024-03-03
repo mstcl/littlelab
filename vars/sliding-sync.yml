@@ -1,6 +1,6 @@
 ---
 network: "ssync-net"
-
+ss_syncv3_secret: ""
 postgres:
   image: "postgres:15-alpine"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
