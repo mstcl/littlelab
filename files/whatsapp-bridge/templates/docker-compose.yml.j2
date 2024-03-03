@@ -24,4 +24,4 @@ services:
     depends_on:
       - {{ service_directory }}-postgres
     volumes:
-      - {{}}:/data:z
+      - {{ config_location }}:/data:z

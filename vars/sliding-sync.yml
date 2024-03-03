@@ -7,4 +7,4 @@ postgres:
   user: ""
   password: ""
   db: ssync
-  link: ""
+  url: ""

@@ -1,8 +1,8 @@
 id: whatsapp
 url: http://{{ service_directory }}:29318
-as_token: "{{ registration.as_token }}"
-hs_token: "{{ registration.hs_token }}"
-sender_localpart: "{{ registration.sender_localpart }}"
+as_token: "{{ appservice_registration.as_token }}"
+hs_token: "{{ appservice_registration.hs_token }}"
+sender_localpart: "{{ appservice_registration.sender_localpart }}"
 rate_limited: false
 namespaces:
     users:
