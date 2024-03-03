@@ -7,7 +7,7 @@
 
 - name: Save the icon
   tags: homepage
-  when: homepage_config is defined and homepage_config.icon | length > 0) and (homepage_config.icon[:3] == 'http')
+  when: (homepage_config is defined) and (homepage_config.icon | length > 0) and (homepage_config.icon[:3] == 'http')
   ansible.builtin.get_url:
     url: "{{ homepage_config.icon }}"
     dest: "{{ base_directory }}/homepage/icon/{{ service_name }}{{ homepage_config.icon | basename | splitext | last }}"
