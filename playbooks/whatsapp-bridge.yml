@@ -12,7 +12,7 @@
   pre_tasks:
     name: Check if wa.yaml registration config already exists
     stat:
-      path: "{{ registration.destination }}"
+      path: "{{ appservice_registration.destination }}"
       get_checksum: false
       get_mime: false
       get_attributes: false
@@ -23,17 +23,21 @@
     - role: config
       vars:
         config_directories:
+          - path: "{{ config_location }}"
+            owner: "1000"
+            permission: "0755"
           - path: "{{ location.docker_data }}/{{ service_directory }}"
             owner: "1000"
             permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/db"
+          - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
     - role: config
       vars:
         config_files:
+          - destination_path: "{{ config_location }}"
           - file_name: "registration.yaml"
-            destination_path: "{{ registration.destination }}"
+            destination_path: "{{ appservice_registration.destination }}"
       when: not stat_registration.stat.exists
     - role: docker
       vars:

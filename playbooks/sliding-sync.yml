@@ -16,7 +16,7 @@
           - path: "{{ location.docker_data }}/{{ service_directory }}"
             owner: "1000"
             permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/db"
+          - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
     - role: docker
@@ -26,5 +26,3 @@
       vars:
         traefik_servers:
           - port: 8008
-        traefik_middlewares:
-          - "internal-ip@file"
