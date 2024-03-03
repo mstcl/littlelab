@@ -38,7 +38,7 @@
           - destination_path: "{{ config_location }}"
           - file_name: "registration.yaml"
             destination_path: "{{ appservice_registration.destination }}"
-      when: not stat_registration.stat.exists
+            when: not stat_registration.stat.exists
     - role: docker
       vars:
         docker_attach_postgres: true
