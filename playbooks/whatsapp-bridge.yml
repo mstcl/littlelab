@@ -11,7 +11,7 @@
   pre_tasks:
     - name: Check if wa.yaml registration config already exists
       ansible.builtin.stat:
-        path: "{{ appservice_registration.destination }}"
+        path: "{{ appservice_registration.destination }}/wa.yaml"
         get_checksum: false
         get_mime: false
         get_attributes: false
@@ -31,17 +31,12 @@
           - path: "{{ postgres.location }}"
             owner: "70"
             permission: "0700"
-    - role: config
-      vars:
         config_files:
-          - destination_path: "{{ config_location }}"
-          - file_name: "registration.yaml"
+          - file_name: "{{ config_file }}"
+            destination_path: "{{ config_location }}"
+          - file_name: "wa.yaml"
             destination_path: "{{ appservice_registration.destination }}"
             when: not stat_registration.stat.exists
     - role: docker
       vars:
         docker_attach_postgres: true
-    - role: traefik
-      vars:
-        traefik_servers:
-          - port: 8008

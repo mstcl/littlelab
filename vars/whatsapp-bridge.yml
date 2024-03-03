@@ -15,4 +15,4 @@ appservice_registration:
   as_token: "{{ lookup('ansible.builtin.password', './tmp/as_token_file', chars=['ascii_letters', 'digits'], length=64) }}"
   hs_token: "{{ lookup('ansible.builtin.password', './tmp/hs_token_file', chars=['ascii_letters', 'digits'], length=64) }}"
   sender_localpart: "{{ lookup('ansible.builtin.password', './tmp/sender_localpart_file', chars=['ascii_letters', 'digits'], length=32) }}"
-  destination: "{{ base_directory }}/dendrite/config/wa.yaml"
+  destination: "{{ base_directory }}/dendrite/config"
