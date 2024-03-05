@@ -27,5 +27,6 @@ services:
       - SYNCV3_DB={{ postgres.url }}
     networks:
       - {{ docker.expose_network }}
+      - {{ network }}
     depends_on:
       - {{ service_directory }}-postgres
