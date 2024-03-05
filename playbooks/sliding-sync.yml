@@ -11,6 +11,7 @@
   roles:
     - role: urls
     - role: config
+      become: true
       vars:
         config_directories:
           - path: "{{ location.docker_data }}/{{ service_directory }}"
