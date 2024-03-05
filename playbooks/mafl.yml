@@ -6,7 +6,7 @@
     - vars/mafl.yml
   vars:
     service_directory: "mafl"
-    image: "hywax/mafl:v0.9.2"
+    image: "hywax/mafl:v0.9.4"
     url: "{{ urls.mafl }}"
 
   roles:
