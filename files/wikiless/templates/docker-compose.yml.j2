@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges
-    logging: *default-logging:true
+    logging: *default-logging
     networks:
       - {{ docker.expose_network }}
       - {{ network }}
