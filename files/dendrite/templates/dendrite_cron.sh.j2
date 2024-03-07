@@ -10,7 +10,7 @@ docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U dendrite > dend
 
 gzip dendrite-$bt.db
 
-mv dendrite-$bt.db {{ location.onsite_backups }}/{{ service_directory }}
+mv dendrite-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
 
 tar -czf dendrite_media-$bt.tar.gz media
 mv dendrite_media-$bt.tar.gz {{ location.onsite_backups }}/{{ service_directory }}
