@@ -7,8 +7,12 @@ mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
 
 bt=$(date '+%Y%m%d-%H%M')
 
+docker stop {{ service_directory }}
+
 sqlite3 data/jellyfin.db ".backup 'jellyfin-$bt.db'"
 sqlite3 data/library.db ".backup 'library-$bt.db'"
+
+docker start {{ service_directory }}
 
 gzip jellyfin-$bt.db
 gzip library-$bt.db
