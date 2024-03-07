@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U dendrite > dendrite-$bt.db
+
+gzip dendrite-$bt.db
+
+mv dendrite-$bt.db {{ location.onsite_backups }}/{{ service_directory }}
+
+tar -czf dendrite_media-$bt.tar.gz media
+mv dendrite_media-$bt.tar.gz {{ location.onsite_backups }}/{{ service_directory }}
