@@ -2,7 +2,7 @@
 - name: Rule with only trusted IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ ufw_rule | default('allow') }}"
+    rule: "{{ ufw_rule }}"
     port: "{{ ufw_port }}"
     proto: "{{ ufw_protocol }}"
     src: "{{ item }}"
