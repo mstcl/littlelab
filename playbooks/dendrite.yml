@@ -37,3 +37,4 @@
       vars:
         traefik_servers:
           - port: 8008
+    -role: backup
