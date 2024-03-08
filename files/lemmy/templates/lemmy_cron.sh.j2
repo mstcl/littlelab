@@ -11,8 +11,3 @@ docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U lemmy > lemmy-$
 zstd --rm -q lemmy-$bt.db
 
 mv lemmy-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
-
-docker stop pictrs
-tar --zstd -cf lemmy_pictrs-$bt.tar.zst pictrs
-mv lemmy_pictrs-$bt.tar.zst {{ location.onsite_backups }}/{{ service_directory }}
-docker start pictrs
