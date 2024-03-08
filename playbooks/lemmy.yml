@@ -47,6 +47,8 @@
             url: "lemmy-ui"
     - role: homepage
     - role: backup
+      vars:
+        backup_minute: "30"
 
   post_tasks:
     - name: Fetch lemmy css
