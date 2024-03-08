@@ -46,6 +46,7 @@
           - port: 8238
             url: "lemmy-ui"
     - role: homepage
+    - role: backup
 
   post_tasks:
     - name: Fetch lemmy css
