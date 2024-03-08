@@ -1,0 +1,5 @@
+---
+backup_weekday: "SAT"
+backup_minute: "0"
+backup_hour: "4"
+backup_cron_disabled: "false"
