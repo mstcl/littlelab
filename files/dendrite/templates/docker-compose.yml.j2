@@ -29,6 +29,7 @@ services:
       {{ network }}:
         aliases:
           - monolith
+    user: 1000:1000
     volumes:
       - ./config:/etc/dendrite
       - {{ location.docker_data }}/{{ service_directory }}/media:/var/dendrite/media
