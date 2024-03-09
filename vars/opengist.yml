@@ -1,0 +1,18 @@
+---
+state: ""
+
+config_directories: [{}] # create default data directory for DBs
+
+docker_state: "{{ state }}"
+docker_image: "{{ image }}"
+docker_networks:
+  - name: "{{ docker.traefik_network }}"
+docker_env:
+  # see the rest here: https://github.com/thomiceli/opengist/blob/master/docs/configuration/cheat-sheet.md
+  UID: "1000"
+  GID: "1000"
+  OG_LOG_LEVEL: "error"
+  OG_LOG_OUTPUT: "stdout"
+  OG_HTTP_PORT: "8080"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/opengist"
