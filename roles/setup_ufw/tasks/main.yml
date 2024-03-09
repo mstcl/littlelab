@@ -16,7 +16,7 @@
     ufw_comment: "sshd"
 
 - name: Open systemd resolved ports
-  ansible.legacy.include_role:
+  ansible.builtin.include_role:
     name: ufw
   vars:
     ufw_port: "5355"
@@ -25,7 +25,7 @@
     ufw_comment: "systemd-resolved"
 
 - name: Open systemd resolved ports
-  ansible.legacy.include_role:
+  ansible.builtin.include_role:
     name: ufw
   vars:
     ufw_port: "5355"
@@ -33,7 +33,7 @@
     ufw_comment: "systemd-resolved"
 
 - name: Open systemd resolved ports
-  ansible.legacy.include_role:
+  ansible.builtin.include_role:
     name: ufw
   vars:
     ufw_port: "5353"
