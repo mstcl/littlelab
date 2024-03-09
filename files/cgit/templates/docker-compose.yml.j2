@@ -37,6 +37,6 @@ services:
       - ./{{ config_file }}:/etc/cgitrc:ro
       - ./{{ css_file }}:/usr/share/webapps/cgit/style.css:ro
       - ./syntax-highlighting.py:/usr/lib/cgit/filters/syntax-highlighting.py:ro
-      - ./favicon.ico:/usr/share/webapps/cgit/favicon_alt.ico:ro
+      - ./favicon.ico:/usr/share/webapps/cgit/favicon.ico:ro
       - ./header.html:/usr/lib/cgit/header.html:ro
       - ./about.html:/usr/lib/cgit/about.html:ro

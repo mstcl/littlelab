@@ -1,16 +1,21 @@
 ---
 config_file: "qBittorrent.conf"
 
-io_port: ""
+io_port: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PORT') }}"
 
-user: ""
-password: ""
-password_encrypted: ""
+user: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_USERNAME') }}"
+password: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD') }}"
+password_encrypted: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PASSWORD_PBKDF2') }}"
 
-bot_token: ""
-chat_id: ""
+bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
+chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
 
 qbittorrent_options:
   seed_ratio: 1
   seed_minutes: 600
   web_ui_enabled: true
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/qbittorrent/qBittorrent/master/src/icons/qbittorrent.ico"
+  description: "BitTorrent client"
+  category: "Stream"

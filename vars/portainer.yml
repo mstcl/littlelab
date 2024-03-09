@@ -3,9 +3,9 @@ network: "socket-net" # network for portainer to talk to the socket
 ipam_subnet: 172.19.0
 
 oidc:
-  client_id:
-  client_secret:
-  digest: ""
+  client_id: "{{ lookup('get_secrets', path='/portainer', secret_name='PORTAINER_OIDC_ID') }}"
+  client_secret: "{{ lookup('get_secrets', path='/portainer', secret_name='PORTAINER_OIDC_SECRET') }}"
+  digest: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_PORTAINER_DIGEST') }}"
   redirect_uris:
     - https://{{ expanded_url }}
 

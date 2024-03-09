@@ -1,9 +1,14 @@
 ---
 config_file: "slskd.yml"
-io_port: ""
+io_port: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PORT') }}"
 
-web_user: ""
-web_password: ""
+web_user: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSKD_USERNAME') }}"
+web_password: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSKD_PASSWORD') }}"
 
-slsk_user: ""
-slsk_password: ""
+slsk_user: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_USERNAME') }}"
+slsk_password: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PASSWORD') }}"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/slskd/slskd/master/src/web/public/favicon.ico"
+  description: "Soulseek client"
+  category: "Stream"

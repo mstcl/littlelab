@@ -1,8 +1,8 @@
 smtp:
-  host: ""
-  user: ""
-  password: ""
-  sender: ""
+  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
+  password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+  sender: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
 
 vaultwarden_options:
   - DOMAIN: "https://{{ expanded_url }}"
@@ -13,3 +13,8 @@ vaultwarden_options:
   - SMTP_USERNAME: "{{ smtp.user }}"
   - SMTP_PASSWORD: "{{ smtp.password }}"
   - LOG_LEVEL: "error"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/dani-garcia/vaultwarden/main/src/static/images/vaultwarden-favicon.png"
+  description: "Password manager"
+  category: "Personal services"

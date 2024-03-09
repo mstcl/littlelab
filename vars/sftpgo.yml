@@ -1,8 +1,8 @@
 ---
 oidc:
-  client_id: ""
-  client_secret: ""
-  digest: ""
+  client_id: "{{ lookup('get_secrets', path='/sftpgo', secret_name='SFTPGO_OIDC_ID') }}"
+  client_secret: "{{ lookup('get_secrets', path='/sftpgo', secret_name='SFTPGO_OIDC_SECRET') }}"
+  digest: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_SFTPGO_DIGEST') }}"
   redirect_uris:
     - https://{{ expanded_url }}/web/oidc/redirect
 
@@ -18,3 +18,8 @@ sftpgo_options:
   - SFTPGO_HTTPD__BINDINGS__0__OIDC__ROLE_FIELD: "groups"
   - SFTPGO_HTTPD__BINDINGS__0__OIDC__SCOPES: "openid,profile,email,groups"
   - SFTPGO_HTTPD__BINDINGS__0__ENABLED_LOGIN_METHODS: "3"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/drakkan/sftpgo/main/static/img/logo.png"
+  description: "File server"
+  category: "SysOps"

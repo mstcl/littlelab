@@ -1,6 +1,11 @@
 ---
 config_file: "baikal.yml"
 
-password_hash: ""
-invite_email: ""
-db_encryption_key: ""
+password_hash: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_PASSWORD_HASHED') }}"
+invite_email: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_INVITE_EMAIL') }}"
+db_encryption_key: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_DB_ENCRYPTION_KEY')}}"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/sabre-io/Baikal/master/Core/Frameworks/Baikal/Resources/Images/logo-baikal.png"
+  description: "CalDAV & CardDAV"
+  category: "Personal services"

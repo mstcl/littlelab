@@ -1,9 +1,13 @@
 root-title={{ instance_name }}
-root-readme=/usr/lib/cgit/about.html
+{% if cgit_options.about %}
+root-readme=/usr/lib/cgit/{{ about_file }}
+{% endif %}
 head-include=/usr/lib/cgit/header.html
 
 commit-filter=/usr/lib/cgit/filters/commit-links.sh
+{% if cgit_options.syntax_highlighting %}
 source-filter=/usr/lib/cgit/filters/syntax-highlighting.py
+{% endif %}
 about-filter=/usr/lib/cgit/filters/about-formatting.sh
 
 readme=:README.md
@@ -42,9 +46,15 @@ mimetype.jpeg=image/jpeg
 mimetype.pdf=application/pdf
 mimetype.png=image/png
 mimetype.svg=image/svg+xml
-favicon=/favicon_alt.ico
+{% if cgit_options.favicon %}
+favicon=/{{ favicon_file }}
+{% endif %}
+{% if cgit_options.css %}
 css=/{{ css_file }}
-logo=/cgit.png
+{% endif %}
+{% if cgit_options.logo %}
+logo=/{{ logo_file }}
+{% endif %}
 logo-link=https://{{ expanded_url }}
 
 # Cache

@@ -1,5 +1,9 @@
 ---
 photon_options:
   - PUBLIC_INSTANCE_URL: "{{ urls.lemmy.sub }}.{{ base_tld }}"
-  - PUBLIC_DEFAULT_FEED: "All"
+  - PUBLIC_DEFAULT_FEED: "Subscribed"
+  - PUBLIC_DEFAULT_FEED_SORT: "New"
+  - PUBLIC_SHOW_COMPACT_POSTS: "true"
+  - PUBLIC_NEW_VOTE_BUTTONS: "true"
+  - PUBLIC_REVERT_VOTE_COLORS: "true"
   - PUBLIC_HIDE_DELETED: "false"

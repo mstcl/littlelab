@@ -1,6 +1,6 @@
 ---
 config_file: "services.yml"
-instance_name: ""
-api_key: ""
-user: ""
-password: ""
+instance_name: "BIM status page"
+api_key: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_API') }}"
+user: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_USER') }}"
+password: "{{ lookup('get_secrets', path='/statping', secret_name='STATPING_PASSWORD') }}"

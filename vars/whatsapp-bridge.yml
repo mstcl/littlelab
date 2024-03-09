@@ -2,14 +2,14 @@
 network: dendrite-net
 config_file: config.yaml
 config_location: "{{ base_directory }}/{{ service_directory }}/config"
-wab_shared_secret: ""
+wab_shared_secret: "{{ lookup('get_secrets', path='/whatsapp-bridge', secret_name='WHATSAPP-BRIDGE_SHARED_SECRET') }}"
 postgres:
   image: "postgres:15-alpine"
-  user: ""
-  password: ""
+  user: "{{ lookup('get_secrets', path='/whatsapp-bridge', secret_name='WHATSAPP-BRIDGE_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/whatsapp-bridge', secret_name='WHATSAPP-BRIDGE_POSTGRES_PASSWORD') }}"
   db: "wabridge"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
-  url:
+  url: "{{ lookup('get_secrets', path='/whatsapp-bridge', secret_name='WHATSAPP-BRIDGE_POSTGRES_URL') }}"
 
 appservice_registration:
   as_token: "{{ lookup('ansible.builtin.password', './tmp/as_token_file', chars=['ascii_letters', 'digits'], length=64) }}"

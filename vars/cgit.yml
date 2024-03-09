@@ -1,9 +1,9 @@
+---
 config_file: "cgitrc"
-# favicon_file: "favicon.ico" # (optional) place in files/cgit/files
-# css_file: "style.css" # (optional) place in files/cgit/files
-# about_file: "about.html" # (optional) place in files/cgit/files
-# logo_file: "" # (optional) place in files/cgit/files
-instance_name: ""
+favicon_file: "favicon.ico"
+css_file: "style.css"
+about_file: "about.html"
+instance_name: "BIM Git Repositories"
 
 cgit_options:
   syntax_highlighting: false

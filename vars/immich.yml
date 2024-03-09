@@ -5,14 +5,30 @@ machine_learning:
   image: ""
 
 typesense:
-  api_key: ""
+  api_key: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_TYPESENSE_API_KEY') }}"
 
 postgres:
   image: "tensorchord/pgvecto-rs:pg14-v0.1.11"
-  user: ""
-  password: ""
+  user: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_POSTGRES_PASSWORD') }}"
   db: "{{ service_directory }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
 redis:
   image: "redis:6.2-alpine"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/immich-app/immich/main/web/static/favicon-144.png"
+  description: "Photo library"
+  category: "Personal services"
+  container: "immich-server"
+
+oidc:
+  client_id: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_ID') }}"
+  client_secret: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_SECRET') }}"
+  digest: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_DIGEST') }}"
+  redirect_uris:
+    - "https://{{ expanded_url }}/auth/login"
+    - "https://{{ expanded_url }}/user-settings"
+    - "https://{{ expanded_url }}/api/oauth/mobile-redirect"
+    - "app.immich://"

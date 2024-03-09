@@ -1,10 +1,10 @@
 ---
 network: "ssync-net"
-ss_syncv3_secret: ""
+ss_syncv3_secret: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_SYNCV3_SECRET') }}"
 postgres:
   image: "postgres:15-alpine"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
-  user: ""
-  password: ""
+  user: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_PASSWORD') }}"
   db: ssync
-  url: ""
+  url: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_URL') }}"

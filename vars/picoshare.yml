@@ -1,2 +1,2 @@
 ---
-picoshare_secret: ""
+picoshare_secret: "{{ lookup('get_secrets', path='/picoshare', secret_name='PS_SHARED_SECRET') }}"

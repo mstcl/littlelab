@@ -1,2 +1,6 @@
 ---
 config_file: "config.json"
+homepage_config:
+  category: "Personal services"
+  icon: "https://raw.githubusercontent.com/cinnyapp/cinny/dev/public/favicon.ico"
+  description: "Modern client for Matrix"

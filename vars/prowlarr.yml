@@ -3,3 +3,8 @@ network: "flare-net"
 
 flaresolverr:
   image: "ghcr.io/flaresolverr/flaresolverr:v3.3.16"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/Logo/128.png"
+  description: "Index manager"
+  category: "Stream"

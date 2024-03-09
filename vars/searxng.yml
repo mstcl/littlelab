@@ -1,8 +1,13 @@
 ---
 config_file: "settings.yml"
 network: "redis-net"
-instance_name: ""
-searxng_secret: ""
+instance_name: "BIM SearXNG"
+searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
 
 redis:
   image: "redis:6.2-alpine"
+
+homepage_config:
+  icon: "https://upload.wikimedia.org/wikipedia/commons/b/b7/SearXNG-wordmark.svg"
+  description: "Meta-search engine"
+  category: "General services"

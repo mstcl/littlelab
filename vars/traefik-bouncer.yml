@@ -1,2 +1,2 @@
 ---
-bouncer_api_key: ""
+bouncer_api_key: "{{ lookup('get_secrets', path='/traefik', secret_name='TRAEFIK_BOUNCER_API_KEY') }}"

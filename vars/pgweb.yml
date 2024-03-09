@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/sosedoff/pgweb/master/static/img/icon.png"
+  description: "PostgreSQL client"
+  category: "SysOps"
