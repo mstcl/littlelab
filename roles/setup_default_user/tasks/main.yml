@@ -1,4 +1,20 @@
 ---
+- name: Ensure group "{{ base_user }}" exists
+  ansible.builtin.group:
+    name: "{{ base_user }}"
+    state: present
+    gid: "{{ base_group_id }}"
+
+- name: Ensure group "sudo" exists
+  ansible.builtin.group:
+    name: sudo
+    state: present
+
+- name: Ensure group "sshuser" exists
+  ansible.builtin.group:
+    name: sshuser
+    state: present
+
 - name: Make base user {{ base_user }}
   ansible.builtin.user:
     name: "{{ base_user }}"
@@ -8,7 +24,7 @@
     shell: /bin/bash
     create_home: true
     password: "{{ setup_default_user_password | password_hash('sha512') }}"
-    uid: 1000
+    uid: "{{ base_user_id }}"
 
 - name: Add authorized keys on this machine to {{ base_user }}
   ansible.builtin.authorized_key:
