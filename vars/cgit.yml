@@ -1,3 +1,4 @@
+---
 state: started
 config_file: "cgitrc"
 # favicon_file: "favicon.ico" # (optional) place in files/cgit/files
