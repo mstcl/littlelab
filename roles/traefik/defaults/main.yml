@@ -1,6 +1,15 @@
 ---
-traefik_redirect: false
-traefik_trailing_slash: true
-traefik_protocol: 'http'
-traefik_create_service: true
-traefik_create_router: true
+traefik_options:
+  service_name: "{{ service_directory }}"
+  file_name: "{{ service_directory }}"
+  router_name: "{{ service_directory }}"
+  redirect: false
+  trailing_slash: true
+  protocol: http
+  rule: ""
+  create_service: true
+  create_router: true
+  middlewares: []
+  servers:
+    - url: "{{ service_directory }}"
+      port: 8080
