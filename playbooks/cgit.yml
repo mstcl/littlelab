@@ -35,27 +35,36 @@
             groups: "sshuser"
             shell: /usr/bin/git-shell
     - role: config
-      when: css_file is defined
+      when: cgit_options.css and css_file is defined
       vars:
         config_copies:
           - file_name: "{{ css_file }}"
     - role: config
-      when: favicon_file is defined
+      when: cgit_options.logo and logo_file is defined
+      vars:
+        config_copies:
+          - file_name: "{{ logo_file }}"
+    - role: config
+      when: cgit_options.favicon and favicon_file is defined
       vars:
         config_copies:
           - file_name: "{{ favicon_file }}"
     - role: config
-      when: about_file is defined
+      when: cgit_options.about and about_file is defined
       vars:
         config_copies:
           - file_name: "{{ about_file }}"
+    - role: config
+      when: cgit_options.syntax_highlighting
+      vars:
+        config_copies:
+          - file_name: "syntax-highlighting.py"
+            permission: "0655"
     - role: config
       vars:
         config_files: [{}]
         config_copies:
           - file_name: "header.html"
-          - file_name: "syntax-highlighting.py"
-            permission: "0655"
     - role: docker
     - role: traefik
       vars:

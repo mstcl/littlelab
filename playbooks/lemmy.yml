@@ -21,14 +21,21 @@
             permission: "0700"
           - path: "{{ location.docker_data }}/{{ service_directory }}/pictrs"
             owner: "991"
-          - path: "{{ base_directory }}/{{ service_directory}}/css"
         config_files:
           -
           - template_name: "{{ postgres_config }}"
+    - role: config
+      when: default_frontend and css_theme_name | length > 0
+      vars:
+        config_directories:
+          - path: "{{ base_directory }}/{{ service_directory}}/css"
+        config_copy:
+          - file_name: "_variables.{{ css_theme_name }}.scss"
+          - file_name: "{{ css_theme_name }}.scss"
+          - file_name: "{{ css_theme_name }}.css"
     - role: docker
       vars:
         docker_attach_postgres: true
-        docker_run: false
     - role: traefik
       vars:
         traefik_servers:
@@ -39,6 +46,7 @@
           || PathPrefix(`/pictrs`) || PathPrefix(`/feeds`) || PathPrefix(`/nodeinfo`) \
           || PathPrefix(`/.well-known`))))"
     - role: traefik
+      when: default_frontend
       vars:
         traefik_file_name: "lemmy-ui"
         traefik_service_name: "lemmy-ui"
@@ -49,24 +57,3 @@
     - role: backup
       vars:
         backup_minute: "30"
-
-  post_tasks:
-    - name: Fetch lemmy css
-      tags: css
-      when: css_url is defined
-      ansible.builtin.get_url:
-        url: "{{ css_url }}/{{ item }}"
-        dest: "{{ base_directory }}/{{ service_directory }}/css/{{ item }}"
-        mode: "0644"
-      loop:
-        - "_variables.{{ css_name }}.scss"
-        - "{{ css_name }}.css"
-        - "{{ css_name }}.scss"
-
-    - name: Start compose file
-      tags: ["docker", "deploy"]
-      ansible.builtin.include_role:
-        name: docker
-        tasks_from: down_and_up.yml
-      vars:
-        docker_force_up: true
