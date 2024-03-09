@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U {{ service_directory }} > {{ service_directory }}-$bt.db
+
+zstd --rm -q {{ service_directory }}-$bt.db
+
+mv {{ service_directory }}-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
+
+# sync pictures
+
+mkdir -p {{ location.onsite_backups }}/pictures
+
+rsync -avP --log-file={{ location.onsite_backups }}/rsync.log {{location.pictures}} {{ location.onsite_backups }}/pictures

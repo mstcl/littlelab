@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -e
+
+cd {{ location.docker_data }}/{{ service_directory }}
+mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
+
+bt=$(date '+%Y%m%d-%H%M')
+docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U {{ service_directory }} > {{ service_directory }}-$bt.db
+
+zstd --rm -q {{ service_directory }}-$bt.db
+
+mv {{ service_directory }}-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
