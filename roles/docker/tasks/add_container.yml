@@ -2,7 +2,6 @@
 - name: Deploy a docker container
   tags: "docker"
   community.docker.docker_container:
-    working_dir: "{{ base_directory }}/{{ service_directory }}"
     state: "{{ docker_container_options.state }}"
     recreate: "{{ docker_container_options.recreate | default(true) }}"
     name: "{{ docker_container_options.name | default(service_directory) }}"

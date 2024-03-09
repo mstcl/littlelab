@@ -39,3 +39,31 @@ docker_container_options:
     - "{{ base_directory }}/{{ service_directory }}/{{ about_file }}:/usr/lib/cgit/{{ about_file }}:ro"
     # - "./{{ logo_file }}:/usr/lib/cgit/{{ logo_file }}:ro"
     # - ./syntax-highlighting.py:/usr/lib/cgit/filters/syntax-highlighting.py:ro
+
+traefik_options:
+  servers:
+    - url: "{{ service_directory }}"
+      port: 80
+  rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
+  additional_content: |2
+          priority: 1
+        cgit-private-repos:
+          rule: "{{ concat_rule }}"
+          service: "{{ service_directory }}"
+          priority: 10
+          tls: *modern
+          middlewares:
+            - "rewrite-cgit@file"
+            - "internal-ip@file"
+        cgit-private:
+          rule: "Host(`private-{{ expanded_url }}`)"
+          service: "{{ service_directory }}"
+          tls: *modern
+          middlewares:
+            - "internal-ip@file"
+
+      middlewares:
+        rewrite-cgit:
+          redirectRegex:
+            regex: "^https://{{ expanded_url }}/(.*)"
+            replacement: "https://private-{{ expanded_url }}/${1}"

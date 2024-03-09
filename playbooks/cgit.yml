@@ -35,22 +35,22 @@
             groups: "sshuser"
             shell: /usr/bin/git-shell
     - role: config
-      when: cgit_options.css and css_file is defined
+      when: cgit_options.css and (css_file | length > 0)
       vars:
         config_copies:
           - file_name: "{{ css_file }}"
     - role: config
-      when: cgit_options.logo and logo_file is defined
+      when: cgit_options.logo and (logo_file | length > 0)
       vars:
         config_copies:
           - file_name: "{{ logo_file }}"
     - role: config
-      when: cgit_options.favicon and favicon_file is defined
+      when: cgit_options.favicon and (favicon_file | length > 0)
       vars:
         config_copies:
           - file_name: "{{ favicon_file }}"
     - role: config
-      when: cgit_options.about and about_file is defined
+      when: cgit_options.about and (about_file | length > 0)
       vars:
         config_copies:
           - file_name: "{{ about_file }}"
@@ -67,30 +67,4 @@
           - file_name: "header.html"
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 80
-        traefik_rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
-        traefik_additional_content: |2
-                priority: 1
-              cgit-private-repos:
-                rule: "{{ concat_rule }}"
-                service: "{{ service_directory }}"
-                priority: 10
-                tls: *modern
-                middlewares:
-                  - "rewrite-cgit@file"
-                  - "internal-ip@file"
-              cgit-private:
-                rule: "Host(`private-{{ expanded_url }}`)"
-                service: "{{ service_directory }}"
-                tls: *modern
-                middlewares:
-                  - "internal-ip@file"
-
-            middlewares:
-              rewrite-cgit:
-                redirectRegex:
-                  regex: "^https://{{ expanded_url }}/(.*)"
-                  replacement: "https://private-{{ expanded_url }}/${1}"
     - role: homepage
