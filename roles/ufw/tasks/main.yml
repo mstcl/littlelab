@@ -28,3 +28,8 @@
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   when: not ufw_local
   notify: Reload firewall
+
+- name: Enable ufw
+  tags: ufw
+  community.general.ufw:
+    state: enabled
