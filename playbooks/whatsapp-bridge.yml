@@ -40,3 +40,4 @@
     - role: docker
       vars:
         docker_attach_postgres: true
+    - role: backup
