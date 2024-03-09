@@ -34,8 +34,8 @@ docker_container_options:
     - "{{ base_directory }}/{{ service_directory }}/header.html:/usr/lib/cgit/header.html:ro"
     - "{{ location.repos }}:/srv/git:ro"
     - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/cgitrc:ro"
-    # - "{{ base_directory }}/{{ service_directory }}/{{ favicon_file }}:/usr/share/webapps/cgit/{{ favicon_file }}:ro"
-    # - "{{ base_directory }}/{{ service_directory }}/{{ css_file }}:/usr/share/webapps/cgit/{{ css_file }}:ro"
-    # - "{{ base_directory }}/{{ service_directory }}/{{ about_file }}:/usr/lib/cgit/{{ about_file }}:ro"
+    - "{{ base_directory }}/{{ service_directory }}/{{ favicon_file }}:/usr/share/webapps/cgit/{{ favicon_file }}:ro"
+    - "{{ base_directory }}/{{ service_directory }}/{{ css_file }}:/usr/share/webapps/cgit/{{ css_file }}:ro"
+    - "{{ base_directory }}/{{ service_directory }}/{{ about_file }}:/usr/lib/cgit/{{ about_file }}:ro"
     # - "./{{ logo_file }}:/usr/lib/cgit/{{ logo_file }}:ro"
     # - ./syntax-highlighting.py:/usr/lib/cgit/filters/syntax-highlighting.py:ro
