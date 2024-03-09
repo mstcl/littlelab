@@ -3,7 +3,7 @@
   tags: traefik
   ansible.builtin.template:
     src: "service.yml.j2"
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_options.file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
     mode: "0644"
 
 - name: Add additional blocks
@@ -11,9 +11,9 @@
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_options.file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
     marker: "  # {mark} ADDITIONAL CONFIGURATION"
-    content: "{{ traefik_optins.additional_content }}"
+    content: "{{ traefik_additional_content }}"
   when: traefik_additional_content is defined
 
 - name: Configure path redirect
@@ -21,13 +21,13 @@
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_options.file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
     marker: "  #  {mark} PATH REDIRECT CONFIGURATION"
     content: |2
         middlewares:
           {{ service_directory }}-strip:
             stripprefix:
-              prefixes: "/{{ url.path }}{{ '/' if traefik_options.trailing_slash == True}}"
+              prefixes: "/{{ url.path }}{{ '/' if traefik_trailing_slash == True}}"
           {{ service_directory }}-redirect:
             redirectregex:
               regex: "^(.*)/{{ url.path }}$"
