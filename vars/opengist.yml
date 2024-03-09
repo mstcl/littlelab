@@ -1,5 +1,5 @@
 ---
-state: ""
+state: started
 
 config_directories: [{}] # create default data directory for DBs
 
@@ -14,5 +14,6 @@ docker_env:
   OG_LOG_LEVEL: "error"
   OG_LOG_OUTPUT: "stdout"
   OG_HTTP_PORT: "8080"
+  OG_SSH_GIT_ENABLED: "false"
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}:/opengist"
