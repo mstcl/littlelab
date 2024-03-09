@@ -6,11 +6,11 @@ cd {{ location.docker_data }}/{{ service_directory }}
 mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
 
 bt=$(date '+%Y%m%d-%H%M')
-docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U dendrite > dendrite-$bt.db
+docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U {{ postgres.user }} > {{ service_directory }}-$bt.db
 
-zstd --rm -q dendrite-$bt.db
+zstd --rm -q {{ service_directory }}-$bt.db
 
-mv dendrite-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
+mv {{ service_directory }}-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
 
-tar --zstd -cf dendrite_media-$bt.tar.zst media
-mv dendrite_media-$bt.tar.zst {{ location.onsite_backups }}/{{ service_directory }}
+tar --zstd -cf {{ service_directory }}_media-$bt.tar.zst media
+mv {{ service_directory }}_media-$bt.tar.zst {{ location.onsite_backups }}/{{ service_directory }}

@@ -6,8 +6,8 @@ cd {{ location.docker_data }}/{{ service_directory }}
 mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
 
 bt=$(date '+%Y%m%d-%H%M')
-docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U lemmy > lemmy-$bt.db
+docker exec -t {{ service_directory }}-postgres pg_dumpall -c -U {{ postgres.user }} > {{ service_directory }}-$bt.db
 
-zstd --rm -q lemmy-$bt.db
+zstd --rm -q {{ service_directory }}-$bt.db
 
-mv lemmy-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
+mv {{ service_directory }}-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
