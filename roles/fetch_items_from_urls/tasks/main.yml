@@ -1,0 +1,7 @@
+---
+- name: Fetch a file
+  ansible.builtin.get_url:
+    url: "{{ item.url }}"
+    dest: "{{ base_directory }}/files/{{ fetch_items_from_urls_service_directory }}/files/{{ item.filename }}"
+    mode: "0644"
+  with_items: "{{ fetch_items_from_urls_urls }}"

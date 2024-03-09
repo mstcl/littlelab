@@ -5,8 +5,7 @@ postgres_config: "customPostgresql.conf"
 default_frontend: false # Enable this to run lemmy-ui
 
 theme_folder: "extra-themes" # (optional) custom css
-css_url: "" # (optional) grab custom css with wget
-css_name: "" # (optional) css theme name
+css_theme_name: "" # (optional) css theme name, need in files/lemmy/files three files (_variables.theme_name.scss, theme_name.scss and theme_name.css)
 
 smtp:
   enabled: true
