@@ -36,5 +36,7 @@
                 rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/share`) || PathPrefix(`/api`) || PathPrefix(`/_app`)))"
                 service: "immich"
                 tls: *modern
-
     - role: homepage
+    - role: backup
+      vars:
+        backup_minute: "10"
