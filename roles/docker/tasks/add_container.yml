@@ -1,0 +1,32 @@
+---
+- name: Deploy a docker container
+  tags: "docker"
+  community.docker.docker_container:
+    state: "{{ docker_container_options.state }}"
+    recreate: "{{ docker_container_options.recreate | default(true) }}"
+    name: "{{ docker_container_options.name | default(service_directory) }}"
+    image: "{{ docker_container_options.image | default(image) }}"
+    security_opts:
+      - no-new-privileges
+    restart_policy: "{{ docker_container_options.restart_policy | default('unless-stopped') }}"
+    log_driver: json-file
+    log_options:
+      max-size: "50m"
+      max-file: "4"
+    networks: "{{ docker_container_options.networks | default(omit) }}"
+    published_ports: "{{ docker_container_options.ports | default(omit) }}"
+    read_only: "{{ docker_container_options.read_only | default(omit) }}"
+    tmpfs: "{{ docker_container_options.tmpfs | default(omit) }}"
+    ulimits: "{{ docker_container_options.ulimits | default(omit) }}"
+    user: "{{ docker_container_options.user | default(omit) }}"
+    command: "{{ docker_container_options.command | default(omit) }}"
+    entrypoint: "{{ docker_container_options.entrypoint | default(omit) }}"
+    volumes: "{{ docker_container_options.volumes | default(omit) }}"
+    env: "{{ docker_container_options.env | default(omit) }}"
+    cap_drop: "{{ docker_container_options.cap_drop | default(omit) }}"
+    capabilities: "{{ docker_container_options.capabilities | default(omit) }}"
+    memory: "{{ docker_container_options.memory | default(omit) }}"
+    cpus: "{{ docker_container_options.cpus | default(omit) }}"
+    network_mode: "{{ docker_container_options.network_mode | default(omit) }}"
+    healthcheck:
+      test: ["NONE"]
