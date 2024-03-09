@@ -23,20 +23,15 @@
           - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
           - template_name: "docker.yaml"
             destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: config
+      when: css_file | length > 0
+      vars:
+        config_copy:
+          - file_name: "custom.css"
+            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
     - role: traefik
       vars:
         traefik_servers:
           - port: 3000
         traefik_middlewares:
           - "internal-ip@file"
-
-  post_tasks:
-    - name: Fetch homepage css
-      tags: css
-      when: css_url is defined
-      ansible.builtin.get_url:
-        url: "{{ css_url }}/{{ item }}"
-        dest: "{{ base_directory }}/{{ service_directory }}/config/{{ item }}"
-        mode: "0644"
-      loop:
-        - custom.css

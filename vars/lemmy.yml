@@ -4,9 +4,8 @@ config_file: "config.hjson"
 postgres_config: "customPostgresql.conf"
 default_frontend: false # Enable this to run lemmy-ui
 
-theme_folder: "extra-themes"
-css_url: "https://raw.githubusercontent.com/mstcl/wardrobe/master/jumper/lemmy"
-css_name: "whiskers_v8"
+theme_folder: "extra-themes" # (optional) custom css
+css_theme_name: "" # (optional) css theme name, need in files/lemmy/files three files (_variables.theme_name.scss, theme_name.scss and theme_name.css)
 
 smtp:
   enabled: true
