@@ -1,44 +1,42 @@
 {{ traefik_protocol }}:
-{% if traefik_create_service %}
+{% if traefik_options.create_service %}
   services:
-    {{ traefik_service_name | default(service_directory) }}:
+    {{ traefik_options.service_name | default(service_directory) }}:
       loadBalancer:
         servers:
-{% for server in traefik_servers %}
-{% if traefik_protocol == 'http' %}
-          - url: "http://{{ server.url | default(service_directory) }}:{{ server.port | default('8080')}}"
+{% for server in traefik_options.servers %}
+{% if traefik_options.protocol == 'http' %}
+          - url: "http://{{ server.url  }}:{{ server.port }}"
 {% else %}
-          - address: "{{ server.url | default(service_directory) }}:{{ server.port | default('8080') }}"
+          - address: "{{ server.url }}:{{ server.port }}"
 {% endif %}
 {% endfor %}
 {% endif %}
-{% if traefik_create_router %}
+{% if traefik_options.create_router %}
   routers:
-{% if traefik_router_name is defined %}
-    {{ traefik_router_name }}:
-{% else %}
-    {{ traefik_service_name | default(service_directory) }}:
-{% endif %}
-{% if traefik_rule is defined %}
+    {{ traefik_options.router_name }}:
+{% if traefik_options.rule | length > 0 %}
       rule: "{{ traefik_rule }}"
 {% elif url.path is undefined %}
       rule: "Host(`{{ expanded_url }}`)"
 {% else  %}
       rule: "Host(`{{ url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ url.path }}`)"
 {% endif %}
-      service: "{{ traefik_service_name | default(service_directory) }}"
+      service: "{{ traefik_options.service_name }}"
       tls: &modern
         options: modern@file
-{% if traefik_protocol == 'http' %}
+{% if traefik_options.protocol == 'http' %}
+{% if (traefik_options.middlewares| length > 0) or (traefik_options.redirect == True) %}
       middlewares:
-{% if traefik_redirect == True %}
-        - {{ service_directory }}-strip
-        - {{ service_directory }}-redirect
+{% if traefik_options.redirect == True %}
+        - {{ traefik_options.router_name }}-strip
+        - {{ traefik_options.router_name }}-redirect
 {% endif %}
-{% if traefik_middlewares is defined %}
-{% for middleware in traefik_middlewares %}
+{% if traefik_options.middlewares| length > 0)%}
+{% for middleware in traefik_options.middlewares %}
         - {{ middleware }}
 {% endfor %}
+{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}
