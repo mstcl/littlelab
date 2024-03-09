@@ -1,3 +1,8 @@
 ---
 config_file: "wikiless.config"
 network: "redis-net"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/Metastem/wikiless/main/static/wikiless-favicon.ico"
+  description: "Wikipedia frontend"
+  category: "General services"

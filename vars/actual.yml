@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/actualbudget/actual/master/packages/desktop-electron/icons/icon.ico"
+  description: "Personal finance"
+  category: "Personal services"

@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/janeczku/calibre-web/master/cps/static/favicon.ico"
+  description: "E-book library management"
+  category: "Personal services"

@@ -1,3 +1,2 @@
----
-setup_cron_bot_token: "" # required
-setup_cron_chat_id: "" # required
+setup_cron_bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='CRON_BOT_TOKEN') }}"
+setup_cron_chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"

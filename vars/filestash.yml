@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/mickael-kerjean/filestash/master/public/assets/logo/favicon.ico"
+  description: "Browser for file servers"
+  category: "Personal services"

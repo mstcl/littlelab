@@ -5,13 +5,13 @@ config_file: "install.yml"
 
 pydio_options:
   frontend:
-    user: ""
-    password: ""
+    user: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_ADMIN_USERNAME') }}"
+    password: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_ADMIN_PASSWORD') }}"
 
 mariadb:
-  image: mariadb:11.3.2
+  image: mariadb:11.2.3
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
-  user: ""
-  password: ""
-  root_password: ""
+  user: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_MARIADB_USER') }}"
+  password: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_MARIADB_PASSWORD') }}"
+  root_password: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_MARIADB_ROOT_PASSWORD') }}"
   db: "{{ service_directory }}"

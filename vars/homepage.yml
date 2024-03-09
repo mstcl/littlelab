@@ -1,11 +1,13 @@
 ---
-instance_name: "" # the title of the page, for more configuration: see template
-css_url: "" # (optional) grab custom css with wget
+instance_name: "BIM Dashboard"
+css_url: "https://raw.githubusercontent.com/mstcl/wardrobe/master/jumper/homepage"
 config_file: "settings.yaml"
 network: "socket-net"
 
-volumes: # declare extra mounts
-  - /mnt:/mnt
+volumes:
+  - /ares:/ares
+  - /mercury:/mercury
+  - /hades:/hades
 
 socket:
   image: "tecnativa/docker-socket-proxy:0.1"

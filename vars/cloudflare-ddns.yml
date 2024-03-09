@@ -1,2 +1,2 @@
 ---
-cf_token: ""
+cf_token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_DDNS') }}"

@@ -11,7 +11,13 @@ piped_proxy:
 
 postgres:
   image: "postgres:15-alpine"
-  user: ""
-  password: ""
+  user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
   db: "{{ service_directory }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/TeamPiped/Piped/master/public/favicon.ico"
+  description: "YouTube frontend"
+  category: "General services"
+  url: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"

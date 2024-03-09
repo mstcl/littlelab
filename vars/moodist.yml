@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/remvze/moodist/main/public/logo.svg"
+  description: "Ambient sound generator"
+  category: "General services"

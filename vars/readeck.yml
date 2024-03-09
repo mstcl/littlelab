@@ -6,3 +6,8 @@ readeck_options:
   - READECK_SERVER_PREFIX: "/"
   - READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
   - READECK_USE_X_FORWARDED: "true"
+
+homepage_config:
+  category: "Personal services"
+  icon: "https://readeck.org/media/logo.1cbb29bf.svg"
+  description: "Bookmark & archive manager"

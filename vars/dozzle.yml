@@ -8,3 +8,8 @@ dozzle_options:
   - DOZZLE_BASE: "/{{ urls.dozzle.path }}"
   - DOZZLE_AUTH_PROVIDER: "forward-proxy"
   - DOZZLE_NO_ANALYTICS: 1
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/amir20/dozzle/master/public/apple-touch-icon.png"
+  description: "Docker logs viewer"
+  category: "SysOps"

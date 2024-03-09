@@ -4,19 +4,19 @@ config_file: "config.hjson"
 postgres_config: "customPostgresql.conf"
 default_frontend: false # Enable this to run lemmy-ui
 
-theme_folder: "extra-themes" # (optional) custom css
-css_url: "" # (optional) grab custom css with wget
-css_name: "" # (optional) css theme name
+theme_folder: "extra-themes"
+css_url: "https://raw.githubusercontent.com/mstcl/wardrobe/master/jumper/lemmy"
+css_name: "whiskers_v8"
 
 smtp:
   enabled: true
-  sender: ""
-  password: ""
-  host: ""
+  sender: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_SENDER') }}"
+  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_SMTP_PASSWORD') }}"
+  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
 
 pictrs:
   image: "asonix/pictrs:0.5.4"
-  api_key: ""
+  api_key: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_PICTRS_API_KEY') }}"
 
 pictrs_options:
   - PICTRS__SERVER__API_KEY: "{{ pictrs.api_key }}"
@@ -27,11 +27,16 @@ lemmy_ui:
   image: "dessalines/lemmy-ui:0.18.5"
 
 lemmy_ui_options:
-  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/{{ theme_folder }}" # (optional) use custom css
+  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/{{ theme_folder }}"
 
 postgres:
   image: "postgres:16-alpine"
-  user: ""
-  password: ""
+  user: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_POSTGRES_PASSWORD') }}"
   db: "{{ service_directory }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
+
+homepage_config:
+  icon: "https://whiskers.bim.boats/pictrs/image/6e5b5700-0bcd-41cc-ab9f-be67f7522713.webp"
+  description: "Federated forum for nerds"
+  category: "General services"

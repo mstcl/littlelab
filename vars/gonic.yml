@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/sentriz/gonic/bf5e4d4811eefc35d8f9b5caa6bf9af1770d183c/server/ctrladmin/adminui/static/favicon.ico"
+  description: "Subsonic music server"
+  category: "Stream"

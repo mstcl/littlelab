@@ -1,18 +1,3 @@
-inventory/hosts
-files/adguard-home/files/persistent_clients.yml
-
-files/cgit/files/*.ico
-files/cgit/files/*.css
-
-files/cgit/files/*.html
-!files/cgit/files/header.html
-
-host_vars/*.yml
-!host_vars/examplebox.yml
-
-group_vars/*.yml
-!group_vars/example_homelab.yml
-
 debug.yml
 
 docs/.vitepress/dist
@@ -20,3 +5,14 @@ docs/.vitepress/cache
 /node_modules
 
 lookup_plugins/__pycache__
+
+playbooks/*vars
+playbooks/requirements.yml
+
+.stversions/*
+
+docs/
+yarn.lock
+.github/*
+README.md
+.renovaterc.*

@@ -2,17 +2,17 @@
 network: "postgres-net" # Docker network to talk to postgres
 
 oidc:
-  client_id: ""
-  client_secret: ""
-  digest: ""
+  client_id: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_ID') }}"
+  client_secret: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_SECRET') }}"
+  digest: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_MINIFLUX_DIGEST') }}"
   redirect_uris:
     - "https://{{ expanded_url }}/oauth2/oidc/callback"
 
 postgres:
   image: "postgres:15-alpine"
-  db: ""
-  user: ""
-  password: ""
+  db: "{{ service_directory }}"
+  user: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_USER') }}"
+  password: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_PASSWORD') }}"
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
 miniflux_options:
@@ -25,3 +25,8 @@ miniflux_options:
   - OAUTH2_REDIRECT_URL: "{{ oidc.redirect_uris[0] }}"
   - OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
   - OAUTH2_USER_CREATION: "0"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/miniflux/v2/main/internal/ui/static/bin/icon-192.png"
+  description: "RSS feed reader"
+  category: "General services"

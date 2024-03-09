@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/jellyfin/jellyfin-web/master/src/assets/img/icon-transparent.png"
+  description: "Media manager & player"
+  category: "Stream"

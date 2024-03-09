@@ -1,3 +1,8 @@
 ---
 libreddit_options:
   - LAYOUT: "clean"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/redlib-org/redlib/main/static/logo.png"
+  description: "Reddit frontend"
+  category: "General services"

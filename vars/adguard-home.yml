@@ -4,16 +4,45 @@ add_persistent_config: false # set this to false if clients have not been config
 network: "dns-net"
 config_file: "AdGuardHome.yaml"
 
-user: ""
-password: ""
+user: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_USER') }}"
+password: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_PASSWORD_HASH') }}"
+
+homepage_config:
+  icon: "https://raw.githubusercontent.com/AdguardTeam/AdGuardHome/master/client/public/assets/favicon.png"
+  description: "Ad-blocking DNS server"
+  category: "SysOps"
 
 upstream_dns:
   - "{{ unbound_dns_ip }}:{{ unbound_dns_port }}" # unbound
 fallback_dns:
   - 'tls://dns.quad9.net'
+  - 'tls://unfiltered.adguard-dns.com'
+  - 'h3://unfiltered.adguard-dns.com/dns-query'
+  - 'tls://dot-ch.blahdns.com'
+  - 'tls://unicast.censurfridns.dk'
+  - 'tls://anycast.censurfridns.dk'
+  - 'tls://getdnsapi.net'
+  - 'tls://dot.libredns.gr'
 filters:
   - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt
     name: Steven Black's List
     id: 1
+  - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_27.txt
+    name: OISD Blocklist Big
+    id: 2
+  - url: https://nsfw.oisd.nl
+    name: OISD NSFW
+    id: 3
 user_rules:
-  - '@@||example.com' # unblock example.com
+  - '@@||steampowered.com'
+  - '@@||steamcommunity.com'
+  - '@@||steamgames.com'
+  - '@@||steamusercontent.com'
+  - '@@||steamcontent.com'
+  - '@@||steamstatic.com'
+  - '@@||akamaihd.net'
+  - '@@||click.discord.com^$important'
+  - '@@||collector.github.com^$important'
+  - /^([^{{ urls.headscale.sub }}|^status]\S*\.)?bim\.boats$/$dnsrewrite={{ base_tailip }}
+  - '@@||kbin.social^$important'
+  - '@@||lemmynsfw.com^$important'

@@ -1,0 +1,5 @@
+---
+homepage_config:
+  icon: "https://raw.githubusercontent.com/Lidarr/Lidarr/develop/Logo/128.png"
+  description: "Music collection manager"
+  category: "Stream"
