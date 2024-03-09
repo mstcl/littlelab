@@ -1,4 +1,5 @@
 ---
+state: started
 config_file: "cgitrc"
 favicon_file: "favicon.ico"
 css_file: "style.css"
@@ -12,3 +13,29 @@ cgit_options:
   logo: true # set filename in logo_file
   favicon: true # set filename in favicon_file
   css: true # set filename in css_file
+
+docker_container_options:
+  state: "{{ state }}"
+  networks:
+    - name: "{{ docker.traefik_network }}"
+  env:
+    USE_CUSTOM_CONFIG: "true"
+  cap_drop:
+    - SYS_ADMIN
+    - AUDIT_WRITE
+    - MKNOD
+    - SYS_CHROOT
+    - NET_RAW
+    - SETFCAP
+    - SYS_PTRACE
+    - DAC_OVERRIDE
+    - SETPCAP
+  volumes:
+    - "{{ base_directory }}/{{ service_directory }}/header.html:/usr/lib/cgit/header.html:ro"
+    - "{{ location.repos }}:/srv/git:ro"
+    - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/cgitrc:ro"
+    # - "{{ base_directory }}/{{ service_directory }}/{{ favicon_file }}:/usr/share/webapps/cgit/{{ favicon_file }}:ro"
+    # - "{{ base_directory }}/{{ service_directory }}/{{ css_file }}:/usr/share/webapps/cgit/{{ css_file }}:ro"
+    # - "{{ base_directory }}/{{ service_directory }}/{{ about_file }}:/usr/lib/cgit/{{ about_file }}:ro"
+    # - "./{{ logo_file }}:/usr/lib/cgit/{{ logo_file }}:ro"
+    # - ./syntax-highlighting.py:/usr/lib/cgit/filters/syntax-highlighting.py:ro
