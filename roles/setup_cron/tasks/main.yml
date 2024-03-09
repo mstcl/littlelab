@@ -7,6 +7,17 @@
     packages_native:
       - cronie
       - curl
+  when: ansible_distribution != "Debian"
+
+- name: Install packages on Debian
+  tags: packages
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    packages_native:
+      - cron
+      - curl
+  when: ansible_distribution == "Debian"
 
 - name: Setup script to notify when a cronjob fails
   ansible.builtin.template:
@@ -24,3 +35,13 @@
   vars:
     systemd_services:
       - "cronie"
+  when: ansible_distribution != "Debian"
+
+- name: Enable and start systemd service (Debian)
+  tags: packages
+  ansible.builtin.include_role:
+    name: systemd
+  vars:
+    systemd_services:
+      - "cron"
+  when: ansible_distribution == "Debian"

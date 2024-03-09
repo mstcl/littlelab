@@ -1,12 +1,14 @@
 - name: Setup homelab
-  gather_facts: false
+  gather_facts: true
   hosts: homelab
+  become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   vars_prompt:
     - name: setup_default_user_password
       prompt: Enter the base user's password (not root user's password)
 
   pre_tasks:
     - name: Make necessary directories
+      tags: dirs
       ansible.builtin.file:
         path: "{{ item.path }}"
         owner: "{{ item.owner | default('1000') }}"
@@ -25,9 +27,23 @@
         - { path: "{{ location.docker_data }}" }
         - { path: "{{ location.repos }}", owner: "1001" }
 
+    - name: Install pip on Debian
+      tags: python
+      ansible.builtin.include_role:
+        name: packages
+      vars:
+        packages_native:
+          - "python3-pip"
+      when: ansible_distribution == "Debian"
+
   roles:
     - role: setup_default_user
+      tags: user
     - role: setup_sshd
+      tags: sshd
     - role: setup_ufw
+      tags: ufw
     - role: setup_docker
+      tags: setup_docker
     - role: setup_cron
+      tags: setup_cron
