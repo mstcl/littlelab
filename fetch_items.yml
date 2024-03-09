@@ -1,0 +1,27 @@
+---
+- name: Fetch certain files from urls and place them on specific hosts
+  gather_facts: false
+
+- name: Fetch Lemmy css
+  hosts: localhost
+  roles:
+    role: fetch_items_from_urls
+    vars:
+      fetch_items_from_urls_service_directory: lemmy
+      fetch_items_from_urls_urls:
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/_variables.whiskers_v8.scss"
+          filename: "_variables.whiskers_v8.scss"
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/whiskers_v8.scss"
+          filename: "whisers_v8.scss"
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/whiskers_v8.css"
+          filename: "whiskers_v8.css"
+
+- name: Fetch homepage css
+  hosts: localhost
+  roles:
+    role: fetch_items_from_urls
+    vars:
+      fetch_items_from_urls_service_directory: homepage
+      fetch_items_from_urls_urls:
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/homepage/custom.css"
+          filename: "custom.css"
