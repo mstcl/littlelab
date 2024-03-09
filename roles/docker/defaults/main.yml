@@ -1,8 +1,12 @@
 ---
-docker_run: true
 docker_attach_redis: false
 docker_add_redis_volume: true
 docker_attach_mariadb: false
 docker_attach_postgres: false
 docker_print_output: false
-docker_force_up: false
+
+docker_state: started
+docker_recreate: true
+docker_name: "{{ service_directory }}"
+docker_image: "{{ image }}"
+docker_restart_policy: unless-stopped
