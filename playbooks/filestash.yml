@@ -4,21 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/filestash.yml
-  vars:
-    service_directory: "filestash"
-    image: "machines/filestash:latest"
-    url: "{{ urls.filestash }}"
 
   roles:
     - role: urls
     - role: config
-      vars:
-        config_directories: [{}]
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 8334
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: homepage

@@ -1,5 +1,22 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/mickael-kerjean/filestash/master/public/assets/logo/favicon.ico"
-  description: "Browser for file servers"
-  category: "Personal services"
+service_directory: "filestash"
+image: "machines/filestash:latest"
+url: "{{ urls.filestash }}"
+
+state: ""
+
+# config_file: "config.json" # (optional) configuration file (to avoid reconfiguring)
+
+config_directories: [{}] # create docker data directory to store DB.
+# config_files: [{}] # (optional) template the configuration file
+
+docker_env:
+  ADMIN_PASSWORD: ""
+  APPLICATION_URL: "https://{{ expanded_url }}"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/app/data/state/"
+  # - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/data/state/config/config.json:ro"
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8334
