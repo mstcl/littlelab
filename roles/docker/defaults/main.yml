@@ -5,8 +5,10 @@ docker_attach_mariadb: false
 docker_attach_postgres: false
 docker_print_output: false
 
-docker_state: started
+docker_state: "{{ state }}"
 docker_recreate: true
 docker_name: "{{ service_directory }}"
 docker_image: "{{ image }}"
 docker_restart_policy: unless-stopped
+docker_networks:
+  - name: "{{ docker.traefik_network }}"
