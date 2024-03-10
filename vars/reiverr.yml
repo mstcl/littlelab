@@ -1,5 +1,17 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/aleksilassila/reiverr/master/static/favicon.png"
-  description: "Watch movies and shows "
-  category: "Stream"
+service_directory: "reiverr"
+image: "ghcr.io/aleksilassila/reiverr:v0.8.1"
+url: "{{ urls.reiverr }}"
+
+state: ""
+
+config_directories: [{}] # make docker data directory for DB
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 9494
+traefik_middlewares:
+  - "internal-ip@file"
+
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/config"
