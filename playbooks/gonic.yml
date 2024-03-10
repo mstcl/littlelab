@@ -6,7 +6,7 @@
     - vars/gonic.yml
   vars:
     service_directory: "gonic"
-    image: "sentriz/gonic:v0.16.2"
+    image: "sentriz/gonic:v0.16.3"
     url: "{{ urls.gonic }}"
 
   roles:
