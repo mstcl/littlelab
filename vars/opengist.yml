@@ -1,4 +1,8 @@
 ---
+service_directory: "opengist"
+image: "ghcr.io/thomiceli/opengist:1"
+url: "{{ urls.opengists }}"
+
 state: ""
 
 config_directories: [{}] # create default data directory for DBs

@@ -4,10 +4,6 @@
   gather_facts: false
   vars_files:
     - vars/opengist.yml
-  vars:
-    service_directory: "opengist"
-    image: "ghcr.io/thomiceli/opengist:1"
-    url: "{{ urls.opengists }}"
 
   roles:
     - role: urls
