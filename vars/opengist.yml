@@ -3,10 +3,7 @@ state: started
 
 config_directories: [{}] # create default data directory for DBs
 
-docker_state: "{{ state }}"
 docker_image: "{{ image }}"
-docker_networks:
-  - name: "{{ docker.traefik_network }}"
 docker_env:
   # see the rest here: https://github.com/thomiceli/opengist/blob/master/docs/configuration/cheat-sheet.md
   UID: "1000"
