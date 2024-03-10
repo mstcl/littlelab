@@ -4,26 +4,11 @@
   gather_facts: false
   vars_files:
     - vars/gonic.yml
-  vars:
-    service_directory: "gonic"
-    image: "sentriz/gonic:v0.16.3"
-    url: "{{ urls.gonic }}"
 
   roles:
     - role: urls
     - role: config
-      vars:
-        config_directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}/playlists"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/podcasts"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/data"
-          - path: "{{ location.cache }}/{{ service_directory }}"
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 4747
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: backup
     - role: homepage
