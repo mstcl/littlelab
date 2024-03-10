@@ -14,9 +14,6 @@ cgit_options:
   favicon: true # set filename in favicon_file
   css: true # set filename in css_file
 
-docker_state: "{{ state }}"
-docker_networks:
-  - name: "{{ docker.traefik_network }}"
 docker_env:
   USE_CUSTOM_CONFIG: "true"
 docker_cap_drop:
