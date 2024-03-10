@@ -1,5 +1,6 @@
 ---
 - name: Make user
+  when: create_host_users_users is defined
   ansible.builtin.user:
     name: "{{ item.name }}"
     shell: "{{ item.shell | default('/usr/sbin/nologin') }}"
