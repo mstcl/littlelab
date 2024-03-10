@@ -1,3 +1,21 @@
+---
+service_directory: "cgit"
+image: "joseluisq/alpine-cgit:2.5"
+url: "{{ urls.cgit }}"
+
+state: started
+
+# make a user for git
+create_host_users_users:
+  - name: "git"
+    uid: ""
+    group: "git"
+    shell: /usr/bin/git-shell
+
+config_files: [{}] # template config file (declared below)
+config_copies: # copy over a mobile friendly html header
+  - file_name: "header.html"
+
 config_file: "cgitrc"
 # favicon_file: "favicon.ico" # (optional) place in files/cgit/files
 # css_file: "style.css" # (optional) place in files/cgit/files

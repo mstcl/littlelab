@@ -4,20 +4,8 @@
   gather_facts: false
   vars_files:
     - vars/cgit.yml
-  vars:
-    service_directory: "cgit"
-    image: "joseluisq/alpine-cgit:2.5"
-    url: "{{ urls.cgit }}"
 
   pre_tasks:
-    - name: Make git user
-      ansible.builtin.user:
-        name: "git"
-        group: "git"
-        groups: sshuser
-        shell: /usr/bin/git-shell
-        create_home: true
-        uid: 1001
     - name: Get full url
       tags: ["urls", "traefik", "homepage"]
       ansible.builtin.include_role:
@@ -27,13 +15,6 @@
 
   roles:
     - role: create_host_users
-      vars:
-        create_host_users_users:
-          - name: "git"
-            uid: 1001
-            group: "git"
-            groups: "sshuser"
-            shell: /usr/bin/git-shell
     - role: config
       when: cgit_options.css and (css_file | length > 0)
       vars:
@@ -60,11 +41,6 @@
         config_copies:
           - file_name: "syntax-highlighting.py"
             permission: "0655"
-    - role: config
-      vars:
-        config_files: [{}]
-        config_copies:
-          - file_name: "header.html"
     - role: docker
     - role: traefik
     - role: homepage
