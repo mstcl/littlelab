@@ -1,5 +1,37 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/sentriz/gonic/bf5e4d4811eefc35d8f9b5caa6bf9af1770d183c/server/ctrladmin/adminui/static/favicon.ico"
-  description: "Subsonic music server"
-  category: "Stream"
+service_directory: "gonic"
+image: "sentriz/gonic:v0.16.3"
+url: "{{ urls.gonic }}"
+
+state: started
+
+podcasts_loc: "{{ location.docker_data }}/{{ service_directory }}/podcasts"
+playlists_loc: "{{ location.docker_data }}/{{ service_directory }}/playlists"
+data_loc: "{{ location.docker_data }}/{{ service_directory }}/data"
+cache_loc: "{{ location.cache }}/{{ service_directory }}"
+
+config_directories:
+  - path: "{{ podcasts_loc }}"
+  - path: "{{ playlists_loc }}"
+  - path: "{{ data_loc }}"
+  - path: "{{ cache_loc }}"
+
+docker_env:
+  GONIC_LISTEN_ADDR: "0.0.0.0:8080"
+  GONIC_HTTP_LOG: "False"
+  TZ: "{{ base_timezone }}"
+  GONIC_MUSIC_PATH: "/music"
+  GONIC_SCAN_WATCHER_ENABLED: "True"
+  GONIC_SCAN_AT_START_ENABLED: "True"
+  GONIC_MULTI_VALUE_GENRE: "delim ;"
+  GONIC_MULTI_VALUE_ALBUM_ARTIST: "delim ;"
+
+docker_volumes:
+  - "{{ podcasts_loc }}:/podcasts"
+  - "{{ playlists_loc }}:/playlists"
+  - "{{ data_loc }}:/data"
+  - "{{ cache_loc }}:/cache"
+  - "{{ location.music }}:/music"
+
+traefik_middlewares:
+  - "internal-ip@file"
