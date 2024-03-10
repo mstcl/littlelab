@@ -1,32 +1,36 @@
 ---
-- name: Deploy docker compose file
-  tags: docker
-  ansible.builtin.template:
-    src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml.j2"
-    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
-    mode: "0644"
-  when: service_directory is defined
+- name: Add container
+  tags: ["docker"]
+  ansible.builtin.include_tasks: add_container.yml
 
-- name: Add redis
-  tags: ["docker", "redis"]
-  ansible.builtin.include_tasks: add_redis.yml
-  when: docker_attach_redis
-
-- name: Add mariadb
-  tags: ["docker", "mariadb"]
-  ansible.builtin.include_tasks: add_mariadb.yml
-  when: docker_attach_mariadb
-
-- name: Add postgres
-  tags: ["docker", "postgres"]
-  ansible.builtin.include_tasks: add_postgres.yml
-  when: docker_attach_postgres
-
-- name: Start compose file
-  tags: ["docker", "deploy"]
-  community.docker.docker_compose:
-    project_src: "{{ base_directory }}/{{ service_directory }}"
-    state: present
-    pull: false
-    remove_orphans: true
-  when: docker_run and service_directory is defined
+# - name: Deploy docker compose file
+#   tags: docker
+#   ansible.builtin.template:
+#     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}/templates/docker-compose.yml.j2"
+#     dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
+#     mode: "0644"
+#   when: service_directory is defined
+#
+# - name: Add redis
+#   tags: ["docker", "redis"]
+#   ansible.builtin.include_tasks: add_redis.yml
+#   when: docker_attach_redis
+#
+# - name: Add mariadb
+#   tags: ["docker", "mariadb"]
+#   ansible.builtin.include_tasks: add_mariadb.yml
+#   when: docker_attach_mariadb
+#
+# - name: Add postgres
+#   tags: ["docker", "postgres"]
+#   ansible.builtin.include_tasks: add_postgres.yml
+#   when: docker_attach_postgres
+#
+# - name: Start compose file
+#   tags: ["docker", "deploy"]
+#   community.docker.docker_compose:
+#     project_src: "{{ base_directory }}/{{ service_directory }}"
+#     state: present
+#     pull: false
+#     remove_orphans: true
+#   when: docker_run and service_directory is defined

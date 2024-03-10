@@ -1,6 +1,7 @@
 ---
 - name: Make service directory
   tags: config
+  when: config_files is defined or config_copies is defined
   ansible.builtin.file:
     path: "{{ base_directory }}/{{ service_directory }}"
     owner: "1000"
