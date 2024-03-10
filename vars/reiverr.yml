@@ -3,7 +3,7 @@ service_directory: "reiverr"
 image: "ghcr.io/aleksilassila/reiverr:v0.8.1"
 url: "{{ urls.reiverr }}"
 
-state: ""
+state: started
 
 config_directories: [{}] # make docker data directory for DB
 
