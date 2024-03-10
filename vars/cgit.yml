@@ -5,15 +5,15 @@ url: "{{ urls.cgit }}"
 
 state: started
 
-# make a user for git
 create_host_users_users:
   - name: "git"
-    uid: ""
+    uid: 1001
     group: "git"
+    groups: "sshuser"
     shell: /usr/bin/git-shell
 
-config_files: [{}] # template config file (declared below)
-config_copies: # copy over a mobile friendly html header
+config_files: [{}]
+config_copies:
   - file_name: "header.html"
 
 config_file: "cgitrc"
