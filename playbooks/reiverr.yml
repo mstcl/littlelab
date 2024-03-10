@@ -6,7 +6,7 @@
     - vars/reiverr.yml
   vars:
     service_directory: "reiverr"
-    image: "ghcr.io/aleksilassila/reiverr:v0.8.0"
+    image: "ghcr.io/aleksilassila/reiverr:v0.8.1"
     url: "{{ urls.reiverr }}"
 
   roles:
