@@ -1,4 +1,1 @@
 ---
-ufw_rule: 'allow'
-ufw_local: true
-ufw_protocol: 'tcp'
