@@ -12,3 +12,9 @@ docker_image: "{{ image }}"
 docker_restart_policy: unless-stopped
 docker_networks:
   - name: "{{ docker.traefik_network }}"
+
+docker_postgres_state: "{{ state }}"
+docker_postgres_recreate: false
+docker_postgres_alias: "{{ service_directory }}-postgres"
+docker_postgres_volumes:
+  - "{{ docker_postgres_location }}:/var/lib/postgresql/data"
