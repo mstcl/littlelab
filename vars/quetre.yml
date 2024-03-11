@@ -1,0 +1,20 @@
+---
+service_directory: "quetre"
+image: "codeberg.org/video-prize-ranch/quetre:v7.1.0"
+url: "{{ urls.quetre }}"
+
+state: started
+
+docker_attach_redis: true
+docker_redis_image: "redis:6.2-alpine"
+docker_redis_network: "{{ service_directory }}-redis-net"
+
+docker_networks:
+  - name: "{{ docker_traefik_network }}"
+  - name: "{{ docker_redis_network }}"
+docker_env:
+  PORT: "8080"
+  NODE_ENV: "production"
+  CACHE_PERIOD: "2h"
+  REDIS_URL: "quetre-redis:6379"
+  REDIS_TTL: "3600"
