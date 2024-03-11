@@ -21,10 +21,10 @@
 #   ansible.builtin.include_tasks: add_mariadb.yml
 #   when: docker_attach_mariadb
 #
-# - name: Add postgres
-#   tags: ["docker", "postgres"]
-#   ansible.builtin.include_tasks: add_postgres.yml
-#   when: docker_attach_postgres
+- name: Add postgres
+  tags: ["docker", "postgres"]
+  ansible.builtin.include_tasks: add_postgres.yml
+  when: docker_attach_postgres
 #
 # - name: Start compose file
 #   tags: ["docker", "deploy"]
