@@ -5,7 +5,7 @@ packages_native: gnu-netcat # need nc
 
 working_dir: "{{ base_directory }}/{{ service_directory }}/tinystatus"
 
-git_repo: "https://github.com/bderenzo/tinystatus"
+git_repo: "https://git.bim.boats/tinystatus"
 git_destination: "{{ working_dir }}"
 git_branch: master
 
