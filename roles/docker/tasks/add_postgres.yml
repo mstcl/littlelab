@@ -10,7 +10,7 @@
     state: "{{ docker_postgres_state }}"
     recreate: false
     name: "{{ service_directory }}-postgres"
-    image: {{ docker_postgres_image }}
+    image: "{{ docker_postgres_image }}"
     security_opts:
       - no-new-privileges
     restart: "{{ docker_restart_policy }}"
@@ -22,7 +22,7 @@
       - name: "{{ docker_pgweb_network }}"
       - name: "{{ docker_postgres_network }}"
         aliases:
-          - {{ docker_postgres_alias }}
+          - "{{ docker_postgres_alias }}"
     volumes: "{{ docker_postgres_volumes }}"
     command: "{{ docker_postgres_command | default(omit) }}"
     env:
