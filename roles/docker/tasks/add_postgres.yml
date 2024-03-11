@@ -1,4 +1,9 @@
 ---
+- name: Create docker network for communication with backend
+  tags: ["network", "docker", "postgres"]
+  community.docker.docker_network:
+    name: "{{ docker_postgres_network }}"
+
 - name: Add postgres service
   tags: ["docker", "postgres"]
   community.docker.docker_container:
@@ -14,8 +19,8 @@
       max-size: "50m"
       max-file: "4"
     networks:
-      - name: "{{ postgres_network }}"
-      - name: "{{ service_directory }}-postgres-net"
+      - name: "{{ docker_pgweb_network }}"
+      - name: "{{ docker_postgres_network }}"
         aliases:
           - {{ docker_postgres_alias }}
     volumes: "{{ docker_postgres_volumes }}"
