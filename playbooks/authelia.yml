@@ -85,11 +85,6 @@
         authelia_oidc_vars_file: "vars/portainer.yml"
     - role: authelia_oidc
       vars:
-        authelia_oidc_url: "{{ urls.miniflux }}"
-        authelia_oidc_service_name: "Miniflux"
-        authelia_oidc_vars_file: "vars/miniflux.yml"
-    - role: authelia_oidc
-      vars:
         authelia_oidc_url: "{{ urls.immich }}"
         authelia_oidc_service_name: "Immich"
         authelia_oidc_vars_file: "vars/immich.yml"
