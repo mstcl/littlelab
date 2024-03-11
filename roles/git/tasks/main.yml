@@ -1,5 +1,6 @@
 ---
 - name: Clone repo with specific branch
+  tags: git
   ansible.builtin.git:
     repo: "{{ git_repo }}"
     dest: "{{ git_destination }}"
