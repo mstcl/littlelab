@@ -1,0 +1,4 @@
+---
+docker_image_container_repository: "https://git.bim.boats/containers"
+docker_image_container_branch: masterk
+docker_image_repository: "{{ docker_image }}:latest"
