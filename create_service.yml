@@ -18,13 +18,14 @@
         force: false
         content: |
           ---
+          service_directory: "{{ service_directory }}"
+          image: ""
+          {% raw %}url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
+
           {% raw %}state: started
 
-          docker_container_options:
-            state: "{{ state }}"
-            image: "{{ image }}"
-            networks:
-              - name: "{{ docker.traefik_network }}"{% endraw %}
+          traefik_middlewares:
+            - "internal_ip@file"
     - name: Create playbook
       ansible.builtin.copy:
         mode: "0644"
@@ -37,13 +38,9 @@
             gather_facts: false
             vars_files:
               - vars/{{ service_directory }}.yml
-            vars:
-              service_directory: "{{ service_directory }}"
-              image: ""
-              {% raw %}url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
 
-            {% raw %}
             roles:
               - role: urls
               - role: docker
               - role: traefik
+              - role: homepage

@@ -1,30 +1,36 @@
 ---
+- name: Create docker network for communication with backend
+  tags: ["network", "docker", "redis"]
+  community.docker.docker_network:
+    name: "{{ docker_redis_network }}"
+
 - name: Add redis service
   tags: ["docker", "redis"]
-  ansible.builtin.blockinfile:
-    state: present
-    insertafter: EOF
-    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
-    prepend_newline: true
-    marker: "  # {mark} REDIS CONFIGURATION"
-    content: |2
-        {{ service_directory }}-redis:
-          image: {{ redis.image }}
-          container_name: {{ service_directory }}-redis
-          restart: unless-stopped
-          security_opt:
-            - no-new-privileges:true
-          logging: *default-logging
-          networks:
-            - {{ network }}
-          read_only: true
-      {% if docker_attach_redis_volume %}
-          volumes:
-            - {{ location.docker_data }}/{{ service_directory }}_redis:/data
-      {% endif %}
-          cap_drop:
-            - ALL
-          cap_add:
-            - CHOWN
-            - SETGID
-            - SETUID
+  community.docker.docker_container:
+    state: "{{ docker_redis_state }}"
+    recreate: "{{ docker_redis_recreate }}"
+    name: "{{ service_directory }}-redis"
+    image: "{{ docker_redis_image }}"
+    security_opts:
+      - no-new-privileges
+    restart_policy: "{{ docker_restart_policy }}"
+    log_driver: json-file
+    log_options:
+      max-size: "50m"
+      max-file: "4"
+    networks:
+      - name: "{{ docker_redis_network }}"
+    read_only: true
+    volumes: "{{ docker_redis_volumes | default(omit) }}"
+    command: "{{ docker_redis_command | default(omit) }}"
+    cap_drop:
+      - ALL
+    capabilities:
+      - CHOWN
+      - SETGID
+      - SETUID
+
+# {% if docker_attach_redis_volume %}
+#     volumes:
+#       - {{ location.docker_data }}/{{ service_directory }}_redis:/data
+# {% endif %}
