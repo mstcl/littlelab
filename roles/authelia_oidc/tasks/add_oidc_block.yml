@@ -1,21 +1,4 @@
 ---
-- name: Clear facts
-  tags: ["authelia", "oidc"]
-  ansible.builtin.set_fact:
-    expanded_url: ""
-
-- name: Get url
-  tags: ["authelia", "oidc"]
-  ansible.builtin.include_role:
-    name: urls
-  vars:
-    urls_url: "{{ authelia_oidc_url }}"
-
-- name: Get variables
-  tags: ["authelia", "oidc"]
-  ansible.builtin.include_vars:
-    file: "{{ authelia_oidc_vars_file }}"
-
 - name: Add an OIDC block to Authelia configuration
   tags: ["authelia", "oidc"]
   become: true
@@ -25,24 +8,18 @@
     dest: "{{ base_directory }}/authelia/config/configuration.yml"
     marker: "      # {mark} {{ authelia_oidc_service_name | upper }} CONFIGURATION"
     content: |2
-            - id: {{ oidc.client_id }}
+            - id: {{ authelia_oidc_client_id }}
               description: {{ authelia_oidc_service_name }}
-              secret: '{{ oidc.digest }}'
+              secret: '{{ authelia_oidc_digest }}'
               public: false
               authorization_policy: two_factor
               redirect_uris:
-      {% for uri in oidc.redirect_uris %}
+      {% for uri in authelia_oidc_redirect_uris %}
                 - {{ uri }}
       {% endfor %}
               scopes:
-      {% if scopes is undefined %}
-                - openid
-                - profile
-                - groups
-                - email
-      {% else %}
-      {% for scope in item.scopes %}
+      {% for scope in authelia_oidc_scopes %}
                 - {{ scope }}
-      {% endfor %}
-      {% endif %}
+      {% else %}
               userinfo_signing_algorithm: none
+  notify: Restart authelia

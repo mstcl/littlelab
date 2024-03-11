@@ -5,28 +5,15 @@
   vars_files:
     - vars/miniflux.yml
   vars:
-    service_directory: "miniflux"
-    image: "miniflux/miniflux:2.1.1"
-    url: "{{ urls.miniflux }}"
 
   roles:
     - role: urls
     - role: config
       become: true
-      vars:
-        config_directories:
-          -
-          - path: "{{ postgres.location }}"
-            owner: "70"
-            permission: "0700"
     - role: docker
       vars:
         docker_attach_postgres: true
-        docker_run: false
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: homepage
     - role: backup
+    - role: authelia_oidc
