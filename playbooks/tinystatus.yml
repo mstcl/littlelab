@@ -40,4 +40,4 @@
         name: "Update statuspage"
         minute: "*/2"
         job: "{{ location.scripts }}/tinystatus_cron.sh > /dev/null || \
-          {{ base_directory.scripts }}/alert.sh 'ERROR: tinystatus failed!'"
+          {{ location.scripts }}/alert.sh 'ERROR: tinystatus failed!'"
