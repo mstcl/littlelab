@@ -25,8 +25,8 @@ config_directories:
     permission: "0700"
 
 docker_networks:
-  - "{{ docker_traefik_network }}"
-  - "{{ docker_postgres_network }}"
+  - name: "{{ docker_traefik_network }}"
+  - name: "{{ docker_postgres_network }}"
 docker_env:
   DATABASE_URL: "postgres://{{ docker_postgres_user }}:{{ docker_postgres_password }}@{{ service_directory }}-postgres/{{ docker_postgres_db }}?sslmode=disable"
   BASE_URL: "https://{{ expanded_url }}"
