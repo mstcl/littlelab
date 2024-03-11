@@ -20,3 +20,6 @@ docker_postgres_recreate: false
 docker_postgres_alias: "{{ service_directory }}-postgres"
 docker_postgres_volumes:
   - "{{ docker_postgres_location }}:/var/lib/postgresql/data"
+
+docker_redis_state: "{{ state }}"
+docker_redis_recreate: false
