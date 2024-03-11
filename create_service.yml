@@ -22,7 +22,7 @@
           image: ""
           {% raw %}url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
 
-          {% raw %}state: started
+          state: started
 
           traefik_middlewares:
             - "internal_ip@file"
