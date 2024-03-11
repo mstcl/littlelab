@@ -1,4 +1,11 @@
 ---
+- name: Ensure destination path exists
+  ansible.builtin.file:
+    path: "{{ item.destination | dirname }}"
+    state: directory
+    mode: "0755"
+  with_items: "{{ fetch_items_from_urls_urls }}"
+
 - name: Fetch a file
   ansible.builtin.get_url:
     url: "{{ item.url }}"
