@@ -1,32 +1,35 @@
 ---
-network: "postgres-net" # Docker network to talk to postgres
+service_directory: "miniflux"
+image: "miniflux/miniflux:2.1.1"
+url: "{{ urls.miniflux }}"
 
-oidc:
-  client_id: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_ID') }}"
-  client_secret: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_OIDC_SECRET') }}"
-  digest: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_MINIFLUX_DIGEST') }}"
-  redirect_uris:
-    - "https://{{ expanded_url }}/oauth2/oidc/callback"
+state: ""
 
-postgres:
-  image: "postgres:15-alpine"
-  db: "{{ service_directory }}"
-  user: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_PASSWORD') }}"
-  location: "{{ location.docker_data }}/{{ service_directory }}/db"
+authelia_oidc_client_id: ""
+authelia_oidc_client_secret: ""
+authelia_oidc_digest: ""
+authelia_oidc_redirect_uris:
+  - "https://{{ expanded_url }}/oauth2/oidc/callback"
 
-miniflux_options:
-  - DATABASE_URL: "postgres://{{ postgres.user }}:{{ postgres.password }}@{{ service_directory }}-postgres/{{ postgres.db }}?sslmode=disable"
-  - BASE_URL: "https://{{ expanded_url }}"
-  - RUN_MIGRATIONS: "1"
-  - OAUTH2_PROVIDER: "oidc"
-  - OAUTH2_CLIENT_ID: "{{ oidc.client_id }}"
-  - OAUTH2_CLIENT_SECRET: "{{ oidc.client_secret }}"
-  - OAUTH2_REDIRECT_URL: "{{ oidc.redirect_uris[0] }}"
-  - OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
-  - OAUTH2_USER_CREATION: "0"
+docker_attach_postgres: true
+docker_postgres_image: "postgres:15-alpine"
+docker_postgres_db: ""
+docker_postgres_user: ""
+docker_postgres_password: ""
+docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/miniflux/v2/main/internal/ui/static/bin/icon-192.png"
-  description: "RSS feed reader"
-  category: "General services"
+config_directories:
+  - path: "{{ docker_postgres_location }}"
+    owner: "70"
+    permission: "0700"
+
+docker_env:
+  DATABASE_URL: "postgres://{{ docker_postgres_user }}:{{ docker_postgres_password }}@{{ service_directory }}-postgres/{{ docker_postgres_db }}?sslmode=disable"
+  BASE_URL: "https://{{ expanded_url }}"
+  RUN_MIGRATIONS: "1"
+  # OAUTH2_PROVIDER: "oidc"
+  # OAUTH2_CLIENT_ID: "{{ authelia_oidc_client_id }}"
+  # OAUTH2_CLIENT_SECRET: "{{ authelia_oidc_client_secret }}"
+  # OAUTH2_REDIRECT_URL: "{{ authelia_oidc_redirect_uris[0] }}"
+  # OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
+  # OAUTH2_USER_CREATION: "0"
