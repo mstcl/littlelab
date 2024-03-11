@@ -13,7 +13,7 @@
     image: "{{ docker_postgres_image }}"
     security_opts:
       - no-new-privileges
-    restart: "{{ docker_restart_policy }}"
+    restart_policy: "{{ docker_restart_policy }}"
     log_driver: json-file
     log_options:
       max-size: "50m"
