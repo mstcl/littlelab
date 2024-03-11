@@ -2,5 +2,6 @@ docker:
   compose_version: "3.8" # the current compose version
   traefik_network: "traefik" # the docker network for internal services
   expose_network: "expose" # the docker network for public services
+  pg_network: "pg" # (optional) the network for pgweb
 
 # anything else for the group homelab goes here
