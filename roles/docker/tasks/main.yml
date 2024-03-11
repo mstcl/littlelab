@@ -1,7 +1,4 @@
 ---
-- name: Add container
-  tags: ["docker"]
-  ansible.builtin.include_tasks: add_container.yml
 
 # - name: Deploy docker compose file
 #   tags: docker
@@ -25,7 +22,11 @@
   tags: ["docker", "postgres"]
   ansible.builtin.include_tasks: add_postgres.yml
   when: docker_attach_postgres
-#
+
+- name: Add container for {{ service_directory }}
+  tags: ["docker"]
+  ansible.builtin.include_tasks: add_container.yml
+
 # - name: Start compose file
 #   tags: ["docker", "deploy"]
 #   community.docker.docker_compose:
