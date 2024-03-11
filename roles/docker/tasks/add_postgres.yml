@@ -1,34 +1,26 @@
 ---
 - name: Add postgres service
   tags: ["docker", "postgres"]
-  ansible.builtin.blockinfile:
-    state: present
-    insertafter: EOF
-    dest: "{{ base_directory }}/{{ service_directory }}/docker-compose.yml"
-    prepend_newline: true
-    marker: "  # {mark} POSTGRES CONFIGURATION"
-    content: |2
-        {{ service_directory }}-postgres:
-          image: {{ postgres.image }}
-          container_name: {{ service_directory }}-postgres
-          restart: unless-stopped
-          security_opt:
-            - no-new-privileges:true
-          networks:
-            pg-net:
-              aliases:
-                - {{ service_directory }}-postgres
-            {{ network }}:
-              aliases:
-                - {{ postgres.alias | default(service_directory + '-postgres') }}
-          logging: *default-logging
-          volumes:
-            - {{ postgres.location }}:/var/lib/postgresql/data
-      {% if postgres_config is defined %}
-            - ./{{ postgres_config }}:/etc/postgresql.conf
-          command: postgres -c config_file=/etc/postgresql.conf
-      {% endif %}
-          environment:
-              POSTGRES_USER: "{{ postgres.user }}"
-              POSTGRES_PASSWORD: "{{ postgres.password }}"
-              POSTGRES_DB: "{{ postgres.db }}"
+  community.docker.docker_container:
+    state: "{{ docker_postgres_state }}"
+    recreate: false
+    name: "{{ service_directory }}-postgres"
+    image: {{ docker_postgres_image }}
+    security_opts:
+      - no-new-privileges
+    restart: "{{ docker_restart_policy }}"
+    log_driver: json-file
+    log_options:
+      max-size: "50m"
+      max-file: "4"
+    networks:
+      - name: "{{ postgres_network }}"
+      - name: "{{ service_directory }}-postgres-net"
+        aliases:
+          - {{ docker_postgres_alias }}
+    volumes: "{{ docker_postgres_volumes }}"
+    command: "{{ docker_postgres_command | default(omit) }}"
+    env:
+      POSTGRES_USER: "{{ docker_postgres_user }}"
+      POSTGRES_PASSWORD: "{{ docker_postgres_password }}"
+      POSTGRES_DB: "{{ docker_postgres_db }}"
