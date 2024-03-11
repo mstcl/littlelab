@@ -1,4 +1,5 @@
 ---
 - name: Add OIDC block
   tags: ["authelia", "oidc"]
+  when: authelia_oidc_client_id | length > 0
   ansible.builtin.include_tasks: add_oidc_block.yml

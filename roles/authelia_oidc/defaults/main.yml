@@ -1,0 +1,7 @@
+---
+authelia_oidc_service_name: "{{ service_directory | capitalize }}"
+authelia_oidc_scopes:
+  - openid
+  - profile
+  - groups
+  - email
