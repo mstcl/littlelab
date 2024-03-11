@@ -3,25 +3,45 @@
   gather_facts: false
 
 - name: Fetch Lemmy css
-  hosts: localhost
+  tags: lemmy
+  hosts: homelab
   roles:
     role: fetch_items_from_urls
     vars:
-      fetch_items_from_urls_service_directory: lemmy
       fetch_items_from_urls_urls:
         - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/_variables.whiskers_v8.scss"
-          filename: "_variables.whiskers_v8.scss"
+          destination: "{{ base_directory }}/lemmy-ui/css/_variables.whiskers_v8.scss"
         - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/whiskers_v8.scss"
-          filename: "whisers_v8.scss"
+          destination: "{{ base_directory }}/lemmy-ui/css/whisers_v8.scss"
         - url: "https://git.bim.boats/wardrobe/plain/jumper/lemmy/whiskers_v8.css"
-          filename: "whiskers_v8.css"
+          destination: "{{ base_directory }}/lemmy-ui/css/whiskers_v8.css"
 
 - name: Fetch homepage css
-  hosts: localhost
+  tags: homepage
+  hosts: homelab
   roles:
     role: fetch_items_from_urls
     vars:
-      fetch_items_from_urls_service_directory: homepage
       fetch_items_from_urls_urls:
         - url: "https://git.bim.boats/wardrobe/plain/jumper/homepage/custom.css"
-          filename: "custom.css"
+          destination: "{{ base_directory }}/homepage/config/custom.css"
+
+- name: Fetch cgit css
+  tags: cgit
+  hosts: homelab
+  roles:
+    role: fetch_items_from_urls
+    vars:
+      fetch_items_from_urls_urls:
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/cgit/style.css"
+          destination: "{{ base_directory }}/cgit/style.css"
+
+- name: Fetch legit css
+  tags: legit
+  hosts: homelab
+  roles:
+    role: fetch_items_from_urls
+    vars:
+      fetch_items_from_urls_urls:
+        - url: "https://git.bim.boats/wardrobe/plain/jumper/homepage/custom.css"
+          destination: "{{ base_directory }}/legit/style.css"
