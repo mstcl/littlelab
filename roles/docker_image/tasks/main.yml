@@ -1,0 +1,17 @@
+---
+- name: Pull container repository
+  ansible.builtin.include_role:
+    name: git
+  vars:
+    git_repo: "{{ docker_image_container_repository }}"
+    git_branch: "{{ docker_image_container_branch }}"
+    git_destination: "{{ base_directory }}"
+
+- name: Build {{ docker_image }}
+  community.docker.docker_image:
+    name: {{ docker_image }}
+    build:
+      path: "{{ base_directory }}/container"
+    source: build
+    state: present
+    repository: "{{ docker_image_repository }}"
