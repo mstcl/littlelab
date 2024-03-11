@@ -1,9 +1,11 @@
 ---
-docker_attach_redis: false
-docker_add_redis_volume: true
-docker_attach_mariadb: false
-docker_attach_postgres: false
-docker_print_output: false
+docker_traefik_network: "" # Main traefik network
+docker_expose_network: "" # Main expose network
+docker_pgweb_network: "" # (optional) Network for pgweb and postgres containers
+docker_attach_redis: false # Run additional redis container
+docker_attach_redis_volume: true # Save redis to disk
+docker_attach_mariadb: false # Run additional mariadb container
+docker_attach_postgres: false # Run additional postgres container
 
 docker_state: "{{ state }}"
 docker_recreate: true
@@ -11,10 +13,11 @@ docker_name: "{{ service_directory }}"
 docker_image: "{{ image }}"
 docker_restart_policy: unless-stopped
 docker_networks:
-  - name: "{{ docker.traefik_network }}"
+  - name: "{{ docker_traefik_network }}"
 
 docker_postgres_state: "{{ state }}"
 docker_postgres_recreate: false
 docker_postgres_alias: "{{ service_directory }}-postgres"
 docker_postgres_volumes:
   - "{{ docker_postgres_location }}:/var/lib/postgresql/data"
+docker_postgres_network: "{{ service_directory }}-postgres-net"

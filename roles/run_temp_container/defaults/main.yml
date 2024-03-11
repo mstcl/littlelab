@@ -1,2 +1,2 @@
 ---
-run_temp_container_print_output: true
+run_temp_container_print_stdout: true # Print stdout off temporary containers
