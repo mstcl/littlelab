@@ -1,5 +1,5 @@
 ---
-- name: Deploy a docker container
+- name: Deploy docker container for {{ service_directory }}
   tags: "docker"
   community.docker.docker_container:
     state: "{{ docker_state }}"
