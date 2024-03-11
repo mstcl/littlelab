@@ -2,31 +2,28 @@
 - name: Rule with only trusted IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ ufw_rule }}"
-    port: "{{ ufw_port }}"
-    proto: "{{ ufw_protocol }}"
-    src: "{{ item }}"
-    comment: "{{ ufw_comment | default(service_directory) }}"
-  loop:
-    - 10.0.0.0/8
-    - 172.16.0.0/12
-    - 192.168.0.0/16
-    - "{{ base_tailnet }}/10"
-    - 127.0.0.0/8
-    - fd7a:115c:a1e0::/48
+    rule: "{{ item.0.rule | default('allow') }}"
+    port: "{{ item.0.port }}"
+    proto: "{{ item.0.protocol | default('tcp') }}"
+    src: "{{ item.1 }}"
+    comment: "{{ item.0.comment | default(service_directory) }}"
+  with_subelements:
+    - ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "{{ base_tailnet }}/10", "127.0.0.0/8", "fd7a:115c:a1e0::/48"]
+    - "{{ ufw_rules }}"
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
-  when: ufw_local
+  when: item.0.local | default(true)
   notify: Reload firewall
 
 - name: Rule with all IPs
   tags: ufw
   community.general.ufw:
-    rule: "{{ ufw_rule }}"
-    port: "{{ ufw_port }}"
-    protocol: "{{ ufw_protocol }}"
-    comment: "{{ ufw_comment | default(service_directory) }}"
+    rule: "{{ item.rule | default('allow') }}"
+    port: "{{ item.port }}"
+    protocol: "{{ item.protocol | default('tcp') }}"
+    comment: "{{ item.comment | default(service_directory) }}"
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
-  when: not ufw_local
+  loop: "{{ ufw_rules }}"
+  when: not item.local
   notify: Reload firewall
 
 - name: Enable ufw
