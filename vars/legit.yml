@@ -6,17 +6,17 @@ url: "{{ urls.legit }}"
 state: started
 
 config_file: "config.yml"
-# css_file: "style.css" # (optional)
+css_file: "style.css" # (optional)
 
 config_files: [{}]
 
 legit_options:
   title: "Repositories"
-  description: "My projects"
+  description: "BIM infra/deployment sources"
 
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
 docker_volumes:
   - "{{ location.repos }}:/srv/git:ro"
   - "{{ working_dir }}/{{ config_file }}:/config/config.yaml"
-  # - "{{ working_dir }}/{{ css_file }}:/app/static/style.css:ro"
+  - "{{ working_dir }}/{{ css_file }}:/app/static/style.css:ro"
