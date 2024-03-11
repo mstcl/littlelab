@@ -8,7 +8,7 @@
   tags: ["docker", "postgres"]
   community.docker.docker_container:
     state: "{{ docker_postgres_state }}"
-    recreate: false
+    recreate: "{{ docker_postgres_recreate }}"
     name: "{{ service_directory }}-postgres"
     image: "{{ docker_postgres_image }}"
     security_opts:
