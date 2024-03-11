@@ -24,15 +24,6 @@
         config_files:
           -
           - template_name: "{{ postgres_config }}"
-    - role: config
-      when: default_frontend and css_theme_name | length > 0
-      vars:
-        config_directories:
-          - path: "{{ base_directory }}/{{ service_directory}}/css"
-        config_copy:
-          - file_name: "_variables.{{ css_theme_name }}.scss"
-          - file_name: "{{ css_theme_name }}.scss"
-          - file_name: "{{ css_theme_name }}.css"
     - role: docker
       vars:
         docker_attach_postgres: true
