@@ -10,7 +10,7 @@ docker_redis_image: "redis:6.2-alpine"
 docker_redis_network: "{{ service_directory }}-redis-net"
 
 docker_networks:
-  - name: "{{ docker_traefik_network }}"
+  - name: "{{ docker_expose_network }}"
   - name: "{{ docker_redis_network }}"
 docker_env:
   PORT: "8080"
