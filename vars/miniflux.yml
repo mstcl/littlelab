@@ -17,12 +17,16 @@ docker_postgres_db: ""
 docker_postgres_user: ""
 docker_postgres_password: ""
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+docker_postgres_network: "{{ service_directory }}-postgres-net"
 
 config_directories:
   - path: "{{ docker_postgres_location }}"
     owner: "70"
     permission: "0700"
 
+docker_networks:
+  - "{{ docker_traefik_network }}"
+  - "{{ docker_postgres_network }}"
 docker_env:
   DATABASE_URL: "postgres://{{ docker_postgres_user }}:{{ docker_postgres_password }}@{{ service_directory }}-postgres/{{ docker_postgres_db }}?sslmode=disable"
   BASE_URL: "https://{{ expanded_url }}"
