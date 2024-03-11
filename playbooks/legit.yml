@@ -1,0 +1,14 @@
+---
+- name: Install legit
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/legit.yml
+
+  roles:
+    - role: urls
+    - role: config
+    - role: docker_image
+    - role: docker
+    - role: traefik
+    - role: homepage

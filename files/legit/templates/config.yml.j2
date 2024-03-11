@@ -1,0 +1,21 @@
+repo:
+  scanPath: /srv/git
+  readme:
+    - readme
+    - README
+    - readme.md
+    - README.md
+  mainBranch:
+    - master
+    - main
+    - prod
+dirs:
+  templates: ./templates
+  static: ./static
+meta:
+  title: {{ legit_options.title }}
+  description: {{ legit_options.description }}
+server:
+  name: {{ expanded_url }}
+  host: 0.0.0.0
+  port: 8080
