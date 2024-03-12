@@ -1,7 +1,7 @@
 ---
 service_directory: "piped"
 image: "1337kavin/piped:latest"
-url: "{{ urls.piped }}"
+urls_url: "{{ urls.piped }}"
 
 state: ""
 
@@ -21,7 +21,7 @@ docker_postgres_user: ""
 docker_postgres_password: ""
 docker_postgres_db: "{{ service_directory }}"
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-docker_postgres_network: "postgres-net"  # Docker network to talk to postgres
+docker_postgres_network: "piped-postgres-net"  # Docker network to talk to postgres
 
 docker_networks:
   - name: "{{ docker_expose_network }}"

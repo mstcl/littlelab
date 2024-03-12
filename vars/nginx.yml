@@ -11,7 +11,7 @@ traefik_create_router: false
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
 docker_networks:
-  - "{{ docker_expose_network }}"
+  - name: "{{ docker_expose_network }}"
 docker_volumes:
   - "/etc/localtime:/etc/localtime:ro"
   - "{{ working_dir }}/error.html:/error"
