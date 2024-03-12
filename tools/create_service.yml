@@ -20,7 +20,8 @@
           ---
           service_directory: "{{ service_directory }}"
           image: ""
-          {% raw %}url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
+
+          {% raw %}urls_url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
 
           state: started
 
