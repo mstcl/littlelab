@@ -2,17 +2,11 @@
 - name: Install nginx
   hosts: homelab
   gather_facts: false
-  vars:
-    service_directory: "nginx"
-    image: "nginx:mainline-alpine3.18"
-    config_file: "nginx.conf"
+  vars_files:
+    - vars/nginx.yml
 
   roles:
     - role: config
     - role: setup_nginx
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 80
-        traefik_create_router: false

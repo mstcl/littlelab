@@ -1,23 +1,45 @@
 ---
-network: "postgres-net"  # Docker network to talk to postgres
+service_directory: "piped"
+image: "1337kavin/piped:latest"
+url: "{{ urls.piped }}"
+
+state: ""
+
 config_file: "config.properties"
-socket_location: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy"
-nginx_flavour: "nginx"
 
-piped_frontend:
-  image: "1337kavin/piped-frontend:latest"
-piped_proxy:
-  image: "1337kavin/piped-proxy:latest"
+files_make:
+  - dest: "{{ postgres.location }}"
+    owner: "70"
+    permission: "0700"
 
-postgres:
-  image: "postgres:15-alpine"
-  user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
-  db: "{{ service_directory }}"
-  location: "{{ location.docker_data }}/{{ service_directory }}/db"
+files_template:
+  - src: "{{ config_file }}" # templates the configuration file declared above
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/TeamPiped/Piped/master/public/favicon.ico"
-  description: "YouTube frontend"
-  category: "General services"
-  url: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"
+docker_attach_postgres: true
+docker_postgres_image: "postgres:15-alpine"
+docker_postgres_user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
+docker_postgres_password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
+docker_postgres_db: "{{ service_directory }}"
+docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+docker_postgres_network: "postgres-net"  # Docker network to talk to postgres
+
+docker_networks:
+  - name: "{{ docker_expose_network }}"
+  - name: "{{ docker_postgres_network }}"
+docker_cap_drop:
+  - SYS_ADMIN
+  - AUDIT_WRITE
+  - MKNOD
+  - SYS_CHROOT
+  - SETFCAP
+  - SYS_PTRACE
+  - DAC_OVERRIDE
+  - SETPCAP
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/config.properties:ro"
+
+traefik_create_service: false
+traefik_service_name: nginx
+
+nginx_configs:
+  - src: "conf.d/piped.yml"

@@ -1,24 +1,17 @@
 ---
+- name: Ensure nginx directory exists
+  ansible.builtin.file:
+    path: "{{ base_directory }}/nginx"
+    owner: "1000"
+    state: "directory"
+    mode: "0755"
+
 - name: Add a templated config
   tags: nginx
   ansible.builtin.template:
-    src: "sites/{{ item.config_src | default(item.config_name) }}.conf.j2"
-    dest: "{{ base_directory }}/{{ nginx_flavour }}/conf.d/\
-      {{ item.config_name }}.conf"
+    src: "{{ item.src }}.j2"
+    dest: "{{ base_directory }}/nginx/{{ item.src }}"
     mode: "0644"
   with_items: "{{ nginx_configs }}"
   when: nginx_configs is defined
-  notify: Restart {{ nginx_flavour }}
-
-- name: Add mounts to nginx docker
-  tags: nginx
-  ansible.builtin.blockinfile:
-    state: present
-    insertafter: EOF
-    dest: "{{ base_directory }}/{{ nginx_flavour }}/docker-compose.yml"
-    marker: "      #  {mark} {{ item.reference | upper }}"
-    content: |2
-            - {{ item.host_location }}:{{ item.container_location }}
-  with_items: "{{ nginx_mounts }}"
-  when: nginx_mounts is defined
-  notify: Restart {{ nginx_flavour }}
+  notify: Restart nginx

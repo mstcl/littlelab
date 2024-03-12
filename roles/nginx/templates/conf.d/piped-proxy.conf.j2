@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ item.server_url }};
+    server_name {{ item.server_url | default(expanded_url) }};
 
     location ~ (/videoplayback|/api/v4/|/api/manifest/) {
         include snippets/ytproxy.conf;

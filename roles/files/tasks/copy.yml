@@ -1,12 +1,12 @@
 ---
-- name: Copy file
-  tags: config
+- name: Copy existing files over
+  tags: files
   ansible.builtin.copy:
     src: "{{ hostvars.localhost.base_directory }}/files/\
-          {{ item.service_override | default(service_directory) }}/files/\
-          {{ item.file_name | default(config_file) }}"
+          {{ service_directory }}/files/\
+          {{ item.src }}"
     dest: "{{ item.destination_path | default(base_directory + '/' + service_directory) }}\
-           /{{ item.file_name }}"
+           /{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
-  with_items: "{{ config_copies }}"
+  with_items: "{{ files_copy }}"
