@@ -8,3 +8,9 @@ cf:
   token: ""
 alpine:
   image: alpine:3.19.1
+
+ufw_rules:
+  - port: 80
+    local: false
+  - port: 443
+    local: false
