@@ -20,3 +20,8 @@ nginx_configs:
   - src: "conf.d/site.conf"
     dest: "conf.d/status.conf"
     root: "/static/status"
+
+traefik_file_name: "status"
+traefik_service_name: "nginx"
+traefik_create_service: false
+traefik_router_name: "status"
