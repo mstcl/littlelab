@@ -33,8 +33,8 @@ FEED_RETENTION: 30
 hibernate.connection.url: jdbc:postgresql://{{ service_directory }}-postgres:5432/piped
 hibernate.connection.driver_class: org.postgresql.Driver
 hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-hibernate.connection.username: {{ postgres.user }}
-hibernate.connection.password: {{ postgres.password }}
+hibernate.connection.username: {{ docker_postgres_user }}
+hibernate.connection.password: {{ docker_postgres_password }}
 
 # frontend properties
 frontend.statusPageUrl: https://{{ urls.tinystatus.sub }}.{{ base_tld }}
