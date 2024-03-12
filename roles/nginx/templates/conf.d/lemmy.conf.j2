@@ -1,7 +1,7 @@
 server {
 	listen 80;
-    server_name {{ item.server_url | default(expanded_url) }};
-	set $domain_name {{ item.server_url | default(expanded_url) }};
+    server_name {{ item.server_name | default(expanded_url) }};
+	set $domain_name {{ item.server_name | default(expanded_url) }};
 	if ($http_host != $domain_name) {
 		return 403;
 	}
