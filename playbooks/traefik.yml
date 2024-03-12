@@ -38,13 +38,6 @@
           - name: "traefik"
             uid: 2000
     - role: ufw
-      vars:
-        ufw_local: false
-        ufw_port: 80
-    - role: ufw
-      vars:
-        ufw_local: false
-        ufw_port: 443
     - role: urls
     - role: config
       become: true
