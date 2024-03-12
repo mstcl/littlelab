@@ -1,6 +1,6 @@
 ---
 service_directory: "tinystatus"
-url: "{{ urls.tinystatus }}"
+urls_url: "{{ urls.tinystatus }}"
 packages_native: gnu-netcat # need nc
 
 working_dir: "{{ base_directory }}/{{ service_directory }}/tinystatus"
@@ -9,9 +9,14 @@ git_repo: "https://github.com/bderenzo/tinystatus"
 git_destination: "{{ working_dir }}"
 git_branch: master
 
-config_files:
-  - template_name: "checks.csv"
+files_template:
+  - src: "checks.csv"
     destination_path: "{{ working_dir }}"
-  - template_name: "tinystatus_cron.sh"
+  - src: "tinystatus_cron.sh"
     destination_path: "{{ location.scripts }}"
     permission: "0555"
+
+nginx_configs:
+  - src: "site.conf"
+    dest: "conf.d/status.conf"
+    root: "/static/status"
