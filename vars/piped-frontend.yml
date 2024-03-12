@@ -27,4 +27,4 @@ traefik_create_service: false
 traefik_service_name: nginx
 
 nginx_configs:
-  - src: "conf.d/piped.yml"
+  - src: "conf.d/piped-frontend.conf"
