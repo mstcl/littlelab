@@ -11,13 +11,6 @@
 
   roles:
     - role: ufw
-      vars: &ufw_defaults
-        ufw_port: 53
-        ufw_local: false
-    - role: ufw
-      vars:
-        <<: *ufw_defaults
-        ufw_protocol: "udp"
     - role: urls
     - role: config
       become: true

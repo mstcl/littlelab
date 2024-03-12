@@ -17,3 +17,10 @@ filters:
     id: 1
 user_rules:
   - '@@||example.com' # unblock example.com
+
+ufw_rules:
+  - port: 53
+    local: false
+  - port: 53
+    local: false
+    protocol: "udp"
