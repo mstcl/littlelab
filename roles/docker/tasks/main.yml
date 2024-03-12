@@ -1,4 +1,12 @@
 ---
+- name: Add container for {{ service_directory }}
+  tags: ["docker"]
+  ansible.builtin.include_tasks: add_container.yml
+
+- name: Add postgres
+  tags: ["docker", "postgres"]
+  ansible.builtin.include_tasks: add_postgres.yml
+  when: docker_attach_postgres
 
 - name: Add redis
   tags: ["docker", "redis"]
@@ -9,12 +17,3 @@
   tags: ["docker", "mariadb"]
   ansible.builtin.include_tasks: add_mariadb.yml
   when: docker_attach_mariadb
-
-- name: Add container for {{ service_directory }}
-  tags: ["docker"]
-  ansible.builtin.include_tasks: add_container.yml
-
-- name: Add postgres
-  tags: ["docker", "postgres"]
-  ansible.builtin.include_tasks: add_postgres.yml
-  when: docker_attach_postgres
