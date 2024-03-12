@@ -15,4 +15,5 @@ docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}:/wiki"
 
 traefik_servers:
-  - port: 1737
+  - url: "{{ service_directory }}"
+    port: 1737
