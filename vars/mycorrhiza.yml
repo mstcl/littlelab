@@ -1,5 +1,18 @@
 ---
-homepage_config:
-  icon: "https://mycorrhiza.wiki/static/favicon.ico"
-  description: "Wiki"
-  category: "Personal services"
+service_directory: "mycorrhiza"
+image: "bouncepaw/mycorrhiza"
+url: "{{ urls.mycorrhiza }}"
+
+files_make:
+  - "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_image_repository: "bouncepaw/mycorrhiza:1.14.0"
+
+docker_user: "1000:1000"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/wiki"
+
+traefik_servers:
+  - port: 1737
+traefik_middlewares:
+  - "internal-ip@file"
