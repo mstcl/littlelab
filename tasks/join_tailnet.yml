@@ -1,4 +1,11 @@
 ---
+- name: Ensure tailscale is installed
+  ansible.builtin.include_role:
+    name: packages
+  vars:
+    packages_native:
+      - tailscale
+
 - name: Authorize and join the tailnet
   tags: ["tailscale", "headscale"]
   check_mode: false
