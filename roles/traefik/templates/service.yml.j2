@@ -20,7 +20,7 @@
 {% elif url.path is undefined %}
       rule: "Host(`{{ expanded_url }}`)"
 {% else  %}
-      rule: "Host(`{{ url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ url.path }}`)"
+      rule: "Host(`{{ urls_url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ urls_url.path }}`)"
 {% endif %}
       service: "{{ traefik_service_name }}"
       tls: &modern
