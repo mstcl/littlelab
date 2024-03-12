@@ -1,10 +1,4 @@
 ---
-- name: Set url
-  tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker"]
-  when: urls_url is not defined
-  ansible.builtin.set_fact:
-    urls_url: "{{ url }}"
-
 - name: Parse URL
   tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker"]
   ansible.builtin.set_fact:
