@@ -11,8 +11,6 @@
     - role: config
       become: true
     - role: docker
-      vars:
-        docker_attach_postgres: true
     - role: traefik
     - role: homepage
     - role: backup
