@@ -5,7 +5,7 @@ server {
 	if ($http_host != $domain_name) {
 		return 403;
 	}
-	root   /{{ item.root }};
+	root   {{ item.root }};
 	autoindex on;
 
 	location / {
