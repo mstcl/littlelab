@@ -8,6 +8,7 @@
   loop:
     - "conf.d"
     - "snippets"
+    - "mounts"
 
 - name: Copy default config files
   tags: nginx
