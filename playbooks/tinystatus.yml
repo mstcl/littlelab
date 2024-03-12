@@ -34,6 +34,7 @@
           - src: "incidents.txt"
             destination_path: "{{ working_dir }}"
     - role: nginx
+    - role: traefik
 
   post_tasks:
     - name: Make crontab for tinystatus
