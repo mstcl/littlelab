@@ -1,3 +1,8 @@
 ---
 bot_token: ""
 chat_id: ""
+
+ufw_rules:
+  - port: 8840
+    local: true
+    src: "{{ ufw_safe_ip }}"
