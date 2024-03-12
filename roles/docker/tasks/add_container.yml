@@ -1,4 +1,10 @@
 ---
+- name: Create docker network for communication with backend
+  tags: ["network", "docker", "postgres"]
+  when: docker_postgres_network is defined
+  community.docker.docker_network:
+    name: "{{ docker_postgres_network }}"
+
 - name: Deploy docker container for {{ service_directory }}
   tags: "docker"
   community.docker.docker_container:
