@@ -23,6 +23,7 @@
       loop: "{{ urls | dict2items }}"
 
   roles:
+    - role: urls
     - role: packages
     - role: git
     - role: files
