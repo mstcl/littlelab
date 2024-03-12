@@ -1,14 +1,15 @@
 ---
 service_directory: "legit"
-image: "alexschroeder/legit"
-url: "{{ urls.legit }}"
+image: "icyphox/legit"
+urls_url: "{{ urls.legit }}"
 
 state: started
 
 config_file: "config.yml"
 # css_file: "style.css" # (optional)
 
-config_files: [{}]
+files_templates:
+  - src: "{{ config_file }}"
 
 legit_options:
   title: "Repositories"
