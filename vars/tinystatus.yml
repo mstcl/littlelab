@@ -17,6 +17,6 @@ files_template:
     permission: "0555"
 
 nginx_configs:
-  - src: "site.conf"
+  - src: "conf.d/site.conf"
     dest: "conf.d/status.conf"
     root: "/static/status"

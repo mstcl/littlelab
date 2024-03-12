@@ -2,7 +2,7 @@ proxy_cache_path /tmp/pipedapi_cache levels=1:2 keys_zone=pipedapi:4m max_size=2
 
 server {
     listen 80;
-    server_name {{ item.server_url | default(expanded_url) }};
+    server_name {{ item.server_name | default(expanded_url) }};
 
     set $backend "http://piped:8080";
 
