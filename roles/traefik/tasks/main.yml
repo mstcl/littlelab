@@ -27,9 +27,9 @@
         middlewares:
           {{ service_directory }}-strip:
             stripprefix:
-              prefixes: "/{{ url.path }}{{ '/' if traefik_trailing_slash == True}}"
+              prefixes: "/{{ urls_url.path }}{{ '/' if traefik_trailing_slash == True}}"
           {{ service_directory }}-redirect:
             redirectregex:
-              regex: "^(.*)/{{ url.path }}$"
-              replacement: "$1/{{ url.path }}/"
+              regex: "^(.*)/{{ urls_url.path }}$"
+              replacement: "$1/{{ urls_url.path }}/"
   when: traefik_redirect
