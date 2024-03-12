@@ -8,6 +8,7 @@
   roles:
     - role: urls
     - role: files
+    - role: docker_image
     - role: docker
     - role: traefik
     - role: homepage
