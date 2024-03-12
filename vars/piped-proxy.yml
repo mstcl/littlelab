@@ -1,7 +1,7 @@
 ---
 service_directory: "piped-proxy"
 image: "1337kavin/piped-proxy:latest"
-urls: "{{ urls['piped-proxy'] }}"
+url: "{{ urls['piped-proxy'] }}"
 
 state: ""
 
@@ -16,7 +16,7 @@ docker_networks:
 docker_volumes:
   - "{{ socket_location }}:/app/socket"
 docker_env:
-  UDS: 1
+  UDS: "1"
 docker_cap_drop:
   - SYS_ADMIN
 
@@ -25,3 +25,4 @@ traefik_service_name: nginx
 
 nginx_configs:
   - src: "conf.d/piped-proxy.conf"
+  - src: "snippets/ytproxy.conf"
