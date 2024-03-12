@@ -30,7 +30,7 @@
     - name: Check for actix socket
       tags: socket
       ansible.builtin.stat:
-        path: "{{ base_directory }}/{{ service_directory }}/piped-proxy/actix.sock"
+        path: "{{ socket_location }}/actix.sock"
       register: socket_results
 
     - name: Change permissions on actix.sock to 0777

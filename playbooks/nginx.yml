@@ -6,7 +6,6 @@
     - vars/nginx.yml
 
   roles:
-    - role: config
     - role: setup_nginx
     - role: docker
     - role: traefik
