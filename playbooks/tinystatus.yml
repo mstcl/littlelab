@@ -25,13 +25,14 @@
   roles:
     - role: packages
     - role: git
-    - role: config
-    - role: config
+    - role: files
+    - role: files
       tags: incident
       vars:
-        config_copies:
-          - file_name: "incidents.txt"
+        files_copy:
+          - src: "incidents.txt"
             destination_path: "{{ working_dir }}"
+    - role: nginx
 
   post_tasks:
     - name: Make crontab for tinystatus
