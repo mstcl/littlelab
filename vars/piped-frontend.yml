@@ -1,11 +1,10 @@
 ---
 service_directory: "piped-frontend"
 image: "1337kavin/piped-frontend:latest"
-urls: "{{ urls['piped-frontend'] }}"
 
-state: ""
+urls_url: "{{ urls['piped-frontend'] }}"
 
-socket_location: "{{ base_directory }}/nginx/mounts/piped-proxy" # for mounting onto nginx
+state: "started"
 
 docker_networks:
   - name: "{{ docker_expose_network }}"
@@ -20,8 +19,9 @@ docker_cap_drop:
   - DAC_OVERRIDE
   - SETPCAP
 docker_entrypoint:
-  "ash -c 'sed -i s/pipedapi.kavin.rocks/{{ urls.piped.sub }}.{{ base_tld }}/g \
-  /usr/share/nginx/html/assets/* && /docker-entrypoint.sh && nginx -g 'daemon off;'"
+  - "/bin/ash"
+  - "-c"
+  - "sed -i s/pipedapi.kavin.rocks/{{ urls.piped.sub }}.{{ base_tld }}/g /usr/share/nginx/html/assets/* && /docker-entrypoint.sh && nginx -g 'daemon off;'"
 
 traefik_create_service: false
 traefik_service_name: nginx

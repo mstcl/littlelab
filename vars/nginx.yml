@@ -3,6 +3,8 @@ service_directory: "nginx"
 image: "nginx:mainline-alpine3.18"
 config_file: "nginx.conf"
 
+state: "started"
+
 traefik_servers:
   - url: "{{ service_directory }}"
     port: 80
@@ -11,7 +13,7 @@ traefik_create_router: false
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
 docker_networks:
-  - "{{ docker_expose_network }}"
+  - name: "{{ docker_expose_network }}"
 docker_volumes:
   - "/etc/localtime:/etc/localtime:ro"
   - "{{ working_dir }}/error.html:/error"
@@ -19,4 +21,4 @@ docker_volumes:
   - "{{ working_dir }}/conf.d:/etc/nginx/conf.d:ro"
   - "{{ working_dir }}/snippets:/etc/nginx/snippets:ro"
   - "{{ working_dir }}/mounts:/var/run" # put anything in here to mount
-  # - "{{ location.sites }}:/static" # location of static sites
+  - "{{ location.sites }}:/static" # location of static sites
