@@ -4,21 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/mycorrhiza.yml
-  vars:
-    service_directory: "mycorrhiza"
-    image: "thecoopcloud/mycorrhiza:v1.14.0"
-    url: "{{ urls.mycorrhiza }}"
 
   roles:
     - role: urls
     - role: config
-      vars:
-        config_directories: [{}]
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 1737
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: homepage
