@@ -1,9 +1,0 @@
----
-- name: Make files/directories
-  tags: config
-  ansible.builtin.file:
-    path: "{{ item.path | default(location.docker_data + '/' + service_directory) }}"
-    owner: "{{ item.owner | default('1000') }}"
-    state: "{{ item.state | default('directory') }}"
-    mode: "{{ item.permission | default('0755') }}"
-  with_items: "{{ config_directories }}"
