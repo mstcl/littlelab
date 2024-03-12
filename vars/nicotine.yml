@@ -8,3 +8,7 @@ password: ""
 
 bot_token: ""
 chat_id: ""
+
+ufw_rules:
+  - port: 50300
+    local: false
