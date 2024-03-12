@@ -1,68 +1,30 @@
 ---
-- name: Install piped
+- name: Install piped backend
   hosts: homelab
   gather_facts: false
   vars_files:
     - vars/piped.yml
-  vars:
-    service_directory: "piped"
-    image: "1337kavin/piped:latest"
-    url: "{{ urls.piped }}"
-    # ANCHORS
-    traefik: &traefik_defaults
-      traefik_create_service: false
-      traefik_service_name: "nginx"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ socket_location }}"
-          - path: "{{ postgres.location }}"
-            owner: "70"
-            permission: "0700"
-        config_files: [{}]
-        config_copies:
-          - file_name: "ytproxy.conf"
-            destination_path: "{{ base_directory }}/{{ nginx_flavour }}/snippets"
+    - role: files
     - role: nginx
-      vars:
-        nginx_configs:
-          - config_name: "piped"
-            server_url: "{{ urls.piped.sub }}.{{ base_tld }}"
-          - config_name: "piped-proxy"
-            server_url: "{{ urls['piped-proxy'].sub }}.{{ base_tld }}"
-          - config_name: "piped-frontend"
-            server_url: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"
-        nginx_mounts:
-          - reference: "Piped socket"
-            host_location: "{{ socket_location }}"
-            container_location: "/var/run/ytproxy"
     - role: docker
-      vars:
-        docker_attach_postgres: true
-        docker_run: false
     - role: traefik
-      vars:
-        <<: *traefik_defaults
-        traefik_file_name: "piped-proxy"
-        traefik_router_name: "{{ file_name }}"
-        traefik_rule: "Host(`{{ urls['piped-proxy'].sub }}.{{ base_tld }}`)"
-    - role: traefik
-      vars:
-        <<: *traefik_defaults
-        traefik_file_name: "piped-frontend"
-        traefik_router_name: "{{ file_name }}"
-        traefik_rule: "Host(`{{ urls['piped-frontend'].sub }}.{{ base_tld }}`)"
-    - role: traefik
-      vars:
-        <<: *traefik_defaults
-        traefik_file_name: "piped"
-        traefik_router_name: "{{ file_name }}"
-        traefik_rule: "Host(`{{ urls.piped.sub }}.{{ base_tld }}`)"
-    - role: homepage
     - role: backup
+
+- name: Install piped proxy
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/piped-proxy.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: nginx
+    - role: docker
+    - role: traefik
 
   post_tasks:
     - name: Check for actix socket
@@ -71,25 +33,24 @@
         path: "{{ base_directory }}/{{ service_directory }}/piped-proxy/actix.sock"
       register: socket_results
 
-    - name: Start piped-proxy
-      tags: socket
-      community.docker.docker_compose_v2:
-        project_src: "{{ base_directory }}/{{ service_directory }}"
-        services:
-          - piped-proxy
-        state: present
-      when: not socket_results.stat.exists
-
     - name: Change permissions on actix.sock to 0777
       tags: ["socket", "permission"]
       become: true
+      when: socket_results.stat.exists
       ansible.builtin.file:
-        path: "{{ location.docker_data }}/{{ service_directory }}/piped-proxy/actix.sock"
+        path: "{{ socket_location }}/actix.sock"
         mode: "0777"
 
-    - name: Start rest of piped stack
-      tags: ["deploy", "docker"]
-      community.docker.docker_compose_v2:
-        project_src: "{{ base_directory }}/{{ service_directory }}"
-        state: present
-      notify: Restart public nginx
+- name: Install piped-frontend
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/piped-frontend.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: nginx
+    - role: docker
+    - role: traefik
+    - role: homepage

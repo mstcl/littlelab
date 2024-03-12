@@ -1,0 +1,27 @@
+---
+service_directory: "piped-proxy"
+image: "1337kavin/piped-proxy:latest"
+urls: "{{ urls['piped-proxy'] }}"
+
+state: ""
+
+socket_location: "{{ base_directory }}/nginx/mounts/piped-proxy" # for mounting onto nginx
+
+files_make:
+  - dest: "{{ socket_location }}"
+
+docker_networks:
+  - name: "{{ docker_expose_network }}"
+
+docker_volumes:
+  - "{{ socket_location }}:/app/socket"
+docker_env:
+  UDS: 1
+docker_cap_drop:
+  - SYS_ADMIN
+
+traefik_create_service: false
+traefik_service_name: nginx
+
+nginx_configs:
+  - src: "conf.d/piped.yml"
