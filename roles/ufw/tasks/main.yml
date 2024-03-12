@@ -1,5 +1,5 @@
 ---
-- name: Rule with only trusted IPs
+- name: Rule applied to only trusted IPs
   tags: ufw
   community.general.ufw:
     rule: "{{ item.0.rule | default('allow') }}"
@@ -8,13 +8,14 @@
     src: "{{ item.1 }}"
     comment: "{{ item.0.comment | default(service_directory) }}"
   with_subelements:
-    - ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16", "{{ base_tailnet }}/10", "127.0.0.0/8", "fd7a:115c:a1e0::/48"]
     - "{{ ufw_rules }}"
+    - src
+    - skip_missing: true
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   when: item.0.local | default(true)
   notify: Reload firewall
 
-- name: Rule with all IPs
+- name: Rule applied to all IPs
   tags: ufw
   community.general.ufw:
     rule: "{{ item.rule | default('allow') }}"
@@ -30,3 +31,4 @@
   tags: ufw
   community.general.ufw:
     state: enabled
+  become: true
