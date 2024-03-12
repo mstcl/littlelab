@@ -1,10 +1,12 @@
 ---
 service_directory: "mycorrhiza"
 image: "bouncepaw/mycorrhiza"
-url: "{{ urls.mycorrhiza }}"
+urls_url: "{{ urls.mycorrhiza }}"
+
+state: ""
 
 files_make:
-  - "{{ location.docker_data }}/{{ service_directory }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
 
 docker_image_repository: "bouncepaw/mycorrhiza:1.14.0"
 
