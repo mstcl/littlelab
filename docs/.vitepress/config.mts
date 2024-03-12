@@ -43,9 +43,9 @@ export default defineConfig({
       {
         text: 'Roles',
         items: [
-          { text: 'nginx', link: '/nginx'},
-          { text: 'setup_nginx', link: '/setup_nginx'},
-          { text: 'setup_sshd', link: '/setup_sshd'},
+          { text: 'nginx', link: '/roles/nginx'},
+          { text: 'setup_nginx', link: '/roles/setup_nginx'},
+          { text: 'setup_sshd', link: '/roles/setup_sshd'},
         ]
       },
     ],
