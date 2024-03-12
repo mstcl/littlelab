@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name {{ item.server_url }};
+    server_name {{ item.server_url | default(expanded_url) }};
 
     set $backend "http://piped-frontend:80";
 
