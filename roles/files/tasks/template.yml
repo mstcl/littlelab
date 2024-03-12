@@ -1,14 +1,12 @@
 ---
-- name: Template configuration file
-  tags: ["config", "template"]
+- name: Template files
+  tags: ["files", "template"]
   ansible.builtin.template:
     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}\
-      /templates/{{ item.template_name | default(config_file) }}.j2"
+      /templates/{{ item.src }}.j2"
     dest:
       "{{ item.destination_path | default(base_directory + '/' + service_directory) }}\
-      /{{ item.file_name | default(item.template_name | default(config_file)) }}"
+      /{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
-  with_items: "{{ config_files }}"
-  # notify:
-  #   - Restart compose stack
+  with_items: "{{ files_template }}"

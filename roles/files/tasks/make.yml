@@ -1,0 +1,9 @@
+---
+- name: Ensure files/directories exists (touch/mkdir)
+  tags: files
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    owner: "{{ item.owner | default('1000') }}"
+    state: "{{ item.type | default('directory') }}"
+    mode: "{{ item.permission | default('0755') }}"
+  with_items: "{{ files_make }}"
