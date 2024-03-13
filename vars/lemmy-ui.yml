@@ -2,7 +2,7 @@
 service_directory: "lemmy-ui"
 image: "dessalines/lemmy-ui:0.18.5"
 
-urls_url: "{{ urls.['lemmy-ui'] }}"
+urls_url: "{{ urls['lemmy-ui'] }}"
 state: started
 
 traefik_middlewares:
