@@ -1,6 +1,7 @@
 ---
 network: "postgres-net" # Docker network to talk to postgres
 config_file: "config.hjson"
+image: "dessalines/lemmy:0.19.3"
 postgres_config: "customPostgresql.conf"
 
 smtp:
