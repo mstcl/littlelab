@@ -6,12 +6,14 @@ urls_url: "{{ urls['lemmy-ui'] }}"
 state: started
 
 traefik_middlewares:
-  - "internal_ip@file"
+  - "internal-ip@file"
 
 docker_env:
   LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
   LEMMY_UI_HOST: "0.0.0.0:8080"
-  LEMMY_UI_INTERNAL_HOST: "lemmy:8536"
+  LEMMY_UI_LEMMY_INTERNAL_HOST: "lemmy:8536"
+  LEMMY_UI_LEMMY_EXTERNAL_HOST: "lemmy:8536"
+  LEMMY_UI_DEBUG: "true"
 docker_networks:
   - name: "{{ docker_expose_network }}"
 docker_volumes:
