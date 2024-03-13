@@ -9,7 +9,6 @@ password: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PASSWORD
 bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='DOWNLOAD_BOT_TOKEN') }}"
 chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID') }}"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/nicotine-plus/nicotine-plus/master/pynicotine/gtkgui/icons/hicolor/scalable/apps/org.nicotine_plus.Nicotine.svg"
-  description: "Soulseek client"
-  category: "Stream"
+ufw_rules:
+  - port: 50300
+    local: false

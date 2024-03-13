@@ -2,7 +2,10 @@
 bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='LAN_BOT_TOKEN') }}"
 chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID')  }}"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/aceberg/WatchYourLAN/main/assets/logo.png"
-  description: "LAN IP scanner"
-  category: "SysOps"
+bot_token: ""
+chat_id: ""
+
+ufw_rules:
+  - port: 8840
+    local: true
+    src: "{{ ufw_safe_ip }}"

@@ -11,9 +11,6 @@
 
   roles:
     - role: ufw
-      vars:
-        ufw_local: false
-        ufw_port: 50300
     - role: urls
     - role: config
       vars:

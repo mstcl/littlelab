@@ -9,7 +9,8 @@ cf:
 alpine:
   image: alpine:3.19.1
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/traefik/traefik/master/webui/public/icons/icon-192x192.png"
-  description: "Reverse proxy"
-  category: "SysOps"
+ufw_rules:
+  - port: 80
+    local: false
+  - port: 443
+    local: false
