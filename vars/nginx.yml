@@ -16,7 +16,7 @@ docker_networks:
   - name: "{{ docker_expose_network }}"
 docker_volumes:
   - "/etc/localtime:/etc/localtime:ro"
-  - "{{ working_dir }}/error.html:/error"
+  - "{{ working_dir }}/error.html:/error:ro"
   - "{{ working_dir }}/{{ config_file }}:/etc/nginx/nginx.conf:ro"
   - "{{ working_dir }}/conf.d:/etc/nginx/conf.d:ro"
   - "{{ working_dir }}/snippets:/etc/nginx/snippets:ro"
