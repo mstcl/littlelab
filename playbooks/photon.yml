@@ -4,18 +4,8 @@
   gather_facts: false
   vars_files:
     - vars/photon.yml
-  vars:
-    service_directory: "photon"
-    image: "ghcr.io/xyphyn/photon:v1.28.1"
-    url: "{{ urls.photon }}"
 
   roles:
     - role: urls
-    - role: config
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 3000
-        traefik_middlewares:
-          - "internal-ip@file"

@@ -1,6 +1,6 @@
 ---
 service_directory: "lemmy-ui"
-image: "dessalines/lemmy-ui:0.18.5"
+image: "dessalines/lemmy-ui:0.19.3"
 
 urls_url: "{{ urls['lemmy-ui'] }}"
 state: started
