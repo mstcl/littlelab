@@ -8,7 +8,7 @@ state: started
 config_file: "config.yml"
 # css_file: "style.css" # (optional)
 
-files_templates:
+files_template:
   - src: "{{ config_file }}"
 
 legit_options:
