@@ -8,12 +8,12 @@ state: started
 config_file: "config.yml"
 css_file: "style.css" # (optional)
 
-files_templates:
+files_template:
   - src: "{{ config_file }}"
 
 legit_options:
   title: "Repositories"
-  description: "BIM infra/deployment sources"
+  description: "Infra/deployment source code"
 
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
@@ -21,3 +21,6 @@ docker_volumes:
   - "{{ location.repos }}:/srv/git:ro"
   - "{{ working_dir }}/{{ config_file }}:/config/config.yaml"
   - "{{ working_dir }}/{{ css_file }}:/app/static/style.css:ro"
+  - "{{ working_dir }}/head.html:/app/templates/head.html:ro"
+  - "{{ working_dir }}/index.html:/app/templates/index.html:ro"
+  - "{{ working_dir }}/repo-header.html:/app/templates/repo-header.html:ro"
