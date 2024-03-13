@@ -2,7 +2,6 @@
 network: "postgres-net" # Docker network to talk to postgres
 config_file: "config.hjson"
 postgres_config: "customPostgresql.conf"
-default_frontend: false # Enable this to run lemmy-ui
 
 smtp:
   enabled: true
@@ -18,12 +17,6 @@ pictrs_options:
   - PICTRS__SERVER__API_KEY: "{{ pictrs.api_key }}"
   - PICTRS__UPGRADE__CONCURRENCY: "8"
   - PICTRS__MEDIA__RETENTION__PROXY: "30m"
-
-lemmy_ui:
-  image: "dessalines/lemmy-ui:0.18.5"
-
-lemmy_ui_options:
-  - LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
 
 postgres:
   image: "postgres:16-alpine"
