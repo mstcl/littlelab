@@ -1,5 +1,18 @@
 ---
-photon_options:
-  - PUBLIC_INSTANCE_URL: "{{ urls.lemmy.sub }}.{{ base_tld }}"
-  - PUBLIC_DEFAULT_FEED: "All"
-  - PUBLIC_HIDE_DELETED: "false"
+service_directory: "photon"
+image: "ghcr.io/xyphyn/photon:v1.28.3"
+urls_url: "{{ urls.photon }}"
+
+state: ""
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 3000
+
+docker_env:
+  PUBLIC_INSTANCE_URL: "{{ urls.lemmy.sub }}.{{ base_tld }}"
+  PUBLIC_DEFAULT_FEED: "All"
+  PUBLIC_HIDE_DELETED: "false"
+  PUBLIC_REVERT_VOTE_COLORS: "true"
+  PUBLIC_SHOW_COMPACT_POSTS: "true"
+  PUBLIC_DEFAULT_FEED_SORT: "New"
