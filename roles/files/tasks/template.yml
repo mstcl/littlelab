@@ -5,7 +5,7 @@
     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}\
       /templates/{{ item.src }}.j2"
     dest:
-      "{{ item.destination_path | default(base_directory + '/' + service_directory) }}\
+      "{{ item.dest | default(base_directory + '/' + service_directory) }}\
       /{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
