@@ -2,9 +2,6 @@
 bot_token: "{{ lookup('get_secrets', path='/telegram', secret_name='LAN_BOT_TOKEN') }}"
 chat_id: "{{ lookup('get_secrets', path='/telegram', secret_name='CHAT_ID')  }}"
 
-bot_token: ""
-chat_id: ""
-
 ufw_rules:
   - port: 8840
     local: true
