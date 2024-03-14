@@ -11,7 +11,7 @@ smtp:
   host: ""
 
 pictrs:
-  image: "asonix/pictrs:0.5.4"
+  image: "asonix/pictrs:0.5.9"
   api_key: ""
 
 pictrs_options:
