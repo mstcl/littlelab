@@ -1,61 +1,9 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   extends: ["config:recommended"],
+  enabledManagers: ["ansible"]
   ansible: {
     fileMatch: ["^.*\\.ya?ml$"],
   },
   baseBranches: ["master"],
-  timezone: "Europe/London",
-  packageRules: [
-    {
-      matchDatasources: ["docker"],
-      commitMessageTopic: "version",
-      digest: {
-        commitMessageTopic: "digest",
-        group: {
-          commitMessageTopic: "digest",
-        },
-      },
-      pin: {
-        group: {
-          commitMessageTopic: "version",
-        },
-      },
-      group: {
-        commitMessageTopic: "version",
-      },
-    },
-    {
-      groupName: "Immich",
-      matchPackagePatterns: [".*\\/immich-.*"],
-      customChangelogUrl: "https://github.com/immich-app/immich",
-    },
-    {
-      matchPackagePatterns: [".*\\/radarr"],
-      versioning: "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$",
-      prBodyNotes: "[Releases](https://github.com/Radarr/Radarr/releases)",
-    },
-    {
-      matchPackagePatterns: ["nginx"],
-      prBodyNotes: "[CHANGES](https://nginx.org/en/CHANGES)",
-    },
-    {
-      matchPackagePatterns: [".*\\/actual-server"],
-      customChangelogUrl: "https://github.com/actualbudget/actual-server",
-      prBodyNotes: "[releases.md](https://github.com/actualbudget/docs/blob/master/docs/releases.md)",
-    },
-    {
-      matchPackagePatterns: [".*\\/portainer-[c|e]e"],
-      customChangelogUrl: "https://github.com/portainer/portainer",
-    },
-    {
-      matchPackagePatterns: [".*\\/qbittorrent"],
-      customChangelogUrl: "https://github.com/qbittorrent/qBittorrent",
-      prBodyNotes: "[Changelog](https://github.com/qbittorrent/qBittorrent/blob/v{{newMajor}}_{{newMinor}}_x/Changelog)",
-    },
-    {
-      matchPackagePatterns: [".*\\/prowlarr"],
-      prBodyNotes: "[Releases](https://github.com/Prowlarr/Prowlarr/releases)",
-    },
-  ]
 }
