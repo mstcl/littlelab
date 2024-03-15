@@ -1,0 +1,3 @@
+---
+ - ansible.builtin.import_playbook: playbooks/setup_tailscale.yml
+ - ansible.builtin.import_playbook: playbooks/traefik-proxy.yml
