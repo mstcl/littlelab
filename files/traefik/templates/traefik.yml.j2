@@ -13,6 +13,7 @@ entryPoints:
       insecure: false
       trustedIPs:
         - "127.0.0.1/32"
+        - "{{ ipam_subnet }}.1"
     http:
       middlewares:
         - "defchain@file"
@@ -31,6 +32,7 @@ entryPoints:
       insecure: false
       trustedIPs:
         - "127.0.0.1/32"
+        - "{{ ipam_subnet }}.1"
     http:
       middlewares:
         - "crowdsec-bouncer@file"
