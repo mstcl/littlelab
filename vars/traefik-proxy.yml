@@ -1,0 +1,74 @@
+---
+service_directory: "traefik-proxy"
+image: "traefik:2.11"
+url: "{{ urls.traefik }}"
+config_file: "traefik.yml"
+state: "started"
+
+# create_docker_network_networks:
+#   - name: "{{ docker_expose_network }}"
+
+packages_native:
+  - "logrotate"
+
+systemd_services:
+  - "logrotate.timer"
+
+create_host_users_users:
+  - name: "traefik"
+    uid: 2000
+
+# if local = true (default), must specify src: ufw_safe_ip
+ufw_rules:
+  - port: 80
+    local: false
+  - port: 443
+    local: false
+  - port: 50300
+    local: false
+  - port: 6881
+    local: false
+
+dynamic_config_dir: "{{ base_directory }}/{{ service_directory }}/dynamic"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ dynamic_config_dir }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/certs"
+    owner: "2000"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/plugins/sources"
+    owner: "2000"
+  - dest: "/var/log/traefik"
+    owner: "0"
+
+files_template:
+  - src: "web.yml"
+    dest: "{{ dynamic_config_dir }}"
+  - src: "websecure.yml"
+    dest: "{{ dynamic_config_dir }}"
+  - src: "qbittorrent.yml"
+    dest: "{{ dynamic_config_dir }}"
+  - src: "slsk.yml"
+    dest: "{{ dynamic_config_dir }}"
+  - src: "traefik.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_networks: []
+#   - name: "{{ docker_expose_network }}"
+docker_network_mode: "host"
+docker_user: "0:0"
+# docker_ports:
+#   - "80:80"
+#   - "443:443"
+#   - "6881:6881"
+#   - "50300:50300"
+#   - "8080:8080"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
+  - "{{ base_directory }}/{{ service_directory }}/dynamic:/etc/traefik/dynamic:ro"
+  - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
+  - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
+  - "/var/log/traefik/log:/log"
+docker_cpus: "1"
+docker_memory: "500MB"
+docker_read_only: true

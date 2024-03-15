@@ -1,0 +1,15 @@
+tcp:
+  routers:
+    webtcp:
+      entryPoints:
+        - "webtcp"
+      rule: "HostSNI(`*`)"
+      service: webtcp
+
+  services:
+    webtcp:
+      loadBalancer:
+        proxyProtocol:
+          version: 2
+        servers:
+          - address: "{{ proxy_target_ip }}:80"

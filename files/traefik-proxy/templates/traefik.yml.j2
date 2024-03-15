@@ -1,0 +1,47 @@
+global:
+  checkNewVersion: true
+  sendAnonymousUsage: false
+
+entryPoints:
+  webtcp: &opts
+    address: "0.0.0.0:80/tcp"
+    forwardedHeaders:
+      insecure: false
+      trustedIPs:
+        - "127.0.0.1/32"
+    proxyProtocol:
+      insecure: false
+      trustedIPs:
+        - "127.0.0.1/32"
+
+  websecuretcp:
+    <<: *opts
+    address: "0.0.0.0:443/tcp"
+
+  slsktcp:
+    <<: *opts
+    address: "0.0.0.0:50300/tcp"
+
+  qbittorrenttcp:
+    <<: *opts
+    address: "0.0.0.0:6881/tcp"
+
+  qbittorrentudp:
+    <<: *opts
+    address: "0.0.0.0:6881/udp"
+
+log:
+  level: "ERROR"
+
+accessLog:
+  filePath: "/log/access.log"
+  bufferingSize: 100
+
+api:
+  insecure: true
+  dashboard: true
+
+providers:
+  file:
+    directory: "/etc/traefik/dynamic"
+    watch: true
