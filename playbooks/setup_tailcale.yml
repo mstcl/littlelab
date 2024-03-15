@@ -1,0 +1,35 @@
+---
+- name: Install tailscale client
+  hosts: homelab
+  gather_facts: true
+  become: true
+  pre_tasks:
+    - name: Add keys for tailscale repository (Debian)
+      when: ansible_distribution == "Debian"
+      ansible.builtin.get_url:
+        mode: "0644"
+        url: "https://pkgs.tailscale.com/stable/debian/bookworm.noarmor.gpg"
+        dest: "/usr/share/keyrings/tailscale-archive-keyring.gpg"
+
+    - name: Add tailscale repository source (Debian)
+      when: ansible_distribution == "Debian"
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg] https://pkgs.tailscale.com/stable/debian bookworm main"
+
+  roles:
+    - role: packages
+      vars:
+        packages_native:
+          - tailscale
+
+    - role: systemd
+      vars:
+        systemd_services:
+          - tailscaled
+
+  post_tasks:
+    - name: Authorize and join the tailnet
+      ansible.builtin.include_tasks: ../tasks/join_tailnet.yml
+      vars:
+        login_server_url: "{{ lookup('get_secrets', path='/cloudbox/headscale', secret_name='HEADSCALE_LOGIN_SERVER_URL') }}"
+        pak: "{{ lookup('get_secrets', path='/cloudbox/headscale', secret_name='HEADSCALE_PREAUTH_KEY') }}"
