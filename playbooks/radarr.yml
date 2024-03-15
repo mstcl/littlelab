@@ -6,7 +6,7 @@
     - vars/radarr.yml
   vars:
     service_directory: "radarr"
-    image: "linuxserver/radarr:5.2.6"
+    image: "linuxserver/radarr:5.3.6"
     url: "{{ urls.radarr }}"
 
   roles:
