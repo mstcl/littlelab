@@ -9,3 +9,4 @@
     group: "{{ item.group | default(omit) }}"
     groups: "{{ item.groups | default(omit) }}"
   with_items: "{{ create_host_users_users }}"
+  become: true
