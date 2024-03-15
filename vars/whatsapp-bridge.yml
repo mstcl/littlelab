@@ -4,7 +4,7 @@ config_file: config.yaml
 config_location: "{{ base_directory }}/{{ service_directory }}/config"
 wab_shared_secret: ""
 postgres:
-  image: "postgres:15-alpine"
+  image: "postgres:16-alpine"
   user: ""
   password: ""
   db: "wabridge"
