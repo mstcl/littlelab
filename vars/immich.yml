@@ -15,4 +15,4 @@ postgres:
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
 redis:
-  image: "redis:6.2-alpine"
+  image: "redis:7.2-alpine"
