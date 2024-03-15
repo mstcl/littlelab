@@ -6,7 +6,7 @@
     - vars/slskd.yml
   vars:
     service_directory: "slskd"
-    image: "slskd/slskd:0.20.0"
+    image: "slskd/slskd:0.20.1"
     url: "{{ urls.slskd }}"
 
   roles:
