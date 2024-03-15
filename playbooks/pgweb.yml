@@ -6,7 +6,7 @@
     - vars/pgweb.yml
   vars:
     service_directory: "pgweb"
-    image: "sosedoff/pgweb:0.14.3"
+    image: "sosedoff/pgweb:0.15.0"
     network: "pg-net"
     url: "{{ urls.pgweb }}"
 
