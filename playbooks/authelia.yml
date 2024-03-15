@@ -6,7 +6,7 @@
     - vars/authelia.yml
   vars:
     service_directory: "authelia"
-    image: "docker.io/authelia/authelia:4.38.1"
+    image: "docker.io/authelia/authelia:4.38.2"
     url: "{{ urls.authelia }}"
     # DEFAULTS
     permissions: &permissions
