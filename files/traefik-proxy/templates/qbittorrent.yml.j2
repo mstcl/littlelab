@@ -1,0 +1,30 @@
+tcp:
+  routers:
+    qbittorrenttcp:
+      entryPoints:
+        - "qbittorrenttcp"
+      rule: "HostSNI(`*`)"
+      service: qbittorrenttcp
+      tls:
+        passthrough: true
+
+  services:
+    qbittorrenttcp:
+      loadBalancer:
+        proxyProtocol:
+          version: 2
+        servers:
+          - address: "{{ proxy_target_ip }}:6881"
+
+udp:
+  routers:
+    qbittorrentudp:
+      entryPoints:
+        - "qbittorrentudp"
+      service: qbittorrentudp
+
+  services:
+    qbittorrentudp:
+      loadBalancer:
+        servers:
+          - address: "{{ proxy_target_ip }}:6881"
