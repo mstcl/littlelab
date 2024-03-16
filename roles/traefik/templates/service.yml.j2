@@ -3,6 +3,10 @@
   services:
     {{ traefik_service_name }}:
       loadBalancer:
+{% if traefik_proxy_protocol %}
+        proxyProtocol:
+          version: 2
+{% endif %}
         servers:
 {% for server in traefik_servers %}
 {% if traefik_protocol == 'http' %}
@@ -23,8 +27,13 @@
       rule: "Host(`{{ urls_url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ urls_url.path }}`)"
 {% endif %}
       service: "{{ traefik_service_name }}"
+{% if traefik_tls_passthrough %}
+      tls:
+		passthrough: true
+{% else %}
       tls: &modern
         options: modern@file
+{% endif %}
 {% if traefik_protocol == 'http' %}
 {% if (traefik_middlewares| length > 0) or (traefik_redirect == True) %}
       middlewares:

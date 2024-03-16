@@ -1,7 +1,9 @@
 ---
+traefik_add: true
 traefik_service_name: "{{ service_directory }}"
 traefik_file_name: "{{ service_directory }}"
 traefik_router_name: "{{ service_directory }}"
+traefik_proxy_protocol: false
 traefik_redirect: false
 traefik_trailing_slash: true
 traefik_protocol: http
