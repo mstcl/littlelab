@@ -2,15 +2,84 @@
 network: "traefik-net" # network to let traefik access bouncer
 ipam_subnet: "172.24.0"
 config_file: "traefik.yml"
+service_directory: "traefik"
+image: "traefik:2.11"
+urls_url: "{{ urls.traefik }}"
 
 cf:
   email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
   token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_TRAEFIK') }}"
-alpine:
-  image: alpine:3.19.1
+
+create_docker_network_networks:
+  - name: "{{ network }}"
+    subnet: "{{ ipam_subnet }}.0/24"
+  - name: "{{ docker.traefik_network }}"
+  - name: "{{ docker.expose_network }}"
+
+packages_native:
+  - logrotate
+
+systemd_services:
+  - "logrotate.timer"
+
+create_host_users_users:
+  - name: "traefik"
+    uid: 2000
 
 ufw_rules:
   - port: 80
     local: false
   - port: 443
     local: false
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ base_directory }}/{{ service_directory }}/dynamic"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/certs"
+    owner: "2000"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/plugins/sources"
+    owner: "2000"
+  - dest: "/var/log/traefik"
+    owner: "0"
+
+files_template:
+  - src: "traefik.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+  - src: "middlewares.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}/dynamic"
+
+files_copy:
+  - src: "security.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}/dynamic"
+
+traefik_create_service: false
+traefik_redirect: true
+traefik_service_name: "api@internal"
+traefik_trailing_slash: false
+traefik_router_name: "traefik"
+traefik_rule: "(Host(`{{ url.sub + '.' + base_tld }}`) && (PathPrefix(`/{{ url.path }}`) || PathPrefix(`/api`)))"
+traefik_middlewares:
+  - "internal-ip@file"
+
+docker_networks:
+  - "bouncer"
+  - "{{ docker.expose_network }}"
+  - "{{ docker.traefik_network }}"
+docker_read_only: true
+docker_user: "2000:2000"
+docker_ports:
+  - "80:10080"
+  - "443:10443"
+docker_env:
+  CLOUDFLARE_EMAIL: "{{ cf.email }}"
+  CLOUDFLARE_DNS_API_TOKEN: "{{ cf.token }}"
+docker_volumes:
+  - "./{{ config_file }}:/etc/traefik/traefik.yml:ro"
+  - "./dynamic:/etc/traefik/dynamic:ro"
+  - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
+  - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
+  - "/var/log/traefik:/log"
+docker_memory: "700MB"
+docker_cpus: "0.75"
+
+homepage_add: true

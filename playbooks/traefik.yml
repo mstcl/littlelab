@@ -4,10 +4,6 @@
   gather_facts: false
   vars_files:
     - vars/traefik.yml
-  vars:
-    service_directory: "traefik"
-    image: "traefik:2.11"
-    url: "{{ urls.traefik }}"
 
   pre_tasks:
     - name: Check if logrotate is installed
@@ -17,58 +13,22 @@
 
   roles:
     - role: create_docker_network
-      vars:
-        create_docker_network_networks:
-          - name: "{{ network }}"
-            subnet: "{{ ipam_subnet }}.0/24"
-          - name: "{{ docker.traefik_network }}"
-          - name: "{{ docker.expose_network }}"
+      when: create_docker_network_networks is defined
     - role: packages
-      vars:
-        packages_native:
-          - logrotate
+      when: "'logrotate' not in ansible_facts.packages"
     - role: systemd
-      vars:
-        systemd_services:
-          - "logrotate.timer"
       when: "'logrotate' not in ansible_facts.packages"
     - role: create_host_users
-      vars:
-        create_host_users_users:
-          - name: "traefik"
-            uid: 2000
     - role: ufw
     - role: urls
-    - role: config
+      when: urls_url is defined
+    - role: files
       become: true
-      vars:
-        config_directories:
-          -
-          - path: "{{ base_directory }}/{{ service_directory }}/dynamic"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/certs"
-            owner: "2000"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/plugins/sources"
-            owner: "2000"
-          - path: "/var/log/traefik"
-            owner: "0"
-        config_files: [{}]
-        config_copies:
-          - file_name: "middlewares.yml"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/dynamic"
-          - file_name: "security.yml"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/dynamic"
     - role: docker
     - role: traefik
-      vars:
-        traefik_create_service: false
-        traefik_redirect: true
-        traefik_service_name: "api@internal"
-        traefik_trailing_slash: false
-        traefik_router_name: "traefik"
-        traefik_rule: "(Host(`{{ url.sub + '.' + base_tld }}`) && (PathPrefix(`/{{ url.path }}`) || PathPrefix(`/api`)))"
-        traefik_middlewares:
-          - "internal-ip@file"
+      when: traefik_add
     - role: homepage
+      when: homepage_config is defined
 
   post_tasks:
     - name: Restrict traefik certificates and logs
