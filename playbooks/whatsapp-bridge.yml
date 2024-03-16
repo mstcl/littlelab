@@ -6,7 +6,7 @@
     - "vars/whatsapp-bridge.yml"
   vars:
     service_directory: "whatsapp-bridge"
-    image: "dock.mau.dev/mautrix/whatsapp:v0.10.5"
+    image: "dock.mau.dev/mautrix/whatsapp:v0.10.6"
 
   pre_tasks:
     - name: Check if wa.yaml registration config already exists
