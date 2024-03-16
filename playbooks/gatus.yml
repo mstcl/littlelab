@@ -6,7 +6,7 @@
     - vars/gatus.yml
   vars:
     service_directory: "gatus"
-    image: "twinproduction/gatus:v5.7.0"
+    image: "twinproduction/gatus:v5.8.0"
     url: "{{ urls.gatus }}"
 
   pre_tasks:
