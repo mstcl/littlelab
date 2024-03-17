@@ -1,0 +1,9 @@
+---
+- name: Start traefik access log
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/traefik-access-log.yml
+
+  roles:
+    - role: docker
