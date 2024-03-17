@@ -6,7 +6,7 @@
     - vars/rss-funnel.yml
   vars:
     service_directory: "rss-funnel"
-    image: "ghcr.io/shouya/rss-funnel:0.1.1"
+    image: "ghcr.io/shouya/rss-funnel:0.1.2"
     url: "{{ urls['rss-funnel'] }}"
 
   roles:
