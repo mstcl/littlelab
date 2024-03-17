@@ -6,7 +6,7 @@
     - vars/traefik.yml
   vars:
     service_directory: "traefik"
-    image: "traefik:2.11"
+    image: "traefik:3.0"
     url: "{{ urls.traefik }}"
 
   pre_tasks:
