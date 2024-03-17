@@ -1,0 +1,15 @@
+---
+service_directory: "traefik-access-log"
+image: "alpine:3.19.1"
+state: "started"
+
+docker_name: "traefik-access-log"
+docker_networks:
+  - name: "{{ docker_traefik_network }}"
+docker_volumes:
+  - "/var/log/traefik/access.log:/var/log/traefik/access.log:ro"
+docker_command:
+  - tail
+  - -f
+  - /var/log/traefik/access.log
+docker_read_only: true
