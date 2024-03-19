@@ -24,4 +24,7 @@ lookup_plugins/__pycache__
 tmp/*
 
 playbooks/*vars
+playbooks/requirements.yml
+
 tools/*vars
+tools/requirements.yml
