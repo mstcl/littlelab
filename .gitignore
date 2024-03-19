@@ -6,9 +6,6 @@ docs/.vitepress/cache
 
 lookup_plugins/__pycache__
 
-playbooks/*vars
-playbooks/requirements.yml
-
 .stversions/*
 
 docs/
@@ -16,3 +13,7 @@ yarn.lock
 .github/*
 README.md
 .renovaterc.*
+tmp/*
+
+playbooks/*vars
+tools/*vars
