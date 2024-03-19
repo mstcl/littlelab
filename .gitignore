@@ -20,3 +20,8 @@ docs/.vitepress/cache
 /node_modules
 
 lookup_plugins/__pycache__
+
+tmp/*
+
+playbooks/*vars
+tools/*vars
