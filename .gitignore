@@ -16,4 +16,7 @@ README.md
 tmp/*
 
 playbooks/*vars
+playbooks/requirements.yml
+
 tools/*vars
+tools/requirements.yml
