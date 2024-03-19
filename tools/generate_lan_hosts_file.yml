@@ -1,0 +1,13 @@
+---
+- name: Generate a hosts file for the OpenWRT router
+  hosts: bunny
+  gather_facts: false
+  vars:
+    base_lanip: "{{ hostvars.bimbox.base_lanip }}"
+    base_tld: "{{ hostvars.bimbox.base_tld }}"
+
+  roles:
+    - role: hosts_file
+      vars:
+        hosts_file_service_rules:
+          - "{{base_lanip}} {{ base_tld }}"
