@@ -5,8 +5,8 @@ urls_url: "{{ urls.photon }}"
 
 state: started
 
-traefik_networks:
-  - name: "{{ docker_expose_network }}"
+docker_networks:
+  - name: "photon-net"
 
 traefik_servers:
   - url: "{{ service_directory }}"

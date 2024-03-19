@@ -41,10 +41,9 @@ user_rules:
   - '@@||akamaihd.net'
   - '@@||click.discord.com^$important'
   - '@@||collector.github.com^$important'
-  - /^([^{{ urls.headscale.sub }}|^status]\S*\.)?bim\.boats$/$dnsrewrite={{ base_tailip }}
   - '@@||kbin.social^$important'
   - '@@||lemmynsfw.com^$important'
-  - '@@||example.com' # unblock example.com
+  - '||{{ urls.immich.sub }}.{{ base_tld }}^$dnsrewrite=100.64.0.5'
 
 ufw_rules:
   - port: 53
