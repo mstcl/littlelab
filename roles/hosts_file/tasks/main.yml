@@ -1,0 +1,21 @@
+---
+- name: Get rules
+  ansible.builtin.set_fact:
+    hosts_file_service_rules: "{{ hosts_file_service_rules + [base_lanip + ' ' + item.value['sub'] + '.' + base_tld] }}"
+  loop: "{{ urls | dict2items }}"
+
+- name: Template hosts file
+  delegate_to: localhost
+  ansible.builtin.template:
+    src: "hosts.j2"
+    dest: "{{ hostvars.localhost.base_directory }}/tmp/hosts"
+    mode: "0644"
+
+- name: Deliver hosts file
+  delegate_to: localhost
+  ansible.builtin.shell: "scp -O -o HostKeyAlgorithms=+ssh-rsa \
+                          -o PubkeyAcceptedAlgorithms=+ssh-rsa \
+                          -o IdentityFile=/home/{{ lookup('env', 'USER') }}/.ssh/id_rsa \
+                          {{ hostvars.localhost.base_directory }}/tmp/hosts \
+                          {{ ansible_user }}@{{ ansible_host }}:/etc/hosts"
+  changed_when: false
