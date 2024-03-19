@@ -11,9 +11,9 @@ git_branch: master
 
 files_template:
   - src: "checks.csv"
-    destination_path: "{{ working_dir }}"
+    dest: "{{ working_dir }}"
   - src: "tinystatus_cron.sh"
-    destination_path: "{{ location.scripts }}"
+    dest: "{{ location.scripts }}"
     permission: "0555"
 
 nginx_configs:
