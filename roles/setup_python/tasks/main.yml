@@ -1,0 +1,10 @@
+---
+- name: Bootstrap a host without python2 installed
+  ansible.builtin.raw: pacman install -Syu python
+  register: result
+  changed_when: "'nothing' not in result.stdout"
+
+- name: Install pip
+  ansible.builtin.package:
+    name:
+      - "{{ 'python3-pip' if ansible_distribution == 'Debian' else 'python-pip' }}"

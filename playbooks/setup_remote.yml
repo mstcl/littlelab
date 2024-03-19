@@ -28,16 +28,8 @@
         - { path: "{{ location.scripts }}" }
         - { path: "{{ location.repos }}", owner: "1001" }
 
-    - name: Install pip on Debian
-      tags: python
-      ansible.builtin.include_role:
-        name: packages
-      vars:
-        packages_native:
-          - "python3-pip"
-      when: ansible_distribution == "Debian"
-
   roles:
+    - role: setup_python
     - role: setup_default_user
       tags: user
     - role: setup_sshd
