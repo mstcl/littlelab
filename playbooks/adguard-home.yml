@@ -6,7 +6,7 @@
     - "vars/adguard-home.yml"
   vars:
     service_directory: "adguard-home"
-    image: "adguard/adguardhome:v0.107.45"
+    image: "adguard/adguardhome:v0.107.46"
     url: "{{ urls['adguard-home'] }}"
 
   roles:
