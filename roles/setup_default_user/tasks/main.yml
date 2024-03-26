@@ -1,5 +1,5 @@
 ---
-- name: Ensure group "{{ base_user }}" exists
+- name: Ensure existence of group "{{ base_user }}"
   ansible.builtin.group:
     name: "{{ base_user }}"
     state: present
@@ -27,6 +27,6 @@
     uid: "{{ base_user_id }}"
 
 - name: Add authorized keys on this machine to {{ base_user }}
-  ansible.builtin.authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ base_user }}"
     key: "{{ lookup('file', '/home/' + lookup('env', 'USER') + '/.ssh/id_ed25519.pub') }}"
