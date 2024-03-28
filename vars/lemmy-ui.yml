@@ -5,9 +5,6 @@ image: "dessalines/lemmy-ui:0.19.3"
 urls_url: "{{ urls['lemmy-ui'] }}"
 state: started
 
-traefik_middlewares:
-  - "internal-ip@file"
-
 docker_env:
   LEMMY_UI_EXTRA_THEMES_FOLDER: "/extra-themes"
   LEMMY_UI_HOST: "0.0.0.0:8080"
