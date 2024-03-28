@@ -18,4 +18,4 @@ traefik_servers:
   - url: "{{ service_directory }}"
     port: 1737
 traefik_middlewares:
-  - "internal-ip@file"
+  - "internal@file"

@@ -11,7 +11,7 @@ traefik_servers:
   - url: "{{ service_directory }}"
     port: 9494
 traefik_middlewares:
-  - "internal-ip@file"
+  - "internal@file"
 
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}:/config"

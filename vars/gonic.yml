@@ -34,4 +34,4 @@ docker_volumes:
   - "{{ location.music }}:/music"
 
 traefik_middlewares:
-  - "internal-ip@file"
+  - "internal@file"
