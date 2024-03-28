@@ -39,4 +39,4 @@ docker_env:
   OAUTH2_USER_CREATION: "0"
 
 traefik_middlewares:
-  - "internal-ip@file"
+  - "internal@file"
