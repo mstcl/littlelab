@@ -15,9 +15,7 @@ entryPoints:
         - "127.0.0.1/32"
     http:
       middlewares:
-        - "crowdsec-bouncer@file"
-        - "sec-headers@file"
-        - "gzip-compress@file"
+        - "defchain@file"
       redirections:
         entryPoint:
           to: "websecure"
