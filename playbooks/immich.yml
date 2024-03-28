@@ -6,7 +6,7 @@
     - vars/immich.yml
   vars:
     service_directory: "immich"
-    image: "ghcr.io/immich-app/immich-server:v1.92.1"
+    image: "ghcr.io/immich-app/immich-server:v1.100.0"
     url: "{{ urls.immich }}"
 
   roles:
