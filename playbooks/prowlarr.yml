@@ -6,7 +6,7 @@
     - vars/prowlarr.yml
   vars:
     service_directory: "prowlarr"
-    image: "linuxserver/prowlarr:1.13.3"
+    image: "linuxserver/prowlarr:1.15.0"
     url: "{{ urls.prowlarr }}"
 
   roles:
