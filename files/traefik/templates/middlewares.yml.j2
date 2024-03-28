@@ -27,3 +27,13 @@ http:
         customResponseHeaders:
           server: ""
           x-powered-by: ""
+    defchain:
+      chain:
+        middlewares:
+          - sec-headers@file
+          - gzip-compress@file
+    internal:
+      chain:
+        middlewares:
+          - error-page@file
+          - internal-ip@file

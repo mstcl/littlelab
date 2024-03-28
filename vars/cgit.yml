@@ -69,13 +69,13 @@ traefik_additional_content: |2
         tls: *modern
         middlewares:
           - "rewrite-cgit@file"
-          - "internal-ip@file"
+          - "internal@file"
       cgit-private:
         rule: "Host(`private-{{ expanded_url }}`)"
         service: "{{ service_directory }}"
         tls: *modern
         middlewares:
-          - "internal-ip@file"
+          - "internal@file"
 
     middlewares:
       rewrite-cgit:
