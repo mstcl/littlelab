@@ -100,6 +100,9 @@
 - name: Install cgit
   # import_playbook: playbooks/cgit.yml
 
+- name: Install legit
+  # import_playbook: playbooks/legit.yml
+
 - name: Install ladder
   # import_playbook: playbooks/ladder.yml
 
@@ -127,6 +130,9 @@
 - name: Install morss
   # import_playbook: playbooks/morss.yml
 
+- name: Install rss-funnel
+  # import_playbook: playbooks/rss-funnel.yml
+
 - name: Install readeck
   # import_playbook: playbooks/readeck.yml
 
@@ -141,6 +147,9 @@
 
 - name: Install lemmy
   # import_playbook: playbooks/lemmy.yml
+
+- name: Install lemmy-ui
+  # import_playbook: playbooks/lemmy-ui.yml
 
 - name: Install photon (frontend for lemmy)
   # import_playbook: playbooks/photon.yml
