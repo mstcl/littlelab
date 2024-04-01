@@ -19,3 +19,11 @@ traefik_servers:
     port: 1737
 traefik_middlewares:
   - "internal@file"
+traefik_additional_content: | # This overrides the error page for new hypha
+      mycorrhiza-new:
+        rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/hypha`))"
+        service: "{{ service_directory }}"
+        tls: &modern
+          options: modern@file
+        middlewares:
+          - internal-ip@file
