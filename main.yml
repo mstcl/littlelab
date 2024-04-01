@@ -131,7 +131,7 @@
   # import_playbook: playbooks/morss.yml
 
 - name: Install rss-funnel
-  # import_playbook: playbooks/rss-funnel.yml
+  import_playbook: playbooks/rss-funnel.yml
 
 - name: Install readeck
   import_playbook: playbooks/readeck.yml
