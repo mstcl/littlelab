@@ -8,7 +8,18 @@ state: "started"
 traefik_servers:
   - url: "{{ service_directory }}"
     port: 80
-traefik_create_router: false
+traefik_router_name: "error"
+traefik_rule: "HostRegexp(`{host:.+}`)"
+traefik_middlewares:
+  - error-page@file
+traefik_additional_content: |2
+        priority: 1
+    middlewares:
+      error-page:
+        errors:
+          status: 402-599
+          service: nginx
+          query: /{status}.html
 
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 

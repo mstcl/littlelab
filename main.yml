@@ -4,6 +4,9 @@
 - name: Install traefik
   # import_playbook: playbooks/traefik.yml
 
+- name: Install nginx
+  # import_playbook: playbooks/nginx.yml
+
 - name: Establish some default UFW rules
   # import_playbook: playbooks/base_ufw.yml
 
@@ -28,15 +31,7 @@
 - name: Install authelia
   # import_playbook: playbooks/authelia.yml
 
-# ~~ (2) WEB SERVERS ~~
-
-- name: Install nginx (public)
-  # import_playbook: playbooks/nginx.yml
-
-- name: Install nginx (private)
-  # import_playbook: playbooks/nginx-private.yml
-
-# ~~ (3) MONITORING ~~
+# ~~ (2) MONITORING ~~
 
 - name: Install dozzle
   # import_playbook: playbooks/dozzle.yml
@@ -53,7 +48,7 @@
 - name: Install dweebui
   # import_playbook: playbooks/dweebui.yml
 
-# ~~ (4) ARRRRRR & MEDIA ~~
+# ~~ (3) ARRRRRR & MEDIA ~~
 
 - name: Install qbittorrent
   # import_playbook: playbooks/qbittorrent.yml
@@ -85,7 +80,7 @@
 - name: Install calibre-web
   # import_playbook: playbooks/calibre-web.yml
 
-# ~~ (5) GENERAL APPS ~~
+# ~~ (4) GENERAL APPS ~~
 
 - name: Install moodist
   # import_playbook: playbooks/moodist.yml
@@ -95,6 +90,9 @@
 
 - name: Install wikiless
   # import_playbook: playbooks/wikiless.yml
+
+- name: Install quetre
+  # import_playbook: playbooks/quetre.yml
 
 - name: Install piped
   # import_playbook: playbooks/piped.yml
@@ -113,6 +111,9 @@
 
 - name: Install hemmelig
   # import_playbook: playbooks/hemmelig.yml
+
+- name: Install opengist
+  # import_playbook: playbooks/opengist.yml
 
 - name: Install picoshare
   # import_playbook: playbooks/picoshare.yml
@@ -144,7 +145,7 @@
 - name: Install photon (frontend for lemmy)
   # import_playbook: playbooks/photon.yml
 
-# ~~ (6) FILE SERVER & BROWSER ~~
+# ~~ (5) FILE SERVER & BROWSER ~~
 
 - name: Install sftpgo
   # import_playbook: playbooks/sftpgo.yml
@@ -169,7 +170,7 @@
 - name: Install patrol
   # import_playbook: playbooks/patrol.yml
 
-- name: Install tinystatus
+- name: Install tinystatus (non-docker)
   # import_playbook: playbooks/tinystatus.yml
 
 - name: Install gatus
@@ -200,10 +201,4 @@
 - name: Install watchyourlan
   # import_playbook: playbooks/watchyourlan.yml
 
-# ~~ (10) SITES ~~
-
-- name: Install static sites
-  # import_playbook: playbooks/static_sites.yml
-
-- name: Install homepage
-  # import_playbook: playbooks/homepage.yml
+# ~~ (10) CUSTOM PLAYBOOKS ~~
