@@ -6,7 +6,7 @@
     - vars/actual.yml
   vars:
     service_directory: "actual"
-    image: "actualbudget/actual-server:24.3.0-alpine"
+    image: "actualbudget/actual-server:24.4.0-alpine"
     url: "{{ urls.actual }}"
 
   roles:
