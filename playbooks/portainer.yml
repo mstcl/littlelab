@@ -6,7 +6,7 @@
     - vars/portainer.yml
   vars:
     service_directory: "portainer"
-    image: "portainer/portainer-ee:2.19.4-alpine"
+    image: "portainer/portainer-ee:2.20.1-alpine"
     url: "{{ urls.portainer }}"
 
   roles:
