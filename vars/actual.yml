@@ -1,5 +1,15 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/actualbudget/actual/master/packages/desktop-electron/icons/icon.ico"
-  description: "Personal finance"
-  category: "Personal services"
+service_directory: "actual"
+image: "actualbudget/actual-server:24.3.0-alpine"
+url: "{{ urls.actual }}"
+
+state: ''
+files_make:
+  - "{{ location.docker_data }}/{{ server_directory }}"
+
+traefik_servers:
+  - url: "{{ server_directory }}"
+    port: "5006"
+
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/data"
