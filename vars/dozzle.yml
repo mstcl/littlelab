@@ -2,7 +2,7 @@
 network: "socket-net"
 
 socket:
-  image: wollomatic/socket-proxy:1.1.2
+  image: wollomatic/socket-proxy:1.1.3
 
 dozzle_options:
   - DOZZLE_BASE: "/{{ urls.dozzle.path }}"
