@@ -1,7 +1,7 @@
 ---
 config_file: "settings.yml"
 network: "redis-net"
-instance_name: "BIM SearXNG"
+instance_name: "SearXNG"
 searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
 
 redis:

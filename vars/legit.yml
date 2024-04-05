@@ -12,8 +12,8 @@ files_template:
   - src: "{{ config_file }}"
 
 legit_options:
-  title: "Repositories"
-  description: "Infra/deployment source code"
+  title: "repositories"
+  description: "infra/deployment source code"
 
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
