@@ -1,0 +1,14 @@
+service_directory: "actual"
+image: "actualbudget/actual-server:24.3.0-alpine"
+url: "{{ urls.actual }}"
+
+state: ''
+files_make:
+  - "{{ location.docker_data }}/{{ server_directory }}"
+
+traefik_servers:
+  - url: "{{ server_directory }}"
+    port: "5006"
+
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/data"
