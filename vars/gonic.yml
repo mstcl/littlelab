@@ -1,7 +1,7 @@
 ---
 service_directory: "gonic"
 image: "sentriz/gonic:v0.16.3"
-url: "{{ urls.gonic }}"
+urls_url: "{{ urls.gonic }}"
 
 state: started
 
