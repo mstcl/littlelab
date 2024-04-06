@@ -1,0 +1,23 @@
+---
+service_directory: "socks5-proxy"
+image: "vimagick/dante:latest"
+config_file: "sockd.conf"
+state: "started"
+
+dante_username: "{{ lookup('get_secrets', path='/cloudbox/socks5-proxy', secret_name='DANTE_USERNAME') }}"
+dante_password: "{{ lookup('get_secrets', path='/cloudbox/socks5-proxy', secret_name='DANTE_PASSWORD') }}"
+io_port: "{{ lookup('get_secrets', path='/cloudbox/socks5-proxy', secret_name='DANTE_PORT') }}"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_tmpfs:
+  - "/run"
+docker_networks: []
+docker_ports:
+  - "{{ io_port }}:{{ io_port }}"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/dante/{{ config_file }}"
