@@ -37,13 +37,12 @@
       block:
         - name: Change mode of certs
           changed_when: false
-          ansible.builtin.command: "sudo chmod 600 \
+          ansible.builtin.command: "chmod 600 \
                                   {{ location.docker_data }}/{{ service_directory }}/\
                                   certs/acme.json"
         - name: Change mode of logs
           changed_when: false
-          ansible.builtin.command: "sudo chmod 644 \
-                                  /var/log/traefik/*.log"
+          ansible.builtin.command: "chmod 644 /var/log/traefik/*.log"
 
     - name: Configure log rotate
       tags: log
