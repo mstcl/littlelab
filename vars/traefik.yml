@@ -5,6 +5,7 @@ config_file: "traefik.yml"
 service_directory: "traefik"
 image: "traefik:2.11"
 urls_url: "{{ urls.traefik }}"
+state: "started"
 
 cf:
   email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
@@ -54,17 +55,19 @@ files_copy:
 
 traefik_create_service: false
 traefik_redirect: true
+traefik_file_name: "{{ config_file }}"
 traefik_service_name: "api@internal"
 traefik_trailing_slash: false
 traefik_router_name: "traefik"
-traefik_rule: "(Host(`{{ url.sub + '.' + base_tld }}`) && (PathPrefix(`/{{ url.path }}`) || PathPrefix(`/api`)))"
+traefik_rule: "(Host(`{{ urls_url.sub + '.' + base_tld }}`) && (PathPrefix(`/{{ urls_url.path }}`) || PathPrefix(`/api`)))"
 traefik_middlewares:
   - "internal-ip@file"
 
 docker_networks:
-  - "bouncer"
-  - "{{ docker.expose_network }}"
-  - "{{ docker.traefik_network }}"
+  - name: "bouncer"
+  - name: "{{ docker_expose_network }}"
+  - name: "{{ docker_traefik_network }}"
+  - name: "photon-net"
 docker_read_only: true
 docker_user: "2000:2000"
 docker_ports:
@@ -74,8 +77,8 @@ docker_env:
   CLOUDFLARE_EMAIL: "{{ cf.email }}"
   CLOUDFLARE_DNS_API_TOKEN: "{{ cf.token }}"
 docker_volumes:
-  - "./{{ config_file }}:/etc/traefik/traefik.yml:ro"
-  - "./dynamic:/etc/traefik/dynamic:ro"
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
+  - "{{ base_directory }}/{{ service_directory }}/dynamic:/etc/traefik/dynamic:ro"
   - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
   - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
   - "/var/log/traefik:/log"
