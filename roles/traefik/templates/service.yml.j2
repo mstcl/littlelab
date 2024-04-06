@@ -21,13 +21,13 @@
     {{ traefik_router_name }}:
 {% if traefik_rule | length > 0 %}
       rule: "{{ traefik_rule }}"
-{% elif url.path is undefined %}
+{% elif urls_url.path is undefined %}
       rule: "Host(`{{ expanded_url }}`)"
 {% else  %}
       rule: "Host(`{{ urls_url.sub + '.' + base_tld }}`) && PathPrefix(`/{{ urls_url.path }}`)"
 {% endif %}
       service: "{{ traefik_service_name }}"
-{% if traefik_tls_passthrough %}
+{% if traefik_tls_passthrough | default(false) %}
       tls:
 		passthrough: true
 {% else %}
