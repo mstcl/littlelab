@@ -3,7 +3,7 @@
   tags: traefik
   ansible.builtin.template:
     src: "service.yml.j2"
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}"
     mode: "0644"
 
 - name: Add additional blocks
@@ -11,7 +11,7 @@
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}"
     marker: "  # {mark} ADDITIONAL CONFIGURATION"
     content: "{{ traefik_additional_content }}"
   when: traefik_additional_content is defined
@@ -21,7 +21,7 @@
   ansible.builtin.blockinfile:
     state: present
     insertafter: EOF
-    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}.yml"
+    dest: "{{ base_directory }}/traefik/dynamic/{{ traefik_file_name }}"
     marker: "  #  {mark} PATH REDIRECT CONFIGURATION"
     content: |2
         middlewares:
