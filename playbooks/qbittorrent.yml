@@ -4,45 +4,12 @@
   gather_facts: false
   vars_files:
     - vars/qbittorrent.yml
-  vars:
-    service_directory: "qbittorrent"
-    image: "gists/qbittorrent:4.6.3"
-    url: "{{ urls.qbittorrent }}"
 
   roles:
     - role: ufw
-      vars: &ufw_defaults
-        ufw_local: false
-        ufw_port: 6881
-    - role: ufw
-      vars:
-        <<: *ufw_defaults
-        ufw_protocol: "udp"
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-        config_files:
-          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-          - template_name: "add.sh"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
-          - template_name: "finish.sh"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/utils"
-        config_copies:
-          - file_name: "categories.json"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: files
     - role: git
-      vars:
-        git_repo: https://github.com/VueTorrent/VueTorrent.git
-        git_destination: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
-        git_branch: latest-release
     - role: docker
     - role: traefik
-      vars:
-        traefik_redirect: true
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: homepage
