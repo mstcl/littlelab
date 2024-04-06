@@ -1,0 +1,42 @@
+---
+service_directory: "nocodb"
+image: "nocodb/nocodb:0.205.0"
+
+urls_url: "{{ urls.nocodb }}"
+
+state: "started"
+
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/app"
+  - dest: "{{ docker_postgres_location }}"
+    owner: "70"
+    permission: "0700"
+
+docker_attach_postgres: true
+docker_postgres_image: "postgres:15-alpine"
+docker_postgres_user: "{{ lookup('get_secrets', path='/nocodb', secret_name='NOCODB_POSTGRES_USER') }}"
+docker_postgres_password: "{{ lookup('get_secrets', path='/nocodb', secret_name='NOCODB_POSTGRES_PASSWORD') }}"
+docker_postgres_db: "{{ service_directory }}"
+docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+docker_postgres_network: "nocodb-net"  # Docker network to talk to postgres
+
+docker_networks:
+  - name: "{{ docker_expose_network }}"
+  - name: "{{ docker_postgres_network }}"
+docker_cap_drop:
+  - SYS_ADMIN
+  - AUDIT_WRITE
+  - MKNOD
+  - SYS_CHROOT
+  - SETFCAP
+  - SYS_PTRACE
+  - DAC_OVERRIDE
+  - SETPCAP
+docker_env:
+  NC_DB: "pg://{{ service_directory }}-postgres:5432?u={{ docker_postgres_user }}&p={{ docker_postgres_password }}&d={{ docker_postgres_db }}"
+  NC_AUTH_JWT_SECRET: "{{ lookup('get_secrets', path='/nocodb', secret_name='NC_AUTH_JWT_SECRET') }}"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}/app:/usr/app/data"
+
+traefik_middlewares:
+  - "internal@file"
