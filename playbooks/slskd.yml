@@ -4,21 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/slskd.yml
-  vars:
-    service_directory: "slskd"
-    image: "slskd/slskd:0.20.1"
-    url: "{{ urls.slskd }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
-        config_files: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: homepage
