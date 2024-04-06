@@ -1,5 +1,36 @@
 ---
+service_directory: "qbittorrent"
+image: "gists/qbittorrent:4.6.3"
+urls_url: "{{ urls.qbittorrent }}"
 config_file: "qBittorrent.conf"
+
+ufw_rules:
+  - port: "6881"
+    local: false
+    protocol: "tcp"
+  - port: "6881"
+    local: false
+    protocol: "udp"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+files_template:
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+  - src: "add.sh"
+    dest: "{{ base_directory }}/{{ service_directory }}/utils"
+  - src: "finish.sh"
+    dest: "{{ base_directory }}/{{ service_directory }}/utils"
+
+files_copy:
+  - src: "categories.json"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+git_repo: https://github.com/VueTorrent/VueTorrent.git
+git_destination: "{{ base_directory }}/{{ service_directory }}/utils/vuetorrent"
+git_branch: latest-release
+
 
 io_port: "{{ lookup('get_secrets', path='/qbittorrent', secret_name='QBITTORRENT_PORT') }}"
 
@@ -14,6 +45,27 @@ qbittorrent_options:
   seed_ratio: 1
   seed_minutes: 600
   web_ui_enabled: true
+
+traefik_redirect: true
+traefik_servers: [{}]
+traefik_middlewares:
+  - "internal-ip@file"
+
+docker_networks:
+  - name: "{{ docker.expose_network }}"
+docker_env:
+  PUID: 1000
+  PGID: 1000
+  TZ: "{{ base_timezone }}"
+docker_volumes:
+  - "{{ location.downloads }}:/data/downloads"
+  - "{{ base_directory }}/{{ service_directory }}/config:/data/.config/qBittorrent"
+  - "{{ base_directory }}/{{ service_directory }}/utils:/data/utils"
+docker_ports:
+  - {{ io_port }}:{{ io_port }}
+  - {{ io_port }}:{{ io_port }}/udp
+docker_cpus: "0.50"
+docker_memory: "200MB"
 
 homepage_config:
   icon: "https://raw.githubusercontent.com/qbittorrent/qBittorrent/master/src/icons/qbittorrent.ico"
