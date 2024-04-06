@@ -11,7 +11,6 @@ lookup_plugins/__pycache__
 docs/
 yarn.lock
 .github/*
-.envrc
 README.md
 .renovaterc.*
 tmp/*
@@ -21,3 +20,4 @@ playbooks/requirements.yml
 
 tools/*vars
 tools/requirements.yml
+.envrc
