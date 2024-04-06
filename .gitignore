@@ -11,6 +11,7 @@ lookup_plugins/__pycache__
 docs/
 yarn.lock
 .github/*
+.envrc
 README.md
 .renovaterc.*
 tmp/*
