@@ -1,0 +1,17 @@
+---
+- name: Install socks5-proxy
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/socks5-proxy.yml
+
+  roles:
+    - role: files
+    - role: docker
+
+  post_tasks:
+    - name: Create user in dante container for authentication
+      tags: test
+      community.docker.docker_container_exec:
+        container: "{{ service_directory }}"
+        command: "useradd {{ dante_username }} -p {{ dante_password | password_hash('sha512') }}"
