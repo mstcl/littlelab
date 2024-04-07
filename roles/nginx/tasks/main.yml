@@ -11,7 +11,7 @@
   tags: nginx
   ansible.builtin.template:
     src: "{{ item.src }}.j2"
-    dest: "{{ base_directory }}/nginx/{{ item.dest }}"
+    dest: "{{ base_directory }}/nginx/{{ item.dest | default(item.src) }}"
     mode: "0644"
   with_items: "{{ nginx_configs }}"
   when: nginx_configs is defined
