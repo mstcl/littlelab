@@ -6,6 +6,7 @@ docker_name: "{{ service_directory }}" # Default container name
 docker_image: "{{ image }}" # Container image
 docker_restart_policy: unless-stopped # Sane restart policy
 docker_connect_to_traefik: true # Connect container to traefik with bridge network
+docker_connect_to_nginx: false # Connect container to nginx with bridge network
 docker_network_internal: true # Make network internal (no internet access)
 
 # ~~ POSTGRES ~~

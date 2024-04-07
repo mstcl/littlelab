@@ -19,5 +19,11 @@
   when: docker_attach_mariadb
 
 - name: Bridge network to traefik
-  tags: ["docker"]
+  tags: ["docker", "network"]
   ansible.builtin.include_tasks: connect_to_traefik.yml
+  when: docker_connect_to_traefik
+
+- name: Bridge network to nginx
+  tags: ["docker", "network"]
+  ansible.builtin.include_tasks: connect_to_nginx.yml
+  when: docker_connect_to_nginx
