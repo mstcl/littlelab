@@ -18,6 +18,11 @@
   ansible.builtin.include_tasks: add_mariadb.yml
   when: docker_attach_mariadb
 
+- name: Add socket proxy
+  tags: ["docker", "socket"]
+  ansible.builtin.include_tasks: add_socket_proxy.yml
+  when: docker_attach_socket_proxy
+
 - name: Bridge network to traefik
   tags: ["docker", "network"]
   ansible.builtin.include_tasks: connect_to_traefik.yml
