@@ -1,2 +1,22 @@
 ---
+service_directory: "mafl"
+image: "hywax/mafl:v0.11.1"
+urls_url: "{{ urls.mafl }}"
+
+state: "started"
+
 config_file: "config.yml"
+
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/data/config.yml"
+docker_network_internal: false
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 3000
+traefik_middlewares:
+  - "internal@file"
