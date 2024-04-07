@@ -29,3 +29,10 @@ docker_attach_mariadb: false # Run additional mariadb container
 
 # ~~ PGWEB ~~
 docker_pgweb_network: "pg-net" # (optional) Network for pgweb and postgres containers
+
+# ~~ SOCKET PROXY ~~
+docker_attach_socket_proxy: false # Run additional socket-proxy container
+docker_socket_proxy_state: "{{ state }}" # Container is started/stopped/restarted
+docker_socket_proxy_recreate: false # Don't recreate postgres if it's already running
+docker_socket_proxy_network: "{{ service_directory }}-socket-proxy" # Internal socket proxy network
+docker_socket_mode: "ro" # Read-only: ro, Read-write: rw

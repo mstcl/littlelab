@@ -1,0 +1,34 @@
+---
+- name: Add socket-proxy
+  tags: ["docker", "socket"]
+  community.docker.docker_container:
+    state: "{{ docker_socket_proxy_state }}"
+    recreate: "{{ docker_socket_proxy_recreate }}"
+    name: "{{ service_directory }}-socket-proxy"
+    image: "{{ docker_socket_proxy_image }}"
+    security_opts:
+      - no-new-privileges
+    restart_policy: "{{ docker_restart_policy }}"
+    log_driver: json-file
+    log_options:
+      max-size: "50m"
+      max-file: "4"
+    read_only: true
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:{{ docker_socket_proxy_mode }}"
+    command: "{{ docker_socket_proxy_command }}"
+    cap_drop:
+      - ALL
+    user: 65534:973
+    memory: 64M
+
+- name: Create docker network for communication with traefik
+  tags: ["network", "docker", "traefik"]
+  community.docker.docker_network:
+    name: "{{ docker_socket_proxy_network }}"
+    internal: "{{ docker_network_internal }}"
+    ipam_config:
+      - subnet: "{{ docker_network_subnet }}/29"
+    connected:
+      - "{{ service_directory }}"
+      - "{{ service_directory }}-socket-proxy"
