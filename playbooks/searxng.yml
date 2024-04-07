@@ -4,29 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/searxng.yml
-  vars:
-    service_directory: "searxng"
-    image: "searxng/searxng:latest"
-    url: "{{ urls.searxng }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
-            owner: "999"
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-        config_files:
-          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-          - template_name: "limiter.toml"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-          - template_name: "uwsgi.ini"
-            destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: files
     - role: docker
-      vars:
-        docker_attach_redis: true
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-    - role: homepage

@@ -4,18 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/ladder.yml
-  vars:
-    service_directory: "ladder"
-    image: "ghcr.io/everywall/ladder:v0.0.21"
-    url: "{{ urls.ladder }}"
 
   roles:
     - role: urls
-    - role: config
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
-    - role: homepage

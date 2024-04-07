@@ -4,23 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/wikiless.yml
-  vars:
-    service_directory: "wikiless"
-    image: "ghcr.io/metastem/wikiless:latest"
-    url: "{{ urls.wikiless}}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ location.docker_data }}/{{ service_directory }}_redis"
-            owner: "999"
-        config_files: [{}]
+    - role: files
     - role: docker
-      vars:
-        docker_attach_redis: true
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-    - role: homepage

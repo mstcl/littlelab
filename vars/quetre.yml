@@ -6,7 +6,7 @@ urls_url: "{{ urls.quetre }}"
 state: started
 
 docker_attach_redis: true
-docker_redis_image: "redis:6.2-alpine"
+docker_redis_image: "registry.redict.io/redict:7.3.0"
 docker_network_internal: false # Needs internet access
 docker_env:
   PORT: "8080"
