@@ -9,6 +9,6 @@ bt=$(date '+%Y%m%d-%H%M')
 
 sqlite3 db/hemmelig.db ".backup 'hemmelig-$bt.db'"
 
-gzip hemmelig-$bt.db
+zstd --rm -q hemmelig-$bt.db
 
-mv hemmelig-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
+mv hemmelig-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}

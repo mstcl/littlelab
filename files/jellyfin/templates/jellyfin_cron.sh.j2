@@ -14,12 +14,12 @@ sqlite3 data/library.db ".backup 'library-$bt.db'"
 
 docker start {{ service_directory }}
 
-gzip jellyfin-$bt.db
-gzip library-$bt.db
+zstd --rm -q jellyfin-$bt.db
+zstd --rm -q library-$bt.db
 
-mv jellyfin-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
-mv library-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
+mv jellyfin-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
+mv library-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
 
 # Tars all files excluding databases and db-journal
-tar --exclude="*.db*" -czf jellyfin_files-$bt.tar.gz .
-mv jellyfin_files-$bt.tar.gz {{ location.onsite_backups }}/{{ service_directory }}
+tar --exclude="*.db*" -czf jellyfin_files-$bt.tar.zst .
+mv jellyfin_files-$bt.tar.zst {{ location.onsite_backups }}/{{ service_directory }}
