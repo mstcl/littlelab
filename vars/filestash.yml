@@ -1,14 +1,17 @@
 ---
 service_directory: "filestash"
 image: "machines/filestash:latest"
-url: "{{ urls.filestash }}"
+urls_url: "{{ urls.filestash }}"
 
 state: started
 
 config_file: "config.json" # (optional) configuration file (to avoid reconfiguring)
 
-config_directories: [{}] # create docker data directory to store DB.
-config_files: [{}] # (optional) template the configuration file
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
 
 docker_env:
   ADMIN_PASSWORD: ""

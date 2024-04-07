@@ -7,7 +7,7 @@
 
   roles:
     - role: urls
-    - role: config
+    - role: files
     - role: docker
     - role: traefik
     - role: homepage
