@@ -22,7 +22,6 @@ docker_postgres_user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPE
 docker_postgres_password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
 docker_postgres_db: "{{ service_directory }}"
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-docker_postgres_network: "piped-postgres-net"  # Docker network to talk to postgres
 
 docker_networks:
   - name: "{{ docker_expose_network }}"

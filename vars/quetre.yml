@@ -1,17 +1,13 @@
 ---
 service_directory: "quetre"
 image: "codeberg.org/video-prize-ranch/quetre:v7.1.0"
-url: "{{ urls.quetre }}"
+urls_url: "{{ urls.quetre }}"
 
 state: started
 
 docker_attach_redis: true
 docker_redis_image: "redis:6.2-alpine"
-docker_redis_network: "{{ service_directory }}-redis-net"
-
-docker_networks:
-  - name: "{{ docker_expose_network }}"
-  - name: "{{ docker_redis_network }}"
+docker_network_internal: false # Needs internet access
 docker_env:
   PORT: "8080"
   NODE_ENV: "production"

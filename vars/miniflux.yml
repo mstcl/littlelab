@@ -1,7 +1,7 @@
 ---
 service_directory: "miniflux"
 image: "miniflux/miniflux:2.1.1"
-url: "{{ urls.miniflux }}"
+urls_url: "{{ urls.miniflux }}"
 
 state: started
 
@@ -17,7 +17,6 @@ docker_postgres_db: "{{ service_directory }}"
 docker_postgres_user: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_USER') }}"
 docker_postgres_password: "{{ lookup('get_secrets', path='/miniflux', secret_name='MINIFLUX_POSTGRES_PASSWORD') }}"
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-docker_postgres_network: "{{ service_directory }}-postgres-net"
 
 config_directories:
   - path: "{{ docker_postgres_location }}"

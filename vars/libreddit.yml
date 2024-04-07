@@ -1,8 +1,14 @@
 ---
-libreddit_options:
-  - LAYOUT: "clean"
+service_directory: "libreddit"
+image: "quay.io/redlib/redlib:latest"
+urls_url: "{{ urls.libreddit }}"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/redlib-org/redlib/main/static/logo.png"
-  description: "Reddit frontend"
-  category: "General services"
+state: "started"
+
+docker_user: nobody
+docker_read_only: true
+docker_cap_drop:
+  - ALL
+docker_env:
+  LAYOUT: "clean"
+docker_network_internal: false # Needs internet access
