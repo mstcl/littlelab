@@ -1,9 +1,4 @@
 ---
-- name: Create docker network for communication with backend
-  tags: ["network", "docker", "redis"]
-  community.docker.docker_network:
-    name: "{{ docker_redis_network }}"
-
 - name: Add redis service
   tags: ["docker", "redis"]
   community.docker.docker_container:
@@ -30,7 +25,11 @@
       - SETGID
       - SETUID
 
-# {% if docker_attach_redis_volume %}
-#     volumes:
-#       - {{ location.docker_data }}/{{ service_directory }}_redis:/data
-# {% endif %}
+- name: Create docker network for communication with backend
+  tags: ["network", "docker", "redis"]
+  community.docker.docker_network:
+    name: "{{ docker_redis_network }}"
+    internal: true
+    connected:
+      - "{{ service_directory }}-redis"
+      - "{{ service_directory }}"

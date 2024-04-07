@@ -1,25 +1,30 @@
 ---
-docker_traefik_network: "" # Main traefik network
-docker_expose_network: "" # Main expose network
-docker_pgweb_network: "" # (optional) Network for pgweb and postgres containers
-docker_attach_redis: false # Run additional redis container
-docker_attach_redis_volume: true # Save redis to disk
-docker_attach_mariadb: false # Run additional mariadb container
+# ~~ MAIN CONTAINER ~~
+docker_state: "{{ state }}" # Container is started/stopped/restarted
+docker_recreate: true # Always recreate the container
+docker_name: "{{ service_directory }}" # Default container name
+docker_image: "{{ image }}" # Container image
+docker_restart_policy: unless-stopped # Sane restart policy
+docker_connect_to_traefik: true # Connect container to traefik with bridge network
+docker_network_internal: true # Make network internal (no internet access)
+
+# ~~ POSTGRES ~~
 docker_attach_postgres: false # Run additional postgres container
-
-docker_state: "{{ state }}"
-docker_recreate: true
-docker_name: "{{ service_directory }}"
-docker_image: "{{ image }}"
-docker_restart_policy: unless-stopped
-docker_networks:
-  - name: "{{ docker_traefik_network }}"
-
-docker_postgres_state: "{{ state }}"
-docker_postgres_recreate: false
-docker_postgres_alias: "{{ service_directory }}-postgres"
-docker_postgres_volumes:
+docker_postgres_state: "{{ state }}" # Container is started/stopped/restarted
+docker_postgres_recreate: false # Don't recreate postgres if it's already running
+docker_postgres_alias: "{{ service_directory }}-postgres" # Alias inside internal postgres network
+docker_postgres_volumes: # Mount postgres db
   - "{{ docker_postgres_location }}:/var/lib/postgresql/data"
+docker_postgres_network: "{{ service_directory }}-postgres-net" # Internal postgres network
 
-docker_redis_state: "{{ state }}"
-docker_redis_recreate: false
+# ~~ REDIS ~~
+docker_attach_redis: false # Run additional redis container
+docker_redis_state: "{{ state }}" # Container is started/stopped/restarted
+docker_redis_recreate: false # Don't recreate postgres if it's already running
+docker_redis_network: "{{ service_directory }}-redis-net" # Internal redis network
+
+# ~~ MARIADB (TODO) ~~
+docker_attach_mariadb: false # Run additional mariadb container
+
+# ~~ PGWEB ~~
+docker_pgweb_network: "pg-net" # (optional) Network for pgweb and postgres containers

@@ -1,0 +1,9 @@
+---
+- name: Create docker network for communication with traefik
+  tags: ["network", "docker", "traefik"]
+  community.docker.docker_network:
+    name: "{{ service_directory }}-net"
+    internal: "{{ docker_network_internal }}"
+    connected:
+      - "traefik"
+      - "{{ service_directory }}"

@@ -24,3 +24,12 @@
       POSTGRES_USER: "{{ docker_postgres_user }}"
       POSTGRES_PASSWORD: "{{ docker_postgres_password }}"
       POSTGRES_DB: "{{ docker_postgres_db }}"
+
+- name: Create docker network for communication with backend
+  tags: ["network", "docker", "postgres"]
+  community.docker.docker_network:
+    name: "{{ docker_postgres_network }}"
+    internal: true
+    connected:
+      - "{{ service_directory }}-postgres"
+      - "{{ service_directory }}"
