@@ -9,6 +9,6 @@ bt=$(date '+%Y%m%d-%H%M')
 
 sqlite3 data/gonic.db ".backup 'gonic-$bt.db'"
 
-gzip gonic-$bt.db
+zstd --rm -q gonic-$bt.db
 
-mv gonic-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
+mv gonic-$bt.db.zst {{ location.onsite_backups }}/{{ service_directory }}
