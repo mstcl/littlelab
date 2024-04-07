@@ -1,13 +1,13 @@
 ---
 service_directory: "opengist"
-image: "ghcr.io/thomiceli/opengist:1"
-url: "{{ urls.opengists }}"
+image: "ghcr.io/thomiceli/opengist:1.7.1"
+urls_url: "{{ urls.opengists }}"
 
 state: started
 
-config_directories: [{}] # create default data directory for DBs
+files_make:
+  - "{{ location.docker_data }}/{{ service_directory }}" # create default data directory for DBs
 
-docker_image: "{{ image }}"
 docker_env:
   # see the rest here: https://github.com/thomiceli/opengist/blob/master/docs/configuration/cheat-sheet.md
   UID: "1000"

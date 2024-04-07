@@ -4,16 +4,8 @@
   gather_facts: false
   vars_files:
     - vars/moodist.yml
-  vars:
-    service_directory: "moodist"
-    image: "ghcr.io/remvze/moodist:v1.4.0"
-    url: "{{ urls.moodist }}"
 
   roles:
     - role: urls
-    - role: config
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-    - role: homepage

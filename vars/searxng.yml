@@ -1,13 +1,38 @@
 ---
+service_directory: "searxng"
+image: "searxng/searxng:latest"
+urls_url: "{{ urls.searxng }}"
+
+state: "started"
+
 config_file: "settings.yml"
-network: "redis-net"
+config_dir: "{{ base_directory }}/{{ service_directory }}/config"
 instance_name: "SearXNG"
 searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
 
-redis:
-  image: "redis:6.2-alpine"
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}_redis"
+    owner: "999"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ config_dir }}"
+  - src: "limiter.toml" # Rate-limiting
+    dest: "{{ config_dir }}"
+  - src: "uwsgi.ini" # Lighter on resources
+    dest: "{{ config_dir }}"
 
-homepage_config:
-  icon: "https://upload.wikimedia.org/wikipedia/commons/b/b7/SearXNG-wordmark.svg"
-  description: "Meta-search engine"
-  category: "General services"
+
+docker_attach_redis: true
+docker_redis_image: "registry.redict.io/redict:7.3.0"
+
+docker_network_internal: false # Needs internet access
+docker_cap_drop:
+  - ALL
+docker_capabilities:
+  - CHOWN
+  - SETGID
+  - SETUID
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/config:/etc/searxng:rw"
+docker_memory: "300MB"
+docker_cpus: "0.50"

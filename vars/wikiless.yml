@@ -1,3 +1,24 @@
 ---
+service_directory: "wikiless"
+image: "ghcr.io/metastem/wikiless:latest"
+urls_url: "{{ urls.wikiless}}"
+
 config_file: "wikiless.config"
-network: "redis-net"
+
+state: "started"
+
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}_redis"
+    owner: "999"
+
+docker_attach_redis: true
+docker_redis_image: "registry.redict.io/redict:7.3.0"
+docker_cap_drop:
+  - ALL
+docker_env:
+  REDIS_HOST: redis://{{ service_directory}}-redis
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{config_file}}:/wikiless/config.js"

@@ -1,5 +1,22 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/everywall/ladder/main/assets/pigeon.svg"
-  description: "Bypass paywalls"
-  category: "General services"
+service_directory: "ladder"
+image: "ghcr.io/everywall/ladder:v0.0.21"
+urls_url: "{{ urls.ladder }}"
+
+state: "started"
+
+docker_env:
+  PORT: "8080"
+docker_read_only: true
+docker_cap_drop:
+  - SYS_ADMIN
+  - AUDIT_WRITE
+  - MKNOD
+  - SYS_CHROOT
+  - NET_RAW
+  - SETFCAP
+  - SYS_PTRACE
+  - DAC_OVERRIDE
+  - SETPCAP
+docker_memory: "512M"
+docker_cpus: "0.50"
