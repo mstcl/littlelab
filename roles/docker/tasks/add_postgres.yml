@@ -13,11 +13,6 @@
     log_options:
       max-size: "50m"
       max-file: "4"
-    networks:
-      - name: "{{ docker_pgweb_network }}"
-      - name: "{{ docker_postgres_network }}"
-        aliases:
-          - "{{ docker_postgres_alias }}"
     volumes: "{{ docker_postgres_volumes }}"
     command: "{{ docker_postgres_command | default(omit) }}"
     env:
@@ -33,3 +28,11 @@
     connected:
       - "{{ service_directory }}-postgres"
       - "{{ service_directory }}"
+
+- name: Create docker network for communication with pgweb
+  tags: ["network", "docker", "postgres"]
+  community.docker.docker_network:
+    name: "{{ docker_pgweb_network }}"
+    internal: true
+    connected:
+      - "{{ service_directory }}-postgres"

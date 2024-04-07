@@ -13,8 +13,6 @@
     log_options:
       max-size: "50m"
       max-file: "4"
-    networks:
-      - name: "{{ docker_redis_network }}"
     read_only: true
     volumes: "{{ docker_redis_volumes | default(omit) }}"
     command: "{{ docker_redis_command | default(omit) }}"
