@@ -12,6 +12,5 @@
       become: true
     - role: docker
     - role: traefik
-    - role: homepage
     - role: backup
-    - role: authelia_oidc
+ #   - role: authelia_oidc
