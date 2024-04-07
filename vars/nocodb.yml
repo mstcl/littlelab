@@ -19,9 +19,6 @@ docker_postgres_password: "{{ lookup('get_secrets', path='/nocodb', secret_name=
 docker_postgres_db: "{{ service_directory }}"
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
-docker_networks:
-  - name: "{{ docker_expose_network }}"
-  - name: "{{ docker_postgres_network }}"
 docker_cap_drop:
   - SYS_ADMIN
   - AUDIT_WRITE
