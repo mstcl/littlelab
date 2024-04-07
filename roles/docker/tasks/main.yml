@@ -17,3 +17,7 @@
   tags: ["docker", "mariadb"]
   ansible.builtin.include_tasks: add_mariadb.yml
   when: docker_attach_mariadb
+
+- name: Bridge network to traefik
+  tags: ["docker"]
+  ansible.builtin.include_tasks: connect_to_traefik.yml
