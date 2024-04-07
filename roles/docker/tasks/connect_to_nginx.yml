@@ -1,0 +1,9 @@
+---
+- name: Create docker network for communication with nginx
+  tags: ["network", "docker", "nginx"]
+  community.docker.docker_network:
+    name: "{{ service_directory }}-net"
+    internal: "{{ docker_network_internal }}"
+    connected:
+      - "nginx"
+      - "{{ service_directory }}"
