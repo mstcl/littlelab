@@ -23,8 +23,6 @@ traefik_additional_content: |2
 
 working_dir: "{{ base_directory }}/{{ service_directory }}"
 
-docker_networks:
-  - name: "{{ docker_expose_network }}"
 docker_volumes:
   - "/etc/localtime:/etc/localtime:ro"
   - "{{ working_dir }}/error.html:/error:ro"
