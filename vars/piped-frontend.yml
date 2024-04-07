@@ -6,8 +6,6 @@ urls_url: "{{ urls['piped-frontend'] }}"
 
 state: "started"
 
-docker_networks:
-  - name: "{{ docker_expose_network }}"
 docker_cap_drop:
   - SYS_ADMIN
   - AUDIT_WRITE
@@ -22,6 +20,9 @@ docker_entrypoint:
   - "/bin/ash"
   - "-c"
   - "sed -i s/pipedapi.kavin.rocks/{{ urls.piped.sub }}.{{ base_tld }}/g /usr/share/nginx/html/assets/* && /docker-entrypoint.sh && nginx -g 'daemon off;'"
+docker_network_internal: false
+docker_connect_to_traefik: false
+docker_connect_to_nginx: true
 
 traefik_create_service: false
 traefik_service_name: nginx
