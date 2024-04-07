@@ -8,7 +8,7 @@
 
   roles:
     - role: urls
-    - role: config
+    - role: files
       become: true
     - role: docker
     - role: traefik

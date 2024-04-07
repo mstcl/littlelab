@@ -9,4 +9,3 @@
     - role: urls
     - role: docker
     - role: traefik
-    - role: homepage

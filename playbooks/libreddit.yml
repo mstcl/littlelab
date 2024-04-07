@@ -1,19 +1,11 @@
 ---
-- name: Install libReddit
+- name: Install libreddit
   hosts: homelab
   gather_facts: false
   vars_files:
     - vars/libreddit.yml
-  vars:
-    service_directory: "libreddit"
-    image: "quay.io/redlib/redlib:latest"
-    url: "{{ urls.libreddit }}"
 
   roles:
     - role: urls
-    - role: config
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-    - role: homepage
