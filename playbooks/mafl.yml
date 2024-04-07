@@ -4,18 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/mafl.yml
-  vars:
-    service_directory: "mafl"
-    image: "hywax/mafl:v0.9.5"
-    url: "{{ urls.mafl }}"
 
   roles:
     - role: urls
-    - role: config
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 3000
-        traefik_middlewares:
-          - "internal-ip@file"
