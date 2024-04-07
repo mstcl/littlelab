@@ -1,12 +1,20 @@
 ---
+- name: Ensure destination directory exists
+  tags: ["files", "template"]
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    owner: "1000"
+    state: "directory"
+    mode: "0755"
+  with_items: "{{ files_template }}"
+
 - name: Template files
   tags: ["files", "template"]
   ansible.builtin.template:
     src: "{{ hostvars.localhost.base_directory }}/files/{{ service_directory }}\
       /templates/{{ item.src }}.j2"
     dest:
-      "{{ item.dest | default(base_directory + '/' + service_directory) }}\
-      /{{ item.src }}"
+      "{{ item.dest }}/{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
   with_items: "{{ files_template }}"
