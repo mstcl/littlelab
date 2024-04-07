@@ -1,12 +1,20 @@
 ---
+- name: Ensure destination directory exists
+  tags: files
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    owner: "1000"
+    state: "directory"
+    mode: "0755"
+  with_items: "{{ files_copy }}"
+
 - name: Copy existing files over
   tags: files
   ansible.builtin.copy:
     src: "{{ hostvars.localhost.base_directory }}/files/\
           {{ service_directory }}/files/\
           {{ item.src }}"
-    dest: "{{ item.dest | default(base_directory + '/' + service_directory) }}\
-           /{{ item.src }}"
+    dest: "{{ item.dest }}/{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
   with_items: "{{ files_copy }}"

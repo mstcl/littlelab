@@ -1,13 +1,4 @@
 ---
-- name: Ensure main service directory exists
-  tags: files
-  when: files_make is defined or files_copies is defined
-  ansible.builtin.file:
-    path: "{{ base_directory }}/{{ service_directory }}"
-    owner: "1000"
-    state: directory
-    mode: "0755"
-
 - name: Ensure files/directories exists (touch/mkdir)
   tags: files
   ansible.builtin.include_tasks: make.yml
