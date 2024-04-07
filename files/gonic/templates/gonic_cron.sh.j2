@@ -6,6 +6,9 @@ cd {{ location.docker_data }}/{{ service_directory }}
 mkdir -p {{ location.onsite_backups }}/{{ service_directory }}
 
 bt=$(date '+%Y%m%d-%H%M')
-latest=$(ls -ht data/gonic.db.*.bak | head -1)
 
-mv $latest {{ location.onsite_backups }}/{{ service_directory }}
+sqlite3 data/gonic.db ".backup 'gonic-$bt.db'"
+
+gzip gonic-$bt.db
+
+mv gonic-$bt.db.gz {{ location.onsite_backups }}/{{ service_directory }}
