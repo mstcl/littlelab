@@ -23,9 +23,6 @@ config_directories:
     owner: "70"
     permission: "0700"
 
-docker_networks:
-  - name: "{{ docker_traefik_network }}"
-  - name: "{{ docker_postgres_network }}"
 docker_env:
   DATABASE_URL: "postgres://{{ docker_postgres_user }}:{{ docker_postgres_password }}@{{ service_directory }}-postgres/{{ docker_postgres_db }}?sslmode=disable"
   BASE_URL: "https://{{ expanded_url }}"
@@ -36,6 +33,7 @@ docker_env:
   OAUTH2_REDIRECT_URL: "{{ authelia_oidc_redirect_uris[0] }}"
   OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ urls.authelia.sub }}.{{ base_tld }}"
   OAUTH2_USER_CREATION: "0"
+docker_network_internal: false
 
 traefik_middlewares:
   - "internal@file"
