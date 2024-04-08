@@ -1,42 +1,23 @@
 ---
-- name: Install immich
+- name: Install immich server
   hosts: homelab
   gather_facts: false
   vars_files:
     - vars/immich.yml
-  vars:
-    service_directory: "immich"
-    image: "ghcr.io/immich-app/immich-server:v1.92.1"
-    url: "{{ urls.immich }}"
 
   roles:
     - role: urls
-    - role: config
+    - role: files
       become: true
-      vars:
-        config_directories:
-          - path: "{{ location.pictures }}"
-          - path: "{{ postgres.location }}"
-            owner: "999"
-            permission: "0700"
     - role: docker
-      vars:
-        docker_attach_postgres: true
-        docker_attach_redis: true
-        docker_attach_redis_volume: false
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 3001
-            url: "immich-server"
-        traefik_rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
-        traefik_additional_content: |2
-                  - "internal-ip@file"
-              immich-public:
-                rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/share`) || PathPrefix(`/api`) || PathPrefix(`/_app`)))"
-                service: "immich"
-                tls: *modern
-    - role: homepage
     - role: backup
-      vars:
-        backup_minute: "10"
+
+- name: Install immich microservices
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/immich-microservices.yml
+
+  roles:
+    - role: docker
