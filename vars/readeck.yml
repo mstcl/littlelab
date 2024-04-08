@@ -1,13 +1,26 @@
 ---
-readeck_options:
-  - READECK_LOG_LEVEL: "error"
-  - READECK_SERVER_HOST: "0.0.0.0"
-  - READECK_SERVER_PORT: 8080
-  - READECK_SERVER_PREFIX: "/"
-  - READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
-  - READECK_USE_X_FORWARDED: "true"
+service_directory: "readeck"
+image: "codeberg.org/readeck/readeck:0.13.1"
+urls_url: "{{ urls.readeck }}"
 
-homepage_config:
-  category: "Personal services"
-  icon: "https://readeck.org/media/logo.1cbb29bf.svg"
-  description: "Bookmark & archive manager"
+state: "started"
+
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_user: "1000:1000"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/readeck"
+docker_env:
+  READECK_LOG_LEVEL: "error"
+  READECK_SERVER_HOST: "0.0.0.0"
+  READECK_SERVER_PORT: "8080"
+  READECK_SERVER_PREFIX: "/"
+  READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
+  READECK_USE_X_FORWARDED: "true"
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8080
+traefik_middlewares:
+  - "internal@file"
