@@ -4,21 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/readeck.yml
-  vars:
-    service_directory: "readeck"
-    image: "codeberg.org/readeck/readeck:0.13.1"
-    url: "{{ urls.readeck }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: backup
-    - role: homepage
