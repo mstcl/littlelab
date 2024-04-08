@@ -1,5 +1,32 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/janeczku/calibre-web/master/cps/static/favicon.ico"
-  description: "E-book library management"
-  category: "Personal services"
+service_directory: "calibre-web"
+image: "linuxserver/calibre-web:nightly"
+urls_url: "{{ urls.calibre_web }}"
+
+state: "started"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_env:
+  DOCKER_MODS: "linuxserver/mods:universal-calibre"
+  PUID: "1000"
+  PGID: "1000"
+docker_volumes:
+  - "{{ location.books }}:/books"
+  - "{{ location.docker_data }}/{{ service_directory }}:/config"
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8083
+traefik_middlewares:
+  - "authelia@file"
+  - "internal@file"
+traefik_additional_content: |2
+      calibre-web-opds:
+        rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/opds`))"
+        service: "{{ service_directory }}"
+        tls: *modern
+        middlewares:
+          - "internal@file"
