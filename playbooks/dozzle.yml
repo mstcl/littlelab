@@ -4,21 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/dozzle.yml
-  vars:
-    service_directory: "dozzle"
-    image: "amir20/dozzle:v6.3.1"
-    url: "{{ urls.dozzle }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "authelia@file"
-          - "internal-ip@file"
-    - role: homepage

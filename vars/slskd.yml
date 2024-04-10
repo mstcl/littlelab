@@ -2,8 +2,10 @@
 service_directory: "slskd"
 image: "slskd/slskd:0.20.1"
 urls_url: "{{ urls.slskd }}"
-state: "started"
+
 config_file: "slskd.yml"
+
+state: started
 
 io_port: "{{ lookup('get_secrets', path='/soulseek', secret_name='SLSK_PORT') }}"
 
@@ -18,19 +20,9 @@ files_template:
   - src: "{{ config_file }}"
     dest: "{{ base_directory }}/{{ service_directory }}"
 
-traefik_servers:
-  - url: "{{ service_directory }}"
-    port: "8080"
 traefik_middlewares:
-  - "internal-ip@file"
+  - "internal@file"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/slskd/slskd/master/src/web/public/favicon.ico"
-  description: "Soulseek client"
-  category: "Stream"
-
-docker_networks:
-  - name: "{{ docker.traefik_network }}"
 docker_ports:
   - "{{ io_port }}:{{ io_port }}"
 docker_env:

@@ -4,20 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/rss-funnel.yml
-  vars:
-    service_directory: "rss-funnel"
-    image: "ghcr.io/shouya/rss-funnel:0.1.1"
-    url: "{{ urls['rss-funnel'] }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_copies:
-          - file_name: "funnel.yml"
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"

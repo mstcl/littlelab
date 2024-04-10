@@ -4,21 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/lidarr.yml
-  vars:
-    service_directory: "lidarr"
-    image: "linuxserver/lidarr:2.1.7"
-    url: "{{ urls.lidarr }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 8686
-        traefik_middlewares:
-          - "internal-ip@file"
-    - role: homepage

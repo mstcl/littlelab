@@ -28,11 +28,3 @@
     connected:
       - "{{ service_directory }}-postgres"
       - "{{ service_directory }}"
-
-- name: Create docker network for communication with pgweb
-  tags: ["network", "docker", "postgres"]
-  community.docker.docker_network:
-    name: "{{ docker_pgweb_network }}"
-    internal: true
-    connected:
-      - "{{ service_directory }}-postgres"

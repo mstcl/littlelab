@@ -1,0 +1,8 @@
+---
+- name: Generate OpenID SSL private key
+  community.crypto.openssl_privatekey:
+    path: "{{ generate_ssl_private_key_path }}"
+    type: "{{ generate_ssl_private_key_type }}"
+    size: "{{ generate_ssl_private_key_size }}"
+    owner: "{{ generate_ssl_private_key_owner }}"
+    mode: "0600"

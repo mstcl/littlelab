@@ -22,6 +22,7 @@
           image: ""
           {% raw %}urls_url: "{{ urls.{% endraw %}{{ service_directory }}{% raw %} }}"{% endraw %}
 
+
           state: started
 
           traefik_middlewares:
@@ -43,4 +44,3 @@
               - role: urls
               - role: docker
               - role: traefik
-              - role: homepage

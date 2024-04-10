@@ -31,3 +31,4 @@ docker_volumes:
   - "{{ working_dir }}/snippets:/etc/nginx/snippets:ro"
   - "{{ working_dir }}/mounts:/var/run" # put anything in here to mount
   - "{{ location.sites }}:/static:ro" # location of static sites
+  - "{{ location.films }}:/movies:ro" # location of movies
