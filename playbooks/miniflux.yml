@@ -4,13 +4,12 @@
   gather_facts: false
   vars_files:
     - vars/miniflux.yml
-  vars:
 
   roles:
     - role: urls
-    - role: files
-      become: true
+    # - role: files
+    #   become: true
     - role: docker
-    - role: traefik
-    - role: backup
+    # - role: traefik
+    # - role: backup
  #   - role: authelia_oidc

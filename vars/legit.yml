@@ -7,20 +7,20 @@ state: started
 
 config_file: "config.yml"
 css_file: "style.css" # (optional)
+config_location: "{{ base_directory }}/{{ service_directory }}"
 
 files_template:
   - src: "{{ config_file }}"
+    dest: "{{ config_location }}"
 
 legit_options:
   title: "repositories"
   description: "infra/deployment source code"
 
-working_dir: "{{ base_directory }}/{{ service_directory }}"
-
 docker_volumes:
   - "{{ location.repos }}:/srv/git:ro"
-  - "{{ working_dir }}/{{ config_file }}:/config/config.yaml"
-  - "{{ working_dir }}/{{ css_file }}:/app/static/style.css:ro"
-  - "{{ working_dir }}/head.html:/app/templates/head.html:ro"
-  - "{{ working_dir }}/index.html:/app/templates/index.html:ro"
-  - "{{ working_dir }}/repo-header.html:/app/templates/repo-header.html:ro"
+  - "{{ config_location }}/{{ config_file }}:/config/config.yaml"
+  - "{{ config_location }}/{{ css_file }}:/app/static/style.css:ro"
+  - "{{ config_location }}/head.html:/app/templates/head.html:ro"
+  - "{{ config_location }}/index.html:/app/templates/index.html:ro"
+  - "{{ config_location }}/repo-header.html:/app/templates/repo-header.html:ro"

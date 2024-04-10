@@ -4,21 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/radarr.yml
-  vars:
-    service_directory: "radarr"
-    image: "linuxserver/radarr:5.3.6"
-    url: "{{ urls.radarr }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 7878
-        traefik_middlewares:
-          - "internal-ip@file"
-    - role: homepage

@@ -17,4 +17,5 @@
       "{{ item.dest }}/{{ item.src }}"
     mode: "{{ item.permission | default('0644') }}"
     owner: "{{ item.owner | default('1000') }}"
+    force: "{{ item.force | default('true') }}"
   with_items: "{{ files_template }}"

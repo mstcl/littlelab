@@ -1,20 +1,44 @@
-smtp:
-  host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
-  user: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
-  password: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
-  sender: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
+service_directory: "vaultwarden"
+image: "vaultwarden/server:1.30.5-alpine"
+urls_url: "{{ urls.vaultwarden }}"
 
-vaultwarden_options:
-  - DOMAIN: "https://{{ expanded_url }}"
-  - SMTP_HOST: "{{ smtp.host }}"
-  - SMTP_PORT: 465
-  - SMTP_FROM: "{{ smtp.sender }}"
-  - SMTP_SECURITY: "force_tls"
-  - SMTP_USERNAME: "{{ smtp.user }}"
-  - SMTP_PASSWORD: "{{ smtp.password }}"
-  - LOG_LEVEL: "error"
+state: started
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/dani-garcia/vaultwarden/main/src/static/images/vaultwarden-favicon.png"
-  description: "Password manager"
-  category: "Personal services"
+db_location: "{{ location.docker_data }}/{{ service_directory }}"
+
+files_make:
+  - dest: "{{ db_location }}"
+
+traefik_middlewares:
+  - "internal@file"
+
+docker_user: 1000:1000
+docker_cap_drop:
+  - ALL
+docker_capabilities:
+  - NET_BIND_SERVICE
+  - CHOWN
+  - SETGID
+  - SETUID
+  - SYS_ADMIN
+  - AUDIT_WRITE
+  - MKNOD
+  - SYS_CHROOT
+  - NET_RAW
+  - SETFCAP
+  - SYS_PTRACE
+  - DAC_OVERRIDE
+  - SETPCAP
+docker_env:
+  DOMAIN: "https://{{ expanded_url }}"
+  SMTP_HOST: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  SMTP_PORT: "465"
+  SMTP_FROM: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
+  SMTP_SECURITY: "force_tls"
+  SMTP_USERNAME: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
+  SMTP_PASSWORD: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+  LOG_LEVEL: "error"
+  SENDS_ALLOWED: "false"
+  ROCKET_PORT: "8080"
+docker_volumes:
+  - "{{ db_location }}:/data"

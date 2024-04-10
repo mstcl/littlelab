@@ -4,39 +4,11 @@
   gather_facts: false
   vars_files:
     - vars/pgweb.yml
-  vars:
-    service_directory: "pgweb"
-    image: "sosedoff/pgweb:0.14.3"
-    network: "pg-net"
-    url: "{{ urls.pgweb }}"
-
-  pre_tasks:
-    - name: Create docker network for postgres databases
-      tags: ["network", "docker"]
-      community.docker.docker_network:
-        name: "{{ docker.traefik_network }}"
 
   roles:
+    - role: create_docker_network
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ base_directory }}/{{ service_directory }}/bookmarks"
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 8081
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: create_pgweb_bookmarks
-      vars:
-        create_pgweb_bookmarks_services:
-          - "miniflux"
-          - "dendrite"
-          - "sliding-sync"
-          - "wa-bridge"
-          - "lemmy"
-          - "immich"
-          - "piped"
-    - role: homepage
