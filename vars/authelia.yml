@@ -1,4 +1,8 @@
 ---
+service_directory: "authelia"
+image: "docker.io/authelia/authelia:4.38.1"
+urls_url: "{{ urls.authelia }}"
+
 config_file: "configuration.yml"
 
 smtp:
@@ -15,7 +19,50 @@ secrets:
   hmac: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET_FILE') }}"
   oidc_private: "{{ lookup('get_secrets', path='/authelia', secret_name='AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY_FILE') }}"
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/authelia/authelia/bffff5e757073bd4b3787748faced71db9940f6f/docs/static/images/branding/logo-cropped.png"
-  description: "SSO portal"
-  category: "Personal services"
+permissions: &permissions
+  owner: "4100"
+  permission: "0600"
+secret_permissions: &secret_permissions
+  <<: *permissions
+  destination_path: "{{ base_directory }}/{{ service_directory }}/secrets"
+
+create_host_users_users:
+  - name: "authelia"
+    uid: 4100
+config_directories:
+  - path: "{{ base_directory }}/{{ service_directory }}/config"
+  - path: "{{ base_directory }}/{{ service_directory }}/secrets"
+  - path: "{{ location.docker_data }}/{{ service_directory }}/data"
+    owner: "4100"
+config_files:
+  - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    <<: *permissions
+  - template_name: "AUTHELIA_JWT_SECRET"
+    <<: *secret_permissions
+  - template_name: "AUTHELIA_SESSION_SECRET"
+    <<: *secret_permissions
+  - template_name: "AUTHELIA_STORAGE_ENCRYPTION_KEY"
+    <<: *secret_permissions
+  - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
+    <<: *secret_permissions
+  - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_HMAC_SECRET"
+    <<: *secret_permissions
+  - template_name: "AUTHELIA_IDENTITY_PROVIDERS_OIDC_ISSUER_PRIVATE_KEY"
+    <<: *secret_permissions
+config_copy:
+  - file_name: "users.yml"
+    destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    <<: *permissions
+
+authelia_oidc_url: "{{ urls.portainer }}"
+authelia_oidc_service_name: "Portainer"
+authelia_oidc_vars_file: "vars/portainer.yml"
+
+authelia_oidc_url: "{{ urls.immich }}"
+authelia_oidc_service_name: "Immich"
+authelia_oidc_vars_file: "vars/immich.yml"
+authelia_oidc_redirect_uris:
+
+authelia_oidc_url: "{{ urls.sftpgo }}"
+authelia_oidc_service_name: "Sftpgo"
+authelia_oidc_vars_file: "vars/sftpgo.yml"
