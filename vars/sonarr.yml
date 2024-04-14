@@ -1,0 +1,34 @@
+---
+service_directory: "sonarr"
+image: "linuxserver/sonarr:3.0.10"
+urls_url: "{{ urls.sonarr }}"
+
+state: started
+
+data_location: "{{ location.docker_data }}/{{ service_directory }}" # media covers, config file etc.
+
+files_make:
+  - dest: "{{ data_location }}"
+files_template:
+  - src: "config.xml"
+    dest: "{{ data_location }}"
+    force: false
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8989
+traefik_middlewares:
+  - "internal@file"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_volumes:
+  - "{{ data_location }}:/config"
+  # - "{{ location.downloads }}:/data/downloads"
+docker_env:
+  PUID: "1000"
+  PGID: "150"
+  TZ: "{{ base_timezone }}"
+docker_cpus: '0.50'
+docker_memory: '100MB'

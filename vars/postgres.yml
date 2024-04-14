@@ -1,0 +1,54 @@
+---
+service_directory: "postgres"
+image: "postgres:16-alpine"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"
+
+docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+config_location: "{{ base_directory }}/{{ service_directory }}"
+config_file: "postgresql.conf"
+
+files_make:
+  - dest: "{{ docker_postgres_location }}"
+    owner: "70"
+    permission: "0700"
+  - dest: "{{ config_location }}/init"
+
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ config_location }}"
+
+# Tune postgres using postgresql.conf
+postgres_max_cons: 200
+postgres_shared_bufs: 1GB
+postgres_eff_cache: 3GB
+postgres_maint_work_mem: 256MB
+postgres_checkp_compl_target: 0.9
+postgres_wal_bufs: 16MB
+postgres_def_stat_target: 100
+postgres_ran_page_cost: 4
+postgres_eff_io_conc: 2
+postgres_work_mem: 2621kB
+postgres_huge_pages: "off"
+postgres_min_wal: 1GB
+postgres_max_wal: 4GB
+
+ufw_rules:
+  - port: 5432
+    local: false
+    protocol: udp
+
+create_docker_network_networks:
+  - name: "{{ docker_pg_network }}"
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_connect_to_traefik: false
+docker_volumes:
+  - "{{ config_location }}/postgresql.conf:/etc/postgresql.conf"
+  - "{{ docker_postgres_location }}:/var/lib/postgresql/data"
+docker_env:
+  POSTGRES_USER: "{{ pg.root.user }}" # default user
+  POSTGRES_PASSWORD: "{{ pg.root.password }}" # default pw

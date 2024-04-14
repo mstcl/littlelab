@@ -1,0 +1,31 @@
+---
+service_directory: "midarr"
+image: "ghcr.io/midarrlabs/midarr-server:v5.0.0-beta.7"
+urls:
+  midarr:
+    sub: "kno"
+urls_url: "{{ urls.midarr }}"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"
+
+docker_volumes:
+  - "{{ location.films }}:/media"
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_env:
+  APP_URL: "http://midarr:4000"
+  DB_USERNAME: "{{ pg.midarr.db }}"
+  DB_DATABSE: "{{ pg.midarr.user }}"
+  DB_PASSWORD: "{{ pg.midarr.password }}"
+  DB_HOSTNAME: "postgres"
+  SETUP_ADMIN_EMAIL: "{{ midarr_admin_email }}"
+  SETUP_ADMIN_NAME: "{{ midarr_admin_username }}"
+  SETUP_ADMIN_PASSWORD: "{{ midarr_admin_password }}"
+  RADARR_BASE_URL: "http://radarr:7878"
+  RADARR_API_KEY: "{{ radarr_api_key }}"
+  SONARR_BASE_URL: "http://sonarr:8989"
+  SONARR_API_KEY: "{{ sonarr_api_key }}"

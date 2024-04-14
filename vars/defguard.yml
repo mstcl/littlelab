@@ -1,0 +1,44 @@
+---
+service_directory: "defguard"
+image: "ghcr.io/defguard/defguard:0.10.0"
+urls_url: "{{ urls.authelia }}"
+
+state: started
+
+create_host_users_users:
+  - name: "defguard"
+    uid: 3019
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+
+generate_ssl_private_key_path: "{{ base_directory }}/{{ service_directory }}/key.pem"
+generate_ssl_private_key_type: "RSA"
+generate_ssl_private_key_size: "2048"
+generate_ssl_private_key_owner: "3019"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_env:
+  DEFGUARD_LOG_LEVEL: "error"
+  DEFGUARD_HTTP_PORT: "8080"
+  DEFGUARD_AUTH_SECRET: "{{ defguard_auth_secret }}"
+  DEFGUARD_YUBIBRIDGE_SECRET: "{{ defguard_yubibridge_secret }}"
+  DEFGUARD_GATEWAY_SECRET: "{{ defguard_gateway_secret }}"
+  DEFGUARD_SECRET_KEY: "{{ defguard_secret_key }}"
+  DEFGUARD_DB_HOST: "postgres"
+  DEFGUARD_DB_PORT: "5432"
+  DEFGUARD_DB_USER: "{{ pg.defguard.user }}"
+  DEFGUARD_DB_PASSWORD: "{{ pg.defguard.password }}"
+  DEFGUARD_DB_NAME: "{{ pg.defguard.db }}"
+  DEFGUARD_URL: "https://{{ expanded_url }}"
+  DEFGUARD_COOKIE_INSECURE: "true"
+  DEFGUARD_WG_SERVICE_URL: "http://{{ defguard_gateway }}:{{ defguard_gateway_port }}"
+  DEFGUARD_OPENID_KEY: "/keys/key.pem"
+  DEFGUARD_DEFAULT_ADMIN_PASSWORD: "{{ defguard_default_admin_password }}"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/key.pem:/keys/key.pem"
+docker_user: "3019:3019"
+traefik_middlewares:
+  - "internal@file"
