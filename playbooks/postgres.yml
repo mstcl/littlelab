@@ -1,0 +1,13 @@
+---
+- name: Install postgres
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/postgres.yml
+
+  roles:
+    - role: create_docker_network
+    - role: ufw
+    - role: files
+      become: true
+    - role: docker

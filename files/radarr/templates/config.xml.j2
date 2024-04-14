@@ -1,0 +1,25 @@
+<Config>
+  <LogLevel>info</LogLevel>
+  <UrlBase>{% if urls.radarr.path != '' %}/{{ urls.radarr.path }}{% endif %}</UrlBase>
+  <UpdateMechanism>Docker</UpdateMechanism>
+  <BindAddress>*</BindAddress>
+  <Port>7878</Port>
+  <SslPort>9898</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <LaunchBrowser>False</LaunchBrowser>
+  <ApiKey></ApiKey>
+  <AuthenticationMethod>Forms</AuthenticationMethod>
+  <Branch>master</Branch>
+  <SslCertPath></SslCertPath>
+  <SslCertPassword></SslCertPassword>
+  <InstanceName>Radarr</InstanceName>
+  <Theme>auto</Theme>
+  <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+  <AnalyticsEnabled>False</AnalyticsEnabled>
+  <PostgresUser>{{ pg.radarr.user }}</PostgresUser>
+  <PostgresPassword>{{ pg.radarr.password }}</PostgresPassword>
+  <PostgresPort>5432</PostgresPort>
+  <PostgresHost>postgres</PostgresHost>
+  <PostgresMainDb>radarrmain</PostgresMainDb>
+  <PostgresLogDb>radarrlog</PostgresLogDb>
+</Config>

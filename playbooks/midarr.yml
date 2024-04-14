@@ -1,0 +1,11 @@
+---
+- name: Install midarr
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/midarr.yml
+
+  roles:
+    - role: urls
+    - role: docker
+    - role: traefik

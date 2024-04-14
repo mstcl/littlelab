@@ -1,0 +1,11 @@
+---
+- name: Install zitadel
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/zitadel.yml
+
+  roles:
+    - role: urls
+    - role: docker
+    - role: traefik
