@@ -3,8 +3,8 @@
   hosts: bunny
   gather_facts: false
   vars:
-    base_lanip: "{{ hostvars.bimbox.base_lanip }}"
-    base_tld: "{{ hostvars.bimbox.base_tld }}"
+    base_lanip: "{{ groupvars.homelab.base_lanip }}"
+    base_tld: "{{ groupvars.homelab.base_tld }}"
 
   roles:
     - role: hosts_file

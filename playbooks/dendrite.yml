@@ -2,39 +2,11 @@
 - name: Install dendrite
   hosts: homelab
   gather_facts: false
-  vars_files: "vars/dendrite.yml"
-  vars:
-    service_directory: "dendrite"
-    image: "matrixdotorg/dendrite-monolith:v0.13.6"
-    url: "{{ urls.dendrite }}"
+  vars_files:
+    - vars/dendrite.yml
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-            owner: "1000"
-            permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/media"
-            owner: "1000"
-            permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/jetstream"
-            owner: "1000"
-            permission: "0755"
-          - path: "{{ location.docker_data }}/{{ service_directory }}/search"
-            owner: "1000"
-            permission: "0755"
-          - path: "{{ db_location }}"
-            owner: "70"
-            permission: "0700"
-        config_files:
-          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: files
     - role: docker
-      vars:
-        docker_attach_postgres: true
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 8008
-    - role: backup

@@ -4,22 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/vaultwarden.yml
-  vars:
-    service_directory: "vaultwarden"
-    image: "vaultwarden/server:1.30.5-alpine"
-    url: "{{ urls.vaultwarden }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 80
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: backup
-    - role: homepage

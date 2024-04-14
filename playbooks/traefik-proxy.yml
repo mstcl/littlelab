@@ -1,6 +1,6 @@
 ---
-- name: Install traefik in proxy configuration
-  hosts: homelab
+- name: Install traefik as a proxy
+  hosts: proxy
   gather_facts: false
   vars_files:
     - vars/traefik-proxy.yml
@@ -45,18 +45,3 @@
             endscript
           }
       become: true
-
-  # post_tasks:
-  #   - name: Restrict traefik certificates and logs
-  #     become: true
-  #     tags: permission
-  #     block:
-  #       - name: Change mode of certs
-  #         changed_when: false
-  #         ansible.builtin.command: "sudo chmod 600 \
-  #                                 {{ location.docker_data }}/{{ service_directory }}/\
-  #                                 certs/acme.json"
-  #       - name: Change mode of logs
-  #         changed_when: false
-  #         ansible.builtin.command: "sudo chmod 644 \
-  #                                 /var/log/traefik/*.log"

@@ -9,21 +9,13 @@ version: 2
 
 # Global Matrix configuration. This configuration applies to all components.
 global:
-  server_name: {{ urls.dendrite.sub }}.{{ base_tld }}
+  server_name: {{ base_tld }}
   private_key: matrix_key.pem
-  old_private_keys:
-  #  If the old private key file is available:
-  #  - private_key: old_matrix_key.pem
-  #    expired_at: 1601024554498
-  #  If only the public key (in base64 format) and key ID are known:
-  #  - public_key: mn59Kxfdq9VziYHSBzI7+EDPDcBS2Xl7jeUdiiQcOnM=
-  #    key_id: ed25519:mykeyid
-  #    expired_at: 1601024554498
 
   key_validity_period: 168h0m0s
 
   database:
-    connection_string: {{ postgres.url }}
+    connection_string: postgresql://{{ pg.dendrite.user }}:{{ pg.dendrite.password }}@postgres/{{ pg.dendrite.db }}?sslmode=disable
     max_open_conns: 90
     max_idle_conns: 5
     conn_max_lifetime: -1
@@ -32,15 +24,15 @@ global:
     max_size_estimated: 1gb
     max_age: 1h
 
-  well_known_server_name: "{{ urls.dendrite.sub }}.{{ base_tld }}:443"
-  well_known_client_name: "https://{{ urls.dendrite.sub }}.{{ base_tld }}"
-  well_known_sliding_sync_proxy: "https://{{ urls['sliding-sync'].sub }}.{{ base_tld }}"
+  well_known_server_name: "{{ base_tld }}:443"
+  well_known_client_name: "https://{{ base_tld }}"
+  well_known_sliding_sync_proxy: "https://syncv3.{{ base_tld }}"
 
   trusted_third_party_id_servers:
     - matrix.org
     - vector.im
 
-  disable_federation: false
+  disable_federation: true
   presence:
     enable_inbound: false
     enable_outbound: false
@@ -72,36 +64,22 @@ global:
   dns_cache:
     enabled: true
     cache_size: 4096
-    cache_lifetime: "5m" # 5 minutes; https://pkg.go.dev/time@master#ParseDuration
+    cache_lifetime: "5m"
 
 app_service_api:
   disable_tls_validation: false
-  config_files:
-    - /etc/dendrite/wa.yaml
+  config_files: []
 
 client_api:
   registration_disabled: true
   guests_disabled: true
   registration_shared_secret: "{{ dendrite_registration_shared_secret }}"
   enable_registration_captcha: false
-  recaptcha_public_key: ""
-  recaptcha_private_key: ""
-  recaptcha_bypass_secret: ""
-  # To use hcaptcha.com instead of ReCAPTCHA, set the following parameters, otherwise just keep them empty.
-  # recaptcha_siteverify_api: "https://hcaptcha.com/siteverify"
-  # recaptcha_api_js_url: "https://js.hcaptcha.com/1/api.js"
-  # recaptcha_form_field: "h-captcha-response"
-  # recaptcha_sitekey_class: "h-captcha"
-
 
   turn:
     turn_user_lifetime: "5m"
     turn_uris:
-    #  - turn:turn.server.org?transport=udp
-    #  - turn:turn.server.org?transport=tcp
     turn_shared_secret: ""
-    # turn_username: ""
-    # turn_password: ""
 
   rate_limiting:
     enabled: true
@@ -141,7 +119,6 @@ media_api:
 
 mscs:
   mscs:
-    - msc3575
     - msc2836  # (Threading, see https://github.com/matrix-org/matrix-doc/pull/2836)
 
 sync_api:
