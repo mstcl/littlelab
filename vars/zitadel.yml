@@ -1,0 +1,43 @@
+---
+service_directory: "zitadel"
+image: "ghcr.io/zitadel/zitadel:v2.49.3"
+urls_url: "{{ urls.zitadel }}"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"
+  - "tld_host@file"
+traefik_protocol: "h2c"
+traefik_pass_host_header: true
+
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_env:
+  ZITADEL_DATABASE_POSTGRES_HOST: "postgres"
+  ZITADEL_DATABASE_POSTGRES_PORT: "5432"
+  ZITADEL_DATABASE_POSTGRES_DATABASE: "{{ pg.zitadel.db }}"
+  ZITADEL_DATABASE_POSTGRES_USER_USERNAME: "{{ pg.zitadel.user }}"
+  ZITADEL_DATABASE_POSTGRES_USER_PASSWORD: "{{ pg.zitadel.password }}"
+  ZITADEL_DATABASE_POSTGRES_USER_SSL_MODE: "disable"
+  ZITADEL_LOG_LEVEL: "error"
+  ZITADEL_EXTERNALSECURE: "true"
+  ZITADEL_EXTERNALPORT: "443"
+  ZITADEL_TLS_ENABLED: "false"
+  ZITADEL_EXTERNALDOMAIN: "{{ base_tld }}"
+  ZITADEL_LOGSTORE_ACCESS_STDOUT_ENABLED: "true"
+  ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORDCHANGEREQUIRED: "false"
+  ZITADEL_FIRSTINSTANCE_ORG_NAME: "auth"
+  ZITADEL_FIRSTINSTANCE_ORG_HUMAN_USERNAME: "{{ zitadel_admin_username }}"
+  ZITADEL_FIRSTINSTANCE_ORG_HUMAN_PASSWORD: "{{ zitadel_admin_password }}"
+  ZITADEL_MASTERKEY: "{{ zitadel_master_key }}"
+  ZITADEL_DATABASE_POSTGRES_MAXOPENCONNECTIONS: "25"
+  ZITADEL_DATABASE_POSTGRES_MAXIDLECONNECTIONS: "10"
+  ZITADEL_SYSTEMDEFAULTS_PASSWORDHASHER_HASHER_ALGORITHM: "scrypt"
+  ZITADEL_SYSTEMDEFAULTS_PASSWORDHASHER_HASHER_COST: "5"
+  # ZITADEL_SYSTEMDEFAULTS_PASSWORDHASHER_HASHER_MEMORY: "6553"
+  # ZITADEL_SYSTEMDEFAULTS_PASSWORDHASHER_HASHER_THREADS: "2"
+docker_command:
+  - "start-from-setup"
+  - "--masterkeyFromEnv"
+docker_network_internal: false

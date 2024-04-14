@@ -1,0 +1,22 @@
+---
+service_directory: "defguard-gateway"
+image: "ghcr.io/defguard/gateway:0.6.2"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"
+
+ufw_rules:
+  - port: 50051
+    local: false
+    protocol: udp
+
+docker_connect_to_traefik: false
+docker_network_mode: "host"
+docker_env:
+  DEFGUARD_GRPC_URL: "https://{{ urls.defguard.sub }}-grpc.{{ base_tld }}"
+  DEFGUARD_GATEWAY_NAME: "gateway1"
+  DEFGUARD_TOKEN: "" # get from dashboard
+docker_capabilities:
+  - NET_ADMIN

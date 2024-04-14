@@ -1,0 +1,9 @@
+---
+service_directory: "defguard-proxy"
+image: "ghcr.io/defguard/defguard-proxy:0.4"
+urls_url: "{{ urls['defguard-proxy'] }}"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"

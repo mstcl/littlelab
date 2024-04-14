@@ -1,0 +1,20 @@
+service_directory: "rss-funnel"
+image: "ghcr.io/shouya/rss-funnel:0.1.2"
+urls_url: "{{ urls['rss-funnel'] }}"
+
+state: started
+
+files_copy:
+  - src: "funnel.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+traefik_middlewares:
+  - "internal@ip"
+docker_command:
+  - "-c"
+  - "/funnel.yml"
+  - "server"
+  - "-b"
+  - "0.0.0.0:8080"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/funnel.yml:/funnel.yml"
