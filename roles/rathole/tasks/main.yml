@@ -1,0 +1,26 @@
+---
+- name: Ensure rathole directory exists
+  tags: rathole
+  ansible.builtin.file:
+    path: "{{ base_directory }}/rathole"
+    owner: "1000"
+    state: "directory"
+    mode: "0755"
+
+- name: Template to client
+  tags: rathole
+  when: rathole_is_client
+  ansible.builtin.template:
+    src: "client.toml.j2"
+    dest: "{{ base_directory }}/rathole/client.toml"
+    mode: "0644"
+    owner: "1000"
+
+- name: Template to server
+  tags: rathole
+  when: not rathole_is_client
+  ansible.builtin.template:
+    src: "server.toml.j2"
+    dest: "{{ base_directory }}/rathole/server.toml"
+    mode: "0644"
+    owner: "1000"
