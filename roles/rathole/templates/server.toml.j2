@@ -1,0 +1,18 @@
+[server]
+bind_addr = "0.0.0.0:{{ rathole_server_port }}"
+default_token = "{{ rathole_secret }}"
+heartbeat_interval = 30
+
+[server.transport]
+type = "tcp"
+
+[server.transport.tcp]
+keepalive_secs = 20
+keepalive_interval = 8
+nodelay = false
+
+{% for service in rathole_services %}
+[server.services.{{ service.name }}]
+bind_addr = "0.0.0.0:{{ service.port }}"
+type = "{{ service.type }}"
+{% endfor %}

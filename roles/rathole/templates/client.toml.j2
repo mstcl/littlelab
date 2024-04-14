@@ -1,0 +1,19 @@
+[client]
+remote_addr = "{{ rathole_server_ip }}:{{ rathole_server_port }}"
+default_token = "{{ rathole_secret }}"
+heartbeat_timeout = 40
+retry_interval = 1
+
+[client.transport]
+type = "tcp"
+
+[client.transport.tcp]
+nodelay = false
+keepalive_secs = 20
+keepalive_interval = 8
+
+{% for service in rathole_services %}
+[client.services.{{ service.name }}]
+local_addr = "0.0.0.0:{{ service.port }}"
+type = "{{ service.type }}"
+{% endfor %}
