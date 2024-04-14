@@ -1,0 +1,12 @@
+---
+- name: Install isaiah
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/isaiah.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
