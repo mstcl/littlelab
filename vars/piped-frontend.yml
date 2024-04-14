@@ -21,7 +21,7 @@ docker_entrypoint:
   - "-c"
   - "sed -i s/pipedapi.kavin.rocks/{{ urls.piped.sub }}.{{ base_tld }}/g /usr/share/nginx/html/assets/* && /docker-entrypoint.sh && nginx -g 'daemon off;'"
 docker_network_internal: false
-docker_connect_to_traefik: false
+docker_connect_to_traefik: true
 docker_connect_to_nginx: true
 
 traefik_create_service: false

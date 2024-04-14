@@ -19,8 +19,5 @@ docker_env:
   READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
   READECK_USE_X_FORWARDED: "true"
 
-traefik_servers:
-  - url: "{{ service_directory }}"
-    port: 8080
 traefik_middlewares:
   - "internal@file"

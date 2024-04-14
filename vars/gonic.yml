@@ -35,3 +35,4 @@ docker_volumes:
 
 traefik_middlewares:
   - "internal@file"
+traefik_rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/rest`) || PathPrefix(`/admin`)))"
