@@ -1,5 +1,35 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/Lidarr/Lidarr/develop/Logo/128.png"
-  description: "Music collection manager"
-  category: "Stream"
+service_directory: "lidarr"
+image: "linuxserver/lidarr:2.1.7"
+urls_url: "{{ urls.lidarr }}"
+
+state: started
+
+data_location: "{{ location.docker_data }}/{{ service_directory }}" # media covers, config file etc.
+
+files_make:
+  - dest: "{{ data_location }}"
+files_template:
+  - src: "config.xml"
+    dest: "{{ data_location }}"
+    force: false
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8686
+traefik_middlewares:
+  - "internal@file"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_volumes:
+  - "{{ data_location }}:/config"
+  - "{{ location.downloads }}:/data/downloads"
+  - "{{ location.music }}:/data/music"
+docker_env:
+  PUID: "1000"
+  PGID: "150"
+  TZ: "{{ base_timezone }}"
+docker_cpus: '0.80'
+docker_memory: '300MB'

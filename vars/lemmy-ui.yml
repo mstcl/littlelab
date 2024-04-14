@@ -10,7 +10,7 @@ docker_env:
   LEMMY_UI_HOST: "0.0.0.0:8080"
   LEMMY_UI_LEMMY_INTERNAL_HOST: "lemmy:8536"
   LEMMY_UI_LEMMY_EXTERNAL_HOST: "lemmy:8536"
-  LEMMY_UI_DEBUG: "true"
+  LEMMY_UI_DEBUG: "false"
 docker_networks:
   - name: "{{ docker_expose_network }}"
 docker_volumes:

@@ -1,14 +1,39 @@
 ---
-network: dendrite-net
+service_directory: "dendrite"
+image: "matrixdotorg/dendrite-monolith:v0.13.7"
+urls_url: "{{ base_tld }}"
 config_file: "dendrite.yaml"
 
-dendrite_registration_shared_secret: "{{ lookup('get_secrets', path='/dendrite', secret_name='DENDRITE_REGISTRATION_SHARED_SECRET') }}"
-db_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-postgres:
-  db: dendrite
-  image: "postgres:15-alpine"
-  user: "{{ lookup('get_secrets', path='/dendrite', secret_name='DENDRITE_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/dendrite', secret_name='DENDRITE_POSTGRES_PASSWORD') }}"
-  url: "{{ lookup('get_secrets', path='/dendrite', secret_name='DENDRITE_POSTGRES_URL') }}"
-  database: "dendrite"
-  location: "{{ db_location }}"
+state: started
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+    owner: "1000"
+    permission: "0755"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/media"
+    owner: "1000"
+    permission: "0755"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/jetstream"
+    owner: "1000"
+    permission: "0755"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}/search"
+    owner: "1000"
+    permission: "0755"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 8008
+traefik_rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/_matrix`) || PathPrefix(`/.well-known`)))"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_user: "1000:1000"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/config:/etc/dendrite:ro"
+  - "{{ location.docker_data }}/{{ service_directory }}/media:/var/dendrite/media"
+  - "{{ location.docker_data }}/{{ service_directory }}/jetstream:/var/dendrite/jetstream"
+  - "{{ location.docker_data }}/{{ service_directory }}/search:/var/dendrite/searchindex"

@@ -1,5 +1,35 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/Radarr/Radarr/develop/Logo/128.png"
-  description: "Movie collection manager"
-  category: "Stream"
+service_directory: "radarr"
+image: "linuxserver/radarr:5.3.6"
+urls_url: "{{ urls.radarr }}"
+
+state: started
+
+data_location: "{{ location.docker_data }}/{{ service_directory }}" # media covers, config file etc.
+
+files_make:
+  - dest: "{{ data_location }}"
+files_template:
+  - src: "config.xml"
+    dest: "{{ data_location }}"
+    force: false
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 7878
+traefik_middlewares:
+  - "internal@file"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_volumes:
+  - "{{ data_location }}:/config"
+  - "{{ location.downloads }}:/data/downloads"
+  - "{{ location.films }}:/data/movies"
+docker_env:
+  PUID: "1000"
+  PGID: "150"
+  TZ: "{{ base_timezone }}"
+docker_cpus: '0.80'
+docker_memory: '300MB'

@@ -18,7 +18,7 @@ docker_env:
 docker_cap_drop:
   - SYS_ADMIN
 docker_network_internal: false
-docker_connect_to_traefik: false
+docker_connect_to_traefik: true
 docker_connect_to_nginx: true
 
 traefik_create_service: false

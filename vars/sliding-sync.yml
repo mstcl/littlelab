@@ -1,10 +1,20 @@
 ---
-network: "ssync-net"
-ss_syncv3_secret: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_SYNCV3_SECRET') }}"
-postgres:
-  image: "postgres:15-alpine"
-  location: "{{ location.docker_data }}/{{ service_directory }}/db"
-  user: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_USER') }}"
-  password: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_PASSWORD') }}"
-  db: ssync
-  url: "{{ lookup('get_secrets', path='/sliding-sync', secret_name='SLIDING-SYNC_POSTGRES_URL') }}"
+service_directory: "sliding-sync"
+image: "ghcr.io/matrix-org/sliding-sync:v0.99.15"
+urls_url: "syncv3.{{ base_tld }}"
+
+state: started
+
+traefik_servers:
+  - url: "sliding-sync"
+    port: 8008
+traefik_rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/client`) || PathPrefix(`/_matrix/client/unstable/org.matrix.msc3575/sync`)))"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_env:
+  SYNCV3_SERVER: "https://{{ base_tld }}"
+  SYNCV3_SECRET: "{{ sliding_sync_secret }}"
+  SYNCV3_BINDADDR: ":8008"
+  SYNCV3_DB: "postgresql://{{ pg['sliding-sync'].user }}:{{ pg['sliding-sync'].password }}@postgres/{{ pg['sliding-sync'].db }}?sslmode=disable"

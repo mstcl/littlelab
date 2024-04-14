@@ -1,11 +1,10 @@
 ---
 service_directory: "traefik-proxy"
 image: "traefik:2.11"
-config_file: "traefik.yml"
-state: "started"
 
-# create_docker_network_networks:
-#   - name: "{{ docker_expose_network }}"
+config_file: "traefik.yml"
+
+state: started
 
 packages_native:
   - "logrotate"
@@ -52,16 +51,8 @@ files_template:
   - src: "traefik.yml"
     dest: "{{ base_directory }}/{{ service_directory }}"
 
-docker_networks: []
-#   - name: "{{ docker_expose_network }}"
 docker_network_mode: "host"
 docker_user: "0:0"
-# docker_ports:
-#   - "80:80"
-#   - "443:443"
-#   - "6881:6881"
-#   - "50300:50300"
-#   - "8080:8080"
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
   - "{{ base_directory }}/{{ service_directory }}/dynamic:/etc/traefik/dynamic:ro"
@@ -71,32 +62,3 @@ docker_volumes:
 docker_cpus: "1"
 docker_memory: "500MB"
 docker_read_only: true
-
-#docker_containers:
-#  - docker_networks: []
-#    docker_network_mode: "host"
-#    docker_user: "0:0"
-#    docker_volumes:
-#      - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
-#      - "{{ base_directory }}/{{ service_directory }}/dynamic:/etc/traefik/dynamic:ro"
-#      - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
-#      - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
-#      - "/var/log/traefik:/log"
-#    docker_cpus: "1"
-#    docker_memory: "500MB"
-#    docker_read_only: true
-
-traefik_add: false
-homepage_add: false
-# traefik_web:
-#   traefik_protocol: tcp
-#   traefik_create_service: true
-#   traefik_service_name: webtcp
-#   traefik_proxy_protocol: true
-#   traefik_servers:
-#     - url: "{{ proxy_target_ip }}"
-#       port: "80"
-#   traefik_create_router: true
-#   traefik_router_name: webtcp
-#   traefik_rule: "HostSNI(`*`)"
-#   traefik_tls_passthrough: true

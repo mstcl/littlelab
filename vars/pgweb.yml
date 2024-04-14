@@ -1,5 +1,40 @@
 ---
-homepage_config:
-  icon: "https://raw.githubusercontent.com/sosedoff/pgweb/master/static/img/icon.png"
-  description: "PostgreSQL client"
-  category: "SysOps"
+service_directory: "pgweb"
+image: "sosedoff/pgweb:0.14.3"
+urls_url: "{{ urls.pgweb }}"
+
+state: started
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}/bookmarks"
+
+create_docker_network_networks:
+  - name: "{{ docker_pg_network }}"
+
+create_pgweb_bookmarks_services:
+  - "miniflux"
+  - "immich"
+  - "piped"
+
+traefik_middlewares:
+  - internal@file
+
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_cap_drop:
+  - ALL
+docker_capabilities:
+  - CHOWN
+  - SETGID
+  - SETUID
+  - FOWNER
+  - DAC_OVERRIDE
+docker_env:
+  PGWEB_URL_PREFIX: "{{ urls_url.path }}"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/bookmarks:/bookmarks"
+docker_entrypoint:
+  - "/usr/bin/pgweb"
+  - "--bind=0.0.0.0"
+  - "--listen=8080"
+  - "--bookmarks-dir=/bookmarks"
