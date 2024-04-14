@@ -1,7 +1,7 @@
 ---
 traefik_add: true
 traefik_service_name: "{{ service_directory }}"
-traefik_file_name: "{{ service_directory }}.yml"
+traefik_file_name: "{{ service_directory }}"
 traefik_router_name: "{{ service_directory }}"
 traefik_proxy_protocol: false
 traefik_redirect: false
@@ -15,3 +15,4 @@ traefik_servers:
   - url: "{{ service_directory }}"
     port: 8080
 traefik_additional_content: ""
+traefik_pass_host_header: false
