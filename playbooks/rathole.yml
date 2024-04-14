@@ -1,0 +1,20 @@
+---
+- name: Install rathole on client(s)
+  hosts: bimbox
+  gather_facts: false
+  vars_files:
+    - vars/rathole-client.yml
+
+  roles:
+    - role: rathole
+    - role: docker
+
+- name: Install rathole on server
+  hosts: cloudbox
+  gather_facts: false
+  vars_files:
+    - vars/rathole-server.yml
+
+  roles:
+    - role: rathole
+    - role: docker
