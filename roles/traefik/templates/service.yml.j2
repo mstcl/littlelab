@@ -1,4 +1,4 @@
-{{ traefik_protocol }}:
+{% if traefik_protocol == 'h2c' %}http{% else %}{{ traefik_protocol }}{% endif %}:
 {% if traefik_create_service %}
   services:
     {{ traefik_service_name }}:
@@ -7,10 +7,13 @@
         proxyProtocol:
           version: 2
 {% endif %}
+{% if traefik_pass_host_header %}
+        passHostHeader: true
+{% endif %}
         servers:
 {% for server in traefik_servers %}
-{% if traefik_protocol == 'http' %}
-          - url: "http://{{ server.url  }}:{{ server.port }}"
+{% if traefik_protocol != 'tcp' %}
+          - url: "{{ traefik_protocol }}://{{ server.url  }}:{{ server.port }}"
 {% else %}
           - address: "{{ server.url }}:{{ server.port }}"
 {% endif %}
@@ -34,7 +37,6 @@
       tls: &modern
         options: modern@file
 {% endif %}
-{% if traefik_protocol == 'http' %}
 {% if (traefik_middlewares| length > 0) or (traefik_redirect == True) %}
       middlewares:
 {% if traefik_redirect == True %}
@@ -45,7 +47,6 @@
 {% for middleware in traefik_middlewares %}
         - {{ middleware }}
 {% endfor %}
-{% endif %}
 {% endif %}
 {% endif %}
 {% endif %}
