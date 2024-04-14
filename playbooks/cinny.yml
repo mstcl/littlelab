@@ -4,19 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/cinny.yml
-  vars:
-    service_directory: "cinny"
-    image: "ajbura/cinny:v3.2.0"
-    url: "{{ urls.cinny }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_files: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 80
-    - role: homepage

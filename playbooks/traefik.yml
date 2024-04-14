@@ -13,7 +13,6 @@
 
   roles:
     - role: create_docker_network
-      when: create_docker_network_networks is defined
     - role: packages
       when: "'logrotate' not in ansible_facts.packages"
     - role: systemd
@@ -21,14 +20,10 @@
     - role: create_host_users
     - role: ufw
     - role: urls
-      when: urls_url is defined
     - role: files
       become: true
     - role: docker
     - role: traefik
-      when: traefik_add
-    - role: homepage
-      when: homepage_config is defined
 
   post_tasks:
     - name: Restrict traefik certificates and logs

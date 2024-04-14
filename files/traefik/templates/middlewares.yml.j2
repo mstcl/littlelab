@@ -37,3 +37,10 @@ http:
         middlewares:
           - error-page@file
           - internal-ip@file
+    tld_host:
+      headers:
+        isDevelopment: false
+        allowedHosts:
+          - "{{ base_tld }}"
+        customRequestHeaders:
+          authority: "{{ base_tld }}"
