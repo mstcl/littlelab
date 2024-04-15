@@ -1,0 +1,19 @@
+---
+service_directory: "rathole"
+image: "rapiz1/rathole:v0.5.0"
+
+state: started
+
+rathole_is_client: false
+
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/server.toml:/app/config.toml:ro"
+docker_command:
+  - "/app/config.toml"
+docker_connect_to_traefik: false
+docker_env:
+  RUST_LOG: "error"
+docker_ports:
+  - "{{ rathole_server_port }}:{{ rathole_server_port }}"
+  - 80:80
+  - 443:443
