@@ -4,6 +4,9 @@
 - name: Install traefik
   import_playbook: playbooks/traefik.yml
 
+- name: Install traefik proxy
+  import_playbook: playbooks/traefik-proxy.yml
+
 - name: Install nginx
   import_playbook: playbooks/nginx.yml
 
@@ -19,17 +22,20 @@
 - name: Install adguard-home
   import_playbook: playbooks/adguard-home.yml
 
+- name: Install defguard
+  import_playbook: playbooks/defguard.yml
+
 - name: Install headscale and join the tailnet
-  import_playbook: playbooks/headscale.yml
+#   import_playbook: playbooks/headscale.yml
 
 - name: Install headscale-panel
-  import_playbook: playbooks/headscale-panel.yml
+#   import_playbook: playbooks/headscale-panel.yml
 
 - name: Install headscale-admin
-  # import_playbook: playbooks/headscale-admin.yml
+#   import_playbook: playbooks/headscale-admin.yml
 
 - name: Install authelia
-  import_playbook: playbooks/authelia.yml
+#   import_playbook: playbooks/authelia.yml
 
 # ~~ (2) MONITORING ~~
 
@@ -40,7 +46,10 @@
   import_playbook: playbooks/watchyourlan.yml
 
 - name: Install portainer
-  import_playbook: playbooks/portainer.yml
+#   import_playbook: playbooks/portainer.yml
+
+- name: Install isaiah
+  import_playbook: playbooks/isaiah.yml
 
 - name: Install dokemon
   # import_playbook: playbooks/dokemon.yml
@@ -69,16 +78,16 @@
   import_playbook: playbooks/lidarr.yml
 
 - name: Install reiverr
-  import_playbook: playbooks/reiverr.yml
+  # import_playbook: playbooks/reiverr.yml
 
 - name: Install jellyfin
-  import_playbook: playbooks/jellyfin.yml
+  # import_playbook: playbooks/jellyfin.yml
 
 - name: Install gonic
   import_playbook: playbooks/gonic.yml
 
 - name: Install calibre-web
-  import_playbook: playbooks/calibre-web.yml
+  # import_playbook: playbooks/calibre-web.yml
 
 # ~~ (4) GENERAL APPS ~~
 
@@ -110,7 +119,7 @@
   import_playbook: playbooks/piped.yml
 
 - name: Install mycorrhiza
-  import_playbook: playbooks/mycorrhiza.yml
+  # import_playbook: playbooks/mycorrhiza.yml
 
 - name: Install hemmelig
   # import_playbook: playbooks/hemmelig.yml
@@ -146,18 +155,18 @@
   import_playbook: playbooks/baikal.yml
 
 - name: Install lemmy
-  import_playbook: playbooks/lemmy.yml
+  # import_playbook: playbooks/lemmy.yml
 
 - name: Install lemmy-ui
   # import_playbook: playbooks/lemmy-ui.yml
 
 - name: Install photon (frontend for lemmy)
-  import_playbook: playbooks/photon.yml
+  # import_playbook: playbooks/photon.yml
 
 # ~~ (5) FILE SERVER & BROWSER ~~
 
 - name: Install sftpgo
-  import_playbook: playbooks/sftpgo.yml
+  # import_playbook: playbooks/sftpgo.yml
 
 - name: Install pydio cells
   # import_playbook: playbooks/pydio.yml
@@ -179,7 +188,7 @@
 - name: Install patrol
   # import_playbook: playbooks/patrol.yml
 
-- name: Install tinystatus (non-docker)
+- name: Install tinystatus (static)
   import_playbook: playbooks/tinystatus.yml
 
 - name: Install gatus
@@ -188,16 +197,16 @@
 # ~~ (8) MATRIX ~~
 
 - name: Install cinny
-  import_playbook: playbooks/cinny.yml
+  # import_playbook: playbooks/cinny.yml
 
 - name: Install dendrite
-  import_playbook: playbooks/dendrite.yml
+  # import_playbook: playbooks/dendrite.yml
 
 - name: Install sliding-sync
-  import_playbook: playbooks/sliding-sync.yml
+  # import_playbook: playbooks/sliding-sync.yml
 
 - name: Install whatsapp-bridge
-  import_playbook: playbooks/whatsapp-bridge.yml
+  # import_playbook: playbooks/whatsapp-bridge.yml
 
 # ~~ (9) OTHER ADMIN TOOLS ~~
 
@@ -215,5 +224,8 @@
 - name: Static sites
   import_playbook: playbooks/static_sites.yml
 
-- name: Users
+- name: Setup users
   import_playbook: playbooks/private_deployment.yml
+
+- name: Setup LAN dns
+  import_playbook: tools/generate_lan_hosts_file.yml
