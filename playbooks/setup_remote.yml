@@ -1,6 +1,6 @@
 - name: Setup homelab
   gather_facts: true
-  hosts: homelab
+  hosts: all
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   vars_prompt:
     - name: setup_default_user_password
@@ -10,23 +10,18 @@
     - name: Make necessary directories
       tags: dirs
       ansible.builtin.file:
-        path: "{{ item.path }}"
+        path: "{{ base_directory }}"
         owner: "{{ item.owner | default('1000') }}"
         state: directory
         mode: "0755"
-      loop:
-        - { path: "{{ base_directory }}" }
-        - { path: "{{ location.films }}" }
-        - { path: "{{ location.books }}" }
-        - { path: "{{ location.music }}" }
-        - { path: "{{ location.pictures }}" }
-        - { path: "{{ location.cache }}" }
-        - { path: "{{ location.files }}" }
-        - { path: "{{ location.onsite_backups }}" }
-        - { path: "{{ location.docker_data }}" }
-        - { path: "{{ location.sites }}" }
-        - { path: "{{ location.scripts }}" }
-        - { path: "{{ location.repos }}", owner: "1001" }
+    - name: Make additional directories
+      tags: dirs
+      ansible.builtin.file:
+        path: "{{ item.value }}"
+        owner: "{{ item.owner | default('1000') }}"
+        state: directory
+        mode: "0755"
+      loop: "{{ location | dict2items }}"
 
   roles:
     - role: setup_python
