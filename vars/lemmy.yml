@@ -11,7 +11,7 @@ smtp:
   host: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
 
 pictrs:
-  image: "asonix/pictrs:0.5.4"
+  image: "asonix/pictrs:0.5.12"
   api_key: "{{ lookup('get_secrets', path='/lemmy', secret_name='LEMMY_PICTRS_API_KEY') }}"
 
 pictrs_options:
