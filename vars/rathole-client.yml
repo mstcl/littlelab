@@ -12,3 +12,5 @@ docker_volumes:
 docker_command:
   - "/app/config.toml"
 docker_connect_to_traefik: false
+docker_env:
+  RUST_LOG: "error"
