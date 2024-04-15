@@ -12,7 +12,6 @@ docs/
 yarn.lock
 .github/*
 README.md
-.renovaterc.*
 tmp/*
 
 playbooks/*vars
