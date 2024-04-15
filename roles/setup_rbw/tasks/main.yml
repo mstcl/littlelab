@@ -1,0 +1,14 @@
+---
+- name: Ensure rbw directory exists
+  ansible.builtin.file:
+    path: "~/.config/rbw"
+    state: directory
+    mode: "0775"
+    owner: 1000
+
+- name: Make config
+  ansible.builtin.template:
+    src: "rbw.json.j2"
+    dest: "~/.config/rbw/config.json"
+    mode: "0644"
+    owner: "1000"
