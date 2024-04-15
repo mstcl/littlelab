@@ -21,3 +21,5 @@ playbooks/requirements.yml
 tools/*vars
 tools/requirements.yml
 .envrc
+
+scan.log
