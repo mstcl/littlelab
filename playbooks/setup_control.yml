@@ -38,17 +38,6 @@
         type: both
         requirements_file: "requirements.yml"
 
-    - name: Install packages
-      tags: packages
-      ansible.builtin.include_role:
-        name: packages
-      vars:
-        packages_pip:
-          - "infisical-python"
-        packages_native:
-          # Useful for scanning for leaked secrets
-          - "infisical-bin"
-
     - name: Generate keypair
       tags: ssh
       community.crypto.openssh_keypair:
