@@ -1,8 +1,9 @@
 ---
-- name: Bootstrap a host without python2 installed
+- name: Bootstrap a host without python installed
   ansible.builtin.raw: pacman install -Syu python
   register: result
   changed_when: "'nothing' not in result.stdout"
+  when: ansible_distribution != "Debian"
 
 - name: Install pip
   ansible.builtin.package:
