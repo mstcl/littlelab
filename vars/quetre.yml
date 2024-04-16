@@ -1,6 +1,6 @@
 ---
 service_directory: "quetre"
-image: "codeberg.org/video-prize-ranch/quetre:v7.1.0"
+image: "codeberg.org/video-prize-ranch/quetre:v8.0.0"
 urls_url: "{{ urls.quetre }}"
 
 state: started
