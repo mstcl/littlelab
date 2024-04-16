@@ -1,6 +1,6 @@
 ---
 service_directory: "lidarr"
-image: "linuxserver/lidarr:2.1.7"
+image: "linuxserver/lidarr:2.2.5"
 urls_url: "{{ urls.lidarr }}"
 
 state: started
