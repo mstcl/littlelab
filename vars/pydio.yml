@@ -9,7 +9,7 @@ pydio_options:
     password: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_ADMIN_PASSWORD') }}"
 
 mariadb:
-  image: mariadb:11.2.3
+  image: mariadb:11.3.2
   location: "{{ location.docker_data }}/{{ service_directory }}/db"
   user: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_MARIADB_USER') }}"
   password: "{{ lookup('get_secrets', path='/pydio', secret_name='PYDIO_MARIADB_PASSWORD') }}"
