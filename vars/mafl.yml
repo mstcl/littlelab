@@ -1,6 +1,6 @@
 ---
 service_directory: "mafl"
-image: "hywax/mafl:v0.11.1"
+image: "hywax/mafl:v0.13.0" # https://github.com/hywax/mafl/releases
 urls_url: "{{ urls.mafl }}"
 
 state: "started"
