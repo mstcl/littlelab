@@ -1,6 +1,6 @@
 ---
 service_directory: "readeck"
-image: "codeberg.org/readeck/readeck:0.13.1"
+image: "codeberg.org/readeck/readeck:0.13.2"
 urls_url: "{{ urls.readeck }}"
 
 state: "started"
