@@ -1,73 +1,38 @@
 ---
 service_directory: "immich"
-image: "ghcr.io/immich-app/immich-server:v1.92.1"
+image: "ghcr.io/immich-app/immich-server:v1.102.2"
 urls_url: "{{ urls.immich }}"
 
 state: "started"
 
-machine_learning:
-  enabled: false
-  image: ""
-
-typesense:
-  api_key: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_TYPESENSE_API_KEY') }}"
-
 files_make:
-  - dest: "{{ location.pictures }}"
   - dest: "{{ docker_postgres_location }}"
     owner: "999"
-    mode: "0700"
+    permission: "0700"
 
-docker_postgres_image: "tensorchord/pgvecto-rs:pg14-v0.1.11"
-docker_postgres_user: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_POSTGRES_USER') }}"
-docker_postgres_password: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_POSTGRES_PASSWORD') }}"
-docker_postgres_db: "{{ service_directory }}"
-docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-
-docker_name: "{{ service_directory }}-server"
-docker_entrypoint:
-  - "/bin/sh"
-  - "./start-server.sh"
 docker_volumes:
   - "{{ location.pictures }}:/usr/src/app/upload"
+  - "/etc/localtime:/etc/localtime:ro"
 docker_env:
-  TYPESENSE_API_KEY: "{{ typesense.api_key }}"
-  DB_HOSTNAME: "{{ service_directory }}-postgres"
-  DB_DATABASE_NAME: "{{ service_directory }}"
   REDIS_HOSTNAME: "{{ service_directory }}-redis"
-  UPLOAD_LOCATION: "{{ location.pictures }}"
-  PUBLIC_LOGIN_PAGE_MESSAGE: ""
-  IMMICH_WEB_URL: "http://{{ service_directory }}-web:3000"
-  IMMICH_SERVER_URL: "http://{{ service_directory }}-server:3001"
-  IMMICH_MACHINE_LEARNING_URL: "http://{{ service_directory }}-machine-learning:3003"
+  DB_HOSTNAME: "{{ service_directory }}-postgres"
+  DB_DATABASE_NAME: "{{ docker_postgres_db }}"
   DB_USERNAME: "{{ docker_postgres_user }}"
   DB_PASSWORD: "{{ docker_postgres_password }}"
+docker_network_internal: false
 
-docker_attach_postgres: true
 docker_attach_redis: true
-docker_attach_redis_volume: false
-
 docker_redis_image: "redis:6.2-alpine"
 
-oidc:
-  client_id: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_ID') }}"
-  client_secret: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_SECRET') }}"
-  digest: "{{ lookup('get_secrets', path='/immich', secret_name='IMMICH_OIDC_DIGEST') }}"
-  redirect_uris:
-    - "https://{{ expanded_url }}/auth/login"
-    - "https://{{ expanded_url }}/user-settings"
-    - "https://{{ expanded_url }}/api/oauth/mobile-redirect"
-    - "app.immich://"
+docker_attach_postgres: true
+docker_postgres_image: "tensorchord/pgvecto-rs:pg14-v0.2.0"
+docker_postgres_user: "{{ pg.immich.user }}"
+docker_postgres_password: "{{ pg.immich.password }}"
+docker_postgres_db: "{{ pg.immich.db }}"
+docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
 
 traefik_servers:
-  - port: 3001
-    url: "immich-server"
-traefik_rule: "(Host(`{{ expanded_url }}`) && PathPrefix(`/`))"
-traefik_additional_content: |2
-          - "internal@file"
-      immich-public:
-        rule: "(Host(`{{ expanded_url }}`) && (PathPrefix(`/share`) || PathPrefix(`/api`) || PathPrefix(`/_app`)))"
-        service: "immich"
-        tls: *modern
+  - url: "{{ service_directory }}-server"
+    port: 3001
 
 backup_minute: "10"

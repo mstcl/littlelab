@@ -9,15 +9,17 @@
     - role: urls
     - role: files
       become: true
-    - role: docker
+    - role: docker # microservice
+      vars:
+        docker_name: "{{ service_directory }}-microservices"
+        docker_command:
+          - "start.sh"
+          - "microservices"
+    - role: docker # server
+      vars:
+        docker_name: "{{ service_directory }}-server"
+        docker_command:
+          - "start.sh"
+          - "immich"
     - role: traefik
     - role: backup
-
-- name: Install immich microservices
-  hosts: homelab
-  gather_facts: false
-  vars_files:
-    - vars/immich-microservices.yml
-
-  roles:
-    - role: docker
