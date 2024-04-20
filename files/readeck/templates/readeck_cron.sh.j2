@@ -13,4 +13,6 @@ gzip db-$bt.sqlite3
 
 mv db-$bt.sqlite3.gz {{ location.onsite_backups }}/{{ service_directory }}
 
-# TODO: resync bookmarks folder
+rsync -ap config.toml {{ location.onsite_backups }}/{{ service_directory }}
+
+rsync -ap data/bookmarks/ {{ location.onsite_backups }}/{{ service_directory }}/bookmarks
