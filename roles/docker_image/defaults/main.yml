@@ -2,3 +2,5 @@
 docker_image_container_repository: "/repos/containers.git"
 docker_image_container_branch: master
 docker_image_repository: "{{ docker_image }}:latest"
+docker_image_state: "present"
+docker_image_force: false
