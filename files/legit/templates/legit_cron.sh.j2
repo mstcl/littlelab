@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -e
+
+rsync -ap /repos/ {{ location.onsite_backups }}/repos
