@@ -1,7 +1,7 @@
 ---
 # ~~ MAIN CONTAINER ~~
 docker_state: "{{ state }}" # Container is started/stopped/restarted
-docker_recreate: true # Always recreate the container
+docker_recreate: false # Don't recreate the container if not needed
 docker_name: "{{ service_directory }}" # Default container name
 docker_image: "{{ image }}" # Container image
 docker_restart_policy: unless-stopped # Sane restart policy
