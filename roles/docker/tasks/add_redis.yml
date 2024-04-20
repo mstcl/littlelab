@@ -30,4 +30,4 @@
     internal: true
     connected:
       - "{{ service_directory }}-redis"
-      - "{{ service_directory }}"
+      - "{{ docker_name }}"

@@ -27,4 +27,4 @@
     internal: true
     connected:
       - "{{ service_directory }}-postgres"
-      - "{{ service_directory }}"
+      - "{{ docker_name }}"

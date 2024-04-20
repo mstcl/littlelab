@@ -6,4 +6,4 @@
     internal: "{{ docker_network_internal }}"
     connected:
       - "traefik"
-      - "{{ service_directory }}"
+      - "{{ docker_name }}"
