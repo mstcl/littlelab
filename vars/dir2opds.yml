@@ -1,0 +1,12 @@
+---
+service_directory: "dir2opds"
+image: "dubyte/dir2opds"
+urls_url: "{{ urls.dir2opds }}"
+
+state: started
+
+traefik_middlewares:
+  - "internal@file"
+
+docker_volumes:
+  - "{{ location.books }}:/books:ro"
