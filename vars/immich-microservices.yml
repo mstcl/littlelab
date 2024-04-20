@@ -1,6 +1,6 @@
 ---
 service_directory: "immich"
-image: "ghcr.io/immich-app/immich-server:v1.92.1"
+image: "ghcr.io/immich-app/immich-server:v1.102.3"
 urls_url: "{{ urls.immich }}"
 
 state: "started"
