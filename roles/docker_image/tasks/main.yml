@@ -12,6 +12,7 @@
     name: "{{ docker_image }}"
     build:
       path: "{{ base_directory }}/containers/{{ docker_image | basename }}"
+    force_source: "{{ docker_image_force }}"
     source: build
-    state: present
+    state: "{{ docker_image_state }}"
     repository: "{{ docker_image_repository }}"
