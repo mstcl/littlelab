@@ -33,3 +33,4 @@ docker_volumes:
   - "{{ location.sites }}:/static:ro" # location of static sites
   - "{{ location.films }}:/movies:ro" # location of movies
   - "{{ location.music }}:/music:ro" # location of music
+  - "{{ location.books }}:/books:ro" # location of books
