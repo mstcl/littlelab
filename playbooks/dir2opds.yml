@@ -1,0 +1,12 @@
+---
+- name: Install dir2opds
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/dir2opds.yml
+
+  roles:
+    - role: urls
+    - role: docker_image
+    - role: docker
+    - role: traefik
