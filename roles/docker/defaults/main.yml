@@ -36,3 +36,6 @@ docker_socket_proxy_state: "{{ state }}" # Container is started/stopped/restarte
 docker_socket_proxy_recreate: false # Don't recreate postgres if it's already running
 docker_socket_proxy_network: "{{ service_directory }}-socket-proxy" # Internal socket proxy network
 docker_socket_mode: "ro" # Read-only: ro, Read-write: rw
+
+# ~~ UNBOUND SIDECAR ~~
+docker_dns_net: "dns-net"
