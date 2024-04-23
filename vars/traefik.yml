@@ -84,5 +84,3 @@ docker_volumes:
   - "/var/log/traefik:/log"
 docker_memory: "700MB"
 docker_cpus: "0.75"
-
-homepage_add: true

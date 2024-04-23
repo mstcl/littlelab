@@ -3,3 +3,4 @@ docker==7.0.0
 pyyaml==6.0.1
 virtualenv
 jmespath
+passlib
