@@ -1,4 +1,23 @@
 ---
-network: "dns-net"
+service_directory: "unbound"
+image: "mvance/unbound:latest"
+
+state: started
+
 config_file: "unbound.conf"
-ipam_subnet: "172.27.0"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+create_docker_network_networks:
+  - name: "{{ docker_dns_net }}"
+    ipam_config:
+      - subnet: "{{ unbound_dns_subnet }}/16"
+
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/config:/opt/unbound/etc/unbound"
+docker_networks:
+  - name: "{{ docker_dns_net }}"
