@@ -1,25 +1,54 @@
 ---
-add_persistent_config: false # set this to false if clients have not been configured
+service_directory: "adguard-home"
+image: "adguard/adguardhome:v0.107.48"
+urls_url: "{{ urls['adguard-home'] }}"
 
-network: "dns-net"
+state: started
+
 config_file: "AdGuardHome.yaml"
 
-user: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_USER') }}"
-password: "{{ lookup('get_secrets', path='/adguard', secret_name='ADGUARD_PASSWORD_HASH') }}"
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+  - dest: "/etc/systemd/resolved.conf.d"
+    owner: "0"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+  - src: "disable_dnsstublistener.conf"
+    dest: "/etc/systemd/resolved.conf.d"
+    owner: "0"
 
+docker_networks:
+  - name: "{{ docker_dns_net }}"
+docker_ports:
+  - 8080:8080/tcp
+  - "{{ base_lanip }}:53:5300/tcp"
+  - "{{ base_lanip }}:53:5300/udp"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/config:/opt/adguardhome/conf"
+  - "{{ location.docker_data }}/{{ service_directory }}:/opt/adguardhome/work"
+docker_connect_to_traefik: false
+
+# UFW (needs to allow from all)
+ufw_rules:
+  - port: 53
+    local: false
+  - port: 53
+    local: false
+    protocol: "udp"
+
+# ~~ Adguard configuration ~~
 upstream_dns:
   - "{{ unbound_dns_ip }}:{{ unbound_dns_port }}" # unbound
-
 fallback_dns:
   - 'tls://dns.quad9.net'
   - 'tls://unfiltered.adguard-dns.com'
   - 'h3://unfiltered.adguard-dns.com/dns-query'
-  - 'tls://dot-ch.blahdns.com'
   - 'tls://unicast.censurfridns.dk'
   - 'tls://anycast.censurfridns.dk'
   - 'tls://getdnsapi.net'
   - 'tls://dot.libredns.gr'
-
 filters:
   - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt
     name: Steven Black's List
@@ -30,7 +59,6 @@ filters:
   - url: https://nsfw.oisd.nl
     name: OISD NSFW
     id: 3
-
 user_rules:
   - '@@||steampowered.com'
   - '@@||steamcommunity.com'
@@ -41,13 +69,3 @@ user_rules:
   - '@@||akamaihd.net'
   - '@@||click.discord.com^$important'
   - '@@||collector.github.com^$important'
-  - '@@||kbin.social^$important'
-  - '@@||lemmynsfw.com^$important'
-  - '||{{ urls.immich.sub }}.{{ base_tld }}^$dnsrewrite=100.64.0.5'
-
-ufw_rules:
-  - port: 53
-    local: false
-  - port: 53
-    local: false
-    protocol: "udp"

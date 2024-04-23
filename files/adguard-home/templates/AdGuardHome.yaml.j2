@@ -2,23 +2,20 @@ http:
   pprof:
     port: 6060
     enabled: false
-  address: 0.0.0.0:3000
+  address: 0.0.0.0:8080
   session_ttl: 720h
-
 users:
-  - name: {{ user }}
-    password: {{ password }}
-
+  - name: "{{ adguard_ui_username }}"
+    password: "{{ adguard_ui_password | password_hash('bcrypt') }}"
 auth_attempts: 5
 block_auth_min: 15
 http_proxy: ""
 language: en
 theme: auto
-
 dns:
   bind_hosts:
     - 0.0.0.0
-  port: 53
+  port: 5300
   anonymize_client_ip: false
   ratelimit: 20
   ratelimit_subnet_len_ipv4: 24
@@ -41,8 +38,7 @@ dns:
 {% for fallback in fallback_dns %}
     - {{ fallback }}
 {% endfor %}
-  all_servers: true
-  fastest_addr: false
+  upstream_mode: parallel
   fastest_timeout: 1s
   allowed_clients: []
   disallowed_clients: []
@@ -71,14 +67,14 @@ dns:
   bootstrap_prefer_ipv6: false
   upstream_timeout: 10s
   private_networks: []
-  use_private_ptr_resolvers: true
+  use_private_ptr_resolvers: false
   local_ptr_upstreams: []
   use_dns64: false
   dns64_prefixes: []
   serve_http3: false
   use_http3_upstreams: false
   serve_plain_dns: true
-
+  hostsfile_enabled: true
 tls:
   enabled: false
   server_name: ""
@@ -94,8 +90,8 @@ tls:
   certificate_path: ""
   private_key_path: ""
   strict_sni_check: false
-
 querylog:
+  dir_path: ""
   ignored: []
   interval: 24h
   size_memory: 1000
@@ -105,7 +101,6 @@ statistics:
   ignored: []
   interval: 24h
   enabled: true
-
 filters:
 {% for filter in filters %}
   - enabled: true
@@ -113,14 +108,15 @@ filters:
     name: {{ filter.name }}
     id: {{ filter.id }}
 {% endfor %}
-
 whitelist_filters: []
-
 user_rules:
 {% for rule in user_rules %}
   - '{{ rule }}'
 {% endfor %}
-
+  - '|{{ base_tld }}^$dnsrewrite={{ hostvars.bimbox.base_tailip }}'
+{% for service_name, values in urls.items() %}
+  - '{{ values.sub }}.{{ base_tld }}^$dnsrewrite={{ values.host | default(hostvars.bimbox.base_tailip) }}'
+{% endfor %}
 dhcp:
   enabled: false
   interface_name: ""
@@ -138,7 +134,6 @@ dhcp:
     lease_duration: 86400
     ra_slaac_only: false
     ra_allow_slaac: false
-
 filtering:
   blocking_ipv4: ""
   blocking_ipv6: ""
@@ -169,7 +164,6 @@ filtering:
   parental_enabled: false
   safebrowsing_enabled: true
   protection_enabled: true
-
 clients:
   runtime_sources:
     whois: true
@@ -177,7 +171,7 @@ clients:
     rdns: true
     dhcp: true
     hosts: true
-  persistent:
+  persistent: []
 
 log:
   file: ""
@@ -187,10 +181,8 @@ log:
   compress: false
   local_time: false
   verbose: false
-
 os:
   group: ""
   user: ""
   rlimit_nofile: 0
-
-schema_version: 27
+schema_version: 28

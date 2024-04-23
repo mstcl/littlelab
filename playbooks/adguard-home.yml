@@ -1,69 +1,39 @@
 ---
 - name: Install adguard-home
-  hosts: homelab
+  hosts: homelab:&proxy
   gather_facts: false
   vars_files:
-    - "vars/adguard-home.yml"
-  vars:
-    service_directory: "adguard-home"
-    image: "adguard/adguardhome:v0.107.45"
-    url: "{{ urls['adguard-home'] }}"
+    - vars/adguard-home.yml
 
   roles:
     - role: ufw
     - role: urls
-    - role: config
+    - role: files
       become: true
-      vars:
-        config_directories:
-          -
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-          - path: "/etc/systemd/resolved.conf.d"
-            owner: "0"
-        config_files:
-          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
-        config_copies:
-          - file_name: "disable_dnsstublistener.conf"
-            destination_path: "/etc/systemd/resolved.conf.d"
-            owner: "0"
     - role: docker
-      vars:
-        docker_run: false
-    - role: traefik
-      vars:
-        traefik_servers:
-          - port: 3000
-        traefik_trailing_slash: false
-        traefik_middlewares:
-          - "adguard-home-strip@file"
-          - "adguard-home-redirect@file"
-          - "internal-ip@file"
-        traefik_additional_content: |2
-            middlewares:
-              adguard-home-strip:
-                stripprefix:
-                  prefixes: "/{{ url.path }}"
-              adguard-home-redirect:
-                plugin:
-                  rewriteHeaders:
-                    rewrites:
-                      - header: "Location"
-                        regex: "^/(.*)"
-                        replacement: "/{{ url.path }}/$1"
-    - role: homepage
+    # - role: traefik
+    #   vars:
+    #     traefik_servers:
+    #       - port: 3000
+    #     traefik_trailing_slash: false
+    #     traefik_middlewares:
+    #       - "adguard-home-strip@file"
+    #       - "adguard-home-redirect@file"
+    #       - "internal-ip@file"
+    #     traefik_additional_content: |2
+    #         middlewares:
+    #           adguard-home-strip:
+    #             stripprefix:
+    #               prefixes: "/{{ url.path }}"
+    #           adguard-home-redirect:
+    #             plugin:
+    #               rewriteHeaders:
+    #                 rewrites:
+    #                   - header: "Location"
+    #                     regex: "^/(.*)"
+    #                     replacement: "/{{ url.path }}/$1"
 
   post_tasks:
-    - name: Append client list to config
-      tags: ["post"]
-      ansible.builtin.blockinfile:
-        state: present
-        insertafter: "^  persistent:"
-        path: "{{ base_directory }}/{{ service_directory }}/config/{{ config_file }}"
-        marker: "  # {mark} CLIENT CONFIGURATION"
-        block: "{{ lookup('file', hostvars.localhost.base_directory + '/files/' + service_directory + '/files/persistent_clients.yml') }}"
-      when: add_persistent_config
-      notify: Restart compose stack
-
     - name: Configure systemd-resolved
       tags: systemd
       become: true
@@ -75,11 +45,3 @@
           ansible.builtin.systemd:
             name: systemd-resolved
             state: restarted
-
-    - name: Start compose file
-      tags: ["docker", "deploy"]
-      ansible.builtin.include_role:
-        name: docker
-        tasks_from: down_and_up.yml
-      vars:
-        docker_force_up: true
