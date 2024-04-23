@@ -1,42 +1,12 @@
 ---
 - name: Install unbound
-  hosts: homelab
+  hosts: homelab:&proxy
   gather_facts: false
   vars_files:
     - vars/unbound.yml
-  vars:
-    service_directory: "unbound"
-    image: "mvance/unbound:latest"
 
   roles:
     - role: create_docker_network
-      vars:
-        create_docker_network_networks:
-          - name: "{{ network }}"
-            subnet: "{{ ipam_subnet }}.0/24"
-    - role: config
-      vars:
-        config_directories:
-          - path: "{{ base_directory }}/{{ service_directory }}/config"
-        config_copies:
-          - destination_path: "{{ base_directory }}/{{ service_directory }}/config"
+    - role: files
+    - role: fetch_root_hints
     - role: docker
-      vars:
-        docker_run: false
-
-  post_tasks:
-    - name: Fetch root hints
-      tags: update
-      ansible.builtin.uri:
-        url: "https://www.internic.net/domain/named.cache"
-        method: GET
-        dest: "{{ base_directory }}/{{ service_directory }}/config/root.hints"
-      register: result
-
-    - name: Start compose file
-      tags: ["docker", "deploy"]
-      ansible.builtin.include_role:
-        name: docker
-        tasks_from: down_and_up.yml
-      vars:
-        docker_force_up: true
