@@ -5,14 +5,8 @@
     expanded_url: "{%if urls_url != base_tld %}{{ urls_url.sub + '.' + base_tld }}\
       {% if urls_url.path is defined %}/{{ urls_url.path }}{% endif %}{% else %}{{ base_tld }}{% endif %}"
 
-- name: Get accumulate paths
-  tags: urls
-  ansible.builtin.set_fact:
-    iter: "{{ urls_url[urls_type] | default('false') }}"
-  when: urls_accumulate
-
 - name: Append urls
   tags: urls
   ansible.builtin.set_fact:
-    all_urls: "{% if iter %}{{ all_urls | default([]) + [expanded_url] }}{% else %}{{ all_urls | default([]) }}{% endif %}"
+    all_urls: "{{ all_urls | default([]) + [expanded_url] }}{% else %}{{ all_urls | default([]) }}"
   when: urls_accumulate

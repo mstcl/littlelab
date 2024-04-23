@@ -1,2 +1,18 @@
 ---
+service_directory: "gatus"
+image: "twinproduction/gatus:v5.10.0"
+urls_url: "{{ urls.gatus }}"
+
+state: started
+
 config_file: "config.yaml"
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}/config"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/data"
+  - "{{ base_directory }}/{{ service_directory }}/config:/config"
