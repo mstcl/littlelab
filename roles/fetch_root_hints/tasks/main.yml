@@ -1,0 +1,8 @@
+---
+- name: Fetch root hints
+  tags: root_hints
+  ansible.builtin.uri:
+    url: "https://www.internic.net/domain/named.cache"
+    method: GET
+    dest: "{{ base_directory }}/{{ service_directory }}/config/root.hints"
+  register: result
