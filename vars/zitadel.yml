@@ -1,12 +1,11 @@
 ---
 service_directory: "zitadel"
-image: "ghcr.io/zitadel/zitadel:v2.50.2"
+image: "ghcr.io/zitadel/zitadel:v2.50.3"
 urls_url: "{{ urls.zitadel }}"
 
 state: started
 
 traefik_middlewares:
-  - "internal@file"
   - "tld_host@file"
 traefik_protocol: "h2c"
 traefik_pass_host_header: true
