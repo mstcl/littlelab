@@ -1,0 +1,9 @@
+---
+- name: Install merino
+  hosts: homelab:&proxy
+  gather_facts: false
+  vars_files:
+    - vars/merino.yml
+
+  roles:
+    - role: docker
