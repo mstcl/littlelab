@@ -1,0 +1,11 @@
+---
+service_directory: "merino"
+image: "ghcr.io/ajmwagar/merino:latest"
+
+state: started
+
+docker_ports:
+  - "{{ merino_port }}:{{ merino_port }}"
+docker_command: "{{ merino_command }}"
+docker_connect_to_traefik: false
+docker_network_internal: false
