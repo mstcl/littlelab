@@ -1,0 +1,25 @@
+<Config>
+  <LogLevel>info</LogLevel>
+  <UrlBase>{% if urls.prowlarr.path != '' %}/{{ urls.prowlarr.path }}{% endif %}</UrlBase>
+  <UpdateMechanism>Docker</UpdateMechanism>
+  <BindAddress>*</BindAddress>
+  <Port>9696</Port>
+  <SslPort>6969</SslPort>
+  <EnableSsl>False</EnableSsl>
+  <LaunchBrowser>False</LaunchBrowser>
+  <ApiKey></ApiKey>
+  <AuthenticationMethod>Forms</AuthenticationMethod>
+  <Branch>master</Branch>
+  <SslCertPath></SslCertPath>
+  <SslCertPassword></SslCertPassword>
+  <InstanceName>Prowlarr</InstanceName>
+  <Theme>auto</Theme>
+  <AuthenticationRequired>DisabledForLocalAddresses</AuthenticationRequired>
+  <AnalyticsEnabled>False</AnalyticsEnabled>
+  <PostgresUser>{{ pg.prowlarr.user }}</PostgresUser>
+  <PostgresPassword>{{ pg.prowlarr.password }}</PostgresPassword>
+  <PostgresPort>5432</PostgresPort>
+  <PostgresHost>postgres</PostgresHost>
+  <PostgresMainDb>prowlarrmain</PostgresMainDb>
+  <PostgresLogDb>prowlarrlog</PostgresLogDb>
+</Config>
