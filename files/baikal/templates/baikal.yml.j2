@@ -4,11 +4,11 @@ system:
     card_enabled: true
     cal_enabled: true
     dav_auth_type: Digest
-    admin_passwordhash: {{ password_hash }}
+    admin_passwordhash: {{ baikal_password_hash }}
     failed_access_message: 'user %u authentication failure for Baikal'
     auth_realm: BaikalDAV
     base_uri: ''
-    invite_from: {{ invite_email }}
+    invite_from: {{ baikal_invite_from }}
 database:
     sqlite_file: /var/www/baikal/Specific/db/db.sqlite
     mysql: false
@@ -16,4 +16,4 @@ database:
     mysql_dbname: ''
     mysql_username: ''
     mysql_password: ''
-    encryption_key: {{ db_encryption_key }}
+    encryption_key: {{ baikal_encryption_key }}
