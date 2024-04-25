@@ -4,21 +4,9 @@
   gather_facts: false
   vars_files:
     - vars/prowlarr.yml
-  vars:
-    service_directory: "prowlarr"
-    image: "linuxserver/prowlarr:1.15.0"
-    url: "{{ urls.prowlarr }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 9696
-        traefik_middlewares:
-          - "internal-ip@file"
-    - role: homepage
