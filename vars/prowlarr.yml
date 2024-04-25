@@ -1,10 +1,36 @@
 ---
-network: "flare-net"
+service_directory: "prowlarr"
+image: "linuxserver/prowlarr:1.16.2"
+urls_url: "{{ urls.prowlarr }}"
 
-flaresolverr:
-  image: "ghcr.io/flaresolverr/flaresolverr:v3.3.17"
+state: started
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/Prowlarr/Prowlarr/develop/Logo/128.png"
-  description: "Index manager"
-  category: "Stream"
+# flaresolverr:
+#   image: "ghcr.io/flaresolverr/flaresolverr:v3.3.17"
+
+data_location: "{{ location.docker_data }}/{{ service_directory }}" # config file etc.
+
+files_make:
+  - dest: "{{ data_location }}"
+files_template:
+  - src: "config.xml"
+    dest: "{{ data_location }}"
+    force: false
+
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 9696
+traefik_middlewares:
+  - "internal@file"
+
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
+docker_volumes:
+  - "{{ data_location }}:/config"
+docker_env:
+  PUID: "1000"
+  PGID: "150"
+  TZ: "{{ base_timezone }}"
+docker_cpus: '0.80'
+docker_memory: '100MB'
