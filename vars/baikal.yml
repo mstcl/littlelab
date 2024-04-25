@@ -1,11 +1,27 @@
 ---
+service_directory: "baikal"
+image: "ckulka/baikal:0.9.5-nginx"
+urls_url: "{{ urls.baikal }}"
+
 config_file: "baikal.yml"
 
-password_hash: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_PASSWORD_HASHED') }}"
-invite_email: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_INVITE_EMAIL') }}"
-db_encryption_key: "{{ lookup('get_secrets', path='/baikal', secret_name='BAIKAL_DB_ENCRYPTION_KEY')}}"
+state: started
 
-homepage_config:
-  icon: "https://raw.githubusercontent.com/sabre-io/Baikal/master/Core/Frameworks/Baikal/Resources/Images/logo-baikal.png"
-  description: "CalDAV & CardDAV"
-  category: "Personal services"
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+files_template:
+  - src: "baikal.yml"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+    owner: "101" # baikal runs as this user
+    permission: "0600"
+
+docker_memory: "256M"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}/data:/var/www/baikal/Specific"
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/var/www/baikal/config/baikal.yaml"
+
+traefik_middlewares:
+  - "internal@file"
+traefik_servers:
+  - url: "{{ service_directory }}"
+    port: 80

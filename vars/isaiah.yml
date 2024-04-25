@@ -14,10 +14,10 @@ traefik_middlewares:
 files_template:
   - src: "docker_hosts"
     dest: "{{ base_directory }}/{{ service_directory }}"
-    mode: "0600"
+    permission: "0600"
   - src: "custom.css"
     dest: "{{ base_directory }}/{{ service_directory }}"
-    mode: "0644"
+    permission: "0644"
 
 docker_env:
   SERVER_PORT: "8080"

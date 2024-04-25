@@ -4,23 +4,11 @@
   gather_facts: false
   vars_files:
     - vars/baikal.yml
-  vars:
-    service_directory: "baikal"
-    image: "robinthrift/baikal:0.9.3-nginx"
-    url: "{{ urls.baikal }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
-        config_files:
-          - permission: "0666"
+    - role: files
+      become: true
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers: [{}]
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: backup
-    - role: homepage
