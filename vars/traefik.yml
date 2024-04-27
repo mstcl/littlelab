@@ -8,8 +8,8 @@ urls_url: "{{ urls.traefik }}"
 state: "started"
 
 cf:
-  email: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_EMAIL') }}"
-  token: "{{ lookup('get_secrets', path='/cloudflare', secret_name='CF_API_TOKEN_TRAEFIK') }}"
+  email: "{{ traefik_cf_email }}"
+  token: "{{ traefik_cf_api_token }}"
 
 create_docker_network_networks:
   - name: "{{ network }}"
@@ -67,7 +67,6 @@ docker_networks:
   - name: "bouncer"
   - name: "{{ docker_expose_network }}"
   - name: "{{ docker_traefik_network }}"
-  - name: "photon-net"
 docker_read_only: true
 docker_user: "2000:2000"
 docker_ports:
