@@ -1,0 +1,35 @@
+---
+service_directory: "netbird"
+image: "netbirdio/management:0.27.3"
+urls_url: "{{ urls.netbird }}"
+config_file: "management.json"
+state: "started"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_name: "{{ service_directory }}-mgmt"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/netbird/management.json"
+  - "{{ location.docker_data }}/{{ service_directory }}/management:/var/lib/netbird"
+  - "{{ location.docker_data }}/{{ service_directory }}/letsencrypt:/etc/letsencrypt:ro"
+docker_command:
+  - "--port"
+  - "443"
+  - "--log-file"
+  - "console"
+  - "--log-level"
+  - "info"
+  - "--disable-anonymous-metrics=true"
+  - "--single-account-mode-domain={{ expanded_url }}"
+  - "--dns-domain={{ netbird_dns_domain }}"
+
+traefik_protocol: "http"
+traefik_servers:
+  - port: "443"
+    url: "{{ docker_name }}"
+traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/api`)"

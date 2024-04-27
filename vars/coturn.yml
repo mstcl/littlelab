@@ -1,0 +1,19 @@
+---
+service_directory: "netbird"
+image: "coturn/coturn:4.6.2-alpine"
+urls_url: "{{ urls.coturn }}"
+config_file: "turnserver.conf"
+state: "started"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_domainname: "{{ expanded_url }}"
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/turnserver.conf:ro"
+docker_network_mode: "host"
+docker_command:
+  - "-c /etc/turnserver.conf"

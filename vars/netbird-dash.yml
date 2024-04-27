@@ -1,0 +1,35 @@
+---
+service_directory: "netbird"
+image: "netbirdio/dashboard:v2.3.0"
+urls_url: "{{ urls.netbird }}"
+
+state: "started"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_name: "{{ service_directory }}-dash"
+docker_envs:
+  NETBIRD_MGMT_API_ENDPOINT: "https://{{ urls.netbird.sub }}.{{ base_tld }}:443"
+  NETBIRD_MGMT_GRPC_API_ENDPOINT: "https://{{ urls.netbird.sub }}.{{ base_tld }}:443"
+  AUTH_AUDIENCE: "{{ netbird_oidc_client_id }}"
+  AUTH_CLIENT_ID: "{{ netbird_oidc_client_id }}"
+  AUTH_CLIENT_SECRET: ""
+  AUTH_AUTHORITY: "https://{{ base_tld }}"
+  USE_AUTH0: "false"
+  AUTH_SUPPORTED_SCOPES: "openid profile email offline_access api"
+  AUTH_REDIRECT_URI: "/auth"
+  AUTH_SILENT_REDIRECT_URI: "/silent-auth"
+  NETBIRD_TOKEN_SOURCE: "accessToken"
+  NGINX_SSL_PORT: "443"
+  LETSENCRYPT_DOMAIN: ""
+  LETSENCRYPT_EMAIL: ""
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}/letsencrypt:/etc/letsencrypt"
+
+traefik_protocol: "http"
+traefik_servers:
+  - port: "80"
+    url: "{{ docker_name }}"
+traefik_rule: "Host(`{{ expanded_url }}`)"

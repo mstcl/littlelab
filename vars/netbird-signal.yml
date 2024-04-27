@@ -1,0 +1,20 @@
+---
+service_directory: "netbird"
+image: "netbirdio/signal:0.27.3"
+urls_url: "{{ urls.netbird }}"
+
+state: "started"
+
+files_make:
+  - dest: "{{ base_directory }}/{{ service_directory }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_name: "{{ service_directory }}-signal"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}/signal:/var/lib/netbird"
+
+traefik_protocol: "h2c"
+traefik_servers:
+  - port: "80"
+    url: "{{ docker_name }}"
+traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/signalexchange.SignalExchange/`)"
