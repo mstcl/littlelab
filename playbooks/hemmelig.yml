@@ -6,7 +6,7 @@
     - vars/hemmelig.yml
   vars:
     service_directory: "hemmelig"
-    image: "hemmeligapp/hemmelig:v5.19.16"
+    image: "hemmeligapp/hemmelig:v5.19.21"
     url: "{{ urls.hemmelig }}"
 
   roles:
