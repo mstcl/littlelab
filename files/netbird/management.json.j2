@@ -1,0 +1,100 @@
+{
+    "Stuns": [
+        {
+            "Proto": "udp",
+            "URI": "stun:{{ urls.coturn.sub }}.{{ base_tld }}:{{ coturn_port }}",
+            "Username": "",
+            "Password": ""
+        }
+    ],
+    "TURNConfig": {
+        "TimeBasedCredentials": false,
+        "CredentialsTTL": "12h0m0s",
+        "Secret": "secret",
+        "Turns": [
+            {
+                "Proto": "udp",
+                "URI": "turn:{{ urls.coturn.sub }}.{{ base_tld }}:{{ coturn_port }}",
+                "Username": "self",
+                "Password": "{{ coturn_password }}"
+            }
+        ]
+    },
+    "Signal": {
+        "Proto": "https",
+        "URI": "{{ urls.netbird.sub }}.{{ base_tld }}:443",
+        "Username": "",
+        "Password": ""
+    },
+    "Datadir": "/var/lib/netbird/",
+    "DataStoreEncryptionKey": "{{ netbird_datastore_encryption_key }}",
+    "HttpConfig": {
+        "LetsEncryptDomain": "",
+        "CertFile": "",
+        "CertKey": "",
+        "AuthAudience": "{{ netbird_oidc_client_id }}",
+        "AuthIssuer": "https://{{ base_tld }}",
+        "AuthUserIDClaim": "",
+        "AuthKeysLocation": "https://{{ base_tld }}/oauth/v2/keys",
+        "OIDCConfigEndpoint": "https://{{ base_tld }}/.well-known/openid-configuration",
+        "IdpSignKeyRefreshEnabled": true
+    },
+    "IdpManagerConfig": {
+        "ManagerType": "{{ netbird_idp_type }}",
+        "ClientConfig": {
+            "Issuer": "https://{{ base_tld }}",
+            "TokenEndpoint": "https://{{ base_tld }}/oauth/v2/token",
+            "ClientID": "{{ netbird_oidc_service_user_name }}",
+            "ClientSecret": "{{ netbird_oidc_service_user_secret }}",
+            "GrantType": "client_credentials"
+        },
+        "ExtraConfig": {
+            "ManagementEndpoint": "https://{{ base_tld }}/management/v1"
+        },
+        "Auth0ClientCredentials": null,
+        "AzureClientCredentials": null,
+        "KeycloakClientCredentials": null,
+        "ZitadelClientCredentials": null
+    },
+    "DeviceAuthorizationFlow": {
+        "Provider": "hosted",
+        "ProviderConfig": {
+            "ClientID": "{{ netbird_oidc_client_id }}",
+            "ClientSecret": "",
+            "Domain": "{{ base_tld }}",
+            "Audience": "{{ netbird_oidc_client_id }}",
+            "TokenEndpoint": "https://{{ base_tld }}/oauth/v2/token",
+            "DeviceAuthEndpoint": "https://{{ base_tld }}/oauth/v2/device_authorization",
+            "AuthorizationEndpoint": "",
+            "Scope": "openid",
+            "UseIDToken": false,
+            "RedirectURLs": null
+        }
+    },
+    "PKCEAuthorizationFlow": {
+        "ProviderConfig": {
+            "ClientID": "{{ netbird_oidc_client_id }}",
+            "ClientSecret": "",
+            "Domain": "",
+            "Audience": "{{ netbird_oidc_client_id }}",
+            "TokenEndpoint": "https://{{ base_tld }}/oauth/v2/token",
+            "DeviceAuthEndpoint": "",
+            "AuthorizationEndpoint": "https://{{ base_tld }}/oauth/v2/authorize",
+            "Scope": "openid profile email offline_access api",
+            "UseIDToken": false,
+            "RedirectURLs": [
+                "http://localhost:53000"
+            ]
+        }
+    },
+    "StoreConfig": {
+        "Engine": "sqlite"
+    },
+    "ReverseProxy": {
+        "TrustedHTTPProxies": [],
+        "TrustedHTTPProxiesCount": 0,
+        "TrustedPeers": [
+            "0.0.0.0/0"
+        ]
+    }
+}

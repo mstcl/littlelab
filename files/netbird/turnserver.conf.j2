@@ -1,0 +1,16 @@
+# Coturn TURN SERVER configuration file
+listening-port="{{ coturn_port }}"
+tls-listening-port="{{ coturn_tls_port }}"
+external-ip="{{ base_lanip }}"
+min-port="{{ coturn_udp_min_port }}"
+max-port="{{ coturn_udp_max_port }}"
+fingerprint
+lt-cred-mech
+user=self:"{{ coturn_password }}"
+realm=wiretrustee.com
+cert=/etc/coturn/certs/cert.pem
+pkey=/etc/coturn/private/privkey.pem
+log-file=stdout
+no-software-attribute
+pidfile="/var/tmp/turnserver.pid"
+no-cli
