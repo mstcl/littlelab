@@ -1,0 +1,33 @@
+---
+service_directory: "upsnap"
+image: "ghcr.io/seriousm4x/upsnap:4"
+urls_url: "{{ urls.upsnap }}"
+
+state: started
+
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_network_mode: "host"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}/data:/app/pb_data"
+docker_env:
+  - TZ: "Europe/London"
+  - UPSNAP_INTERVAL: "@every 10s"
+  - UPSNAP_SCAN_RANGE: "192.168.1.0/24"
+  - UPSNAP_SCAN_TIMEOUT: "500ms"
+  - UPSNAP_PING_PRIVILEGED: "false"
+  - UPSNAP_WEBSITE_TITLE: "LD commune"
+docker_dns_servers:
+  - "192.168.1.1"
+docker_entrypoint:
+  - '/bin/sh'
+  - '-c'
+  - '"./upsnap serve --http 0.0.0.0:8000"'
+
+traefik_servers:
+  - port: 8000
+    url: "{{ service_directory }}"
+traefik_middlewares:
+  - "internal@file"
+traefik_rule: "Host(`{{ expanded_url }}`)"
