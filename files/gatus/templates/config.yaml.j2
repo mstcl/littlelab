@@ -36,7 +36,7 @@ endpoints:
     group: {{ values.group | default('core services') }}
 {% if monitor_name == "zitadel" %}
     url: "https://{{ base_tld }}/ui/login"
-{% elif monitor_name == "netbird-turn" %}
+{% elif monitor_name == "coturn" %}
     url: "udp://{{ values.sub }}.{{ base_tld }}:65535"
 {% else %}
     url: "https://{{ values.sub }}.{{ base_tld }}{% if values.path is defined %}/{{ values.path }}{% endif %}"
@@ -46,7 +46,7 @@ endpoints:
     conditions:
       - "[STATUS] == 500"
       - "[CERTIFICATE_EXPIRATION] > 48h"
-{% elif monitor_name == "netbird-turn" %}
+{% elif monitor_name == "coturn" %}
     interval: 2m
     conditions:
       - "[CONNECTED] == true"
