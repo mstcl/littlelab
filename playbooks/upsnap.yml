@@ -1,0 +1,13 @@
+---
+- name: Install upsnap
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/upsnap.yml
+
+  roles:
+    - role: ufw
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
