@@ -1,0 +1,56 @@
+---
+- name: Install netbird dashboard
+  hosts: vpn-host
+  gather_facts: false
+  vars_files:
+    - vars/netbird-dash.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
+
+- name: Install netbird management server
+  hosts: vpn-host
+  gather_facts: false
+  vars_files:
+    - vars/netbird-mgmt.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
+    - role: traefik
+      vars:
+        traefik_protocol: "h2c"
+        traefik_servers:
+          - port: "443"
+            url: "{{ docker_name }}"
+        traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/signalexchange.SignalExchange/`)"
+
+
+- name: Install netbird signal server
+  hosts: vpn-host
+  gather_facts: false
+  vars_files:
+    - vars/netbird-signal.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
+
+- name: Install turn server for netbird
+  hosts: vpn-host
+  gather_facts: false
+  vars_files:
+    - vars/coturn.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+
