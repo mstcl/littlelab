@@ -19,7 +19,8 @@ entryPoints:
         - "defchain@file"
       redirections:
         entryPoint:
-          to: "websecure"
+          to: ":443"
+          permanent: true
           scheme: "https"
 
   websecure:
