@@ -1,6 +1,6 @@
 ---
 service_directory: "miniflux"
-image: "miniflux/miniflux:2.1.2"
+image: "miniflux/miniflux:2.1.3"
 urls_url: "{{ urls.miniflux }}"
 
 state: started
