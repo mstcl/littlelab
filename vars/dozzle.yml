@@ -25,7 +25,7 @@ docker_volumes:
 
 docker_network_subnet: 172.34.0.8 # Available .10 -> .14
 docker_attach_socket_proxy: true
-docker_socket_proxy_image: "wollomatic/socket-proxy:1.1.3"
+docker_socket_proxy_image: "wollomatic/socket-proxy:1.2.0"
 docker_socket_proxy_mode: "ro"
 docker_socket_proxy_command:
   - "-loglevel=error"
