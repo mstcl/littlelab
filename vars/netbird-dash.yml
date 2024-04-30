@@ -10,7 +10,7 @@ files_make:
   - dest: "{{ location.docker_data }}/{{ service_directory }}"
 
 docker_name: "{{ service_directory }}-dash"
-docker_envs:
+docker_env:
   NETBIRD_MGMT_API_ENDPOINT: "https://{{ urls.netbird.sub }}.{{ base_tld }}:443"
   NETBIRD_MGMT_GRPC_API_ENDPOINT: "https://{{ urls.netbird.sub }}.{{ base_tld }}:443"
   AUTH_AUDIENCE: "{{ netbird_oidc_client_id }}"
@@ -27,7 +27,12 @@ docker_envs:
   LETSENCRYPT_EMAIL: ""
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/letsencrypt:/etc/letsencrypt"
+docker_connect_to_traefik: false
 
+
+traefik_service_name: "nb-dash"
+traefik_router_name: "nb-dash"
+traefik_file_name: "nb-dash"
 traefik_protocol: "http"
 traefik_servers:
   - port: "80"

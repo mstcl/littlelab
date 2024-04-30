@@ -1,6 +1,6 @@
 ---
 - name: Install netbird dashboard
-  hosts: vpn-host
+  hosts: vpn_host
   gather_facts: false
   vars_files:
     - vars/netbird-dash.yml
@@ -12,7 +12,7 @@
     - role: traefik
 
 - name: Install netbird management server
-  hosts: vpn-host
+  hosts: vpn_host
   gather_facts: false
   vars_files:
     - vars/netbird-mgmt.yml
@@ -24,15 +24,29 @@
     - role: traefik
     - role: traefik
       vars:
+        traefik_service_name: "nb-mgmt-grpc"
+        traefik_router_name: "nb-mgmt-grpc"
+        traefik_file_name: "nb-mgmt-grpc"
         traefik_protocol: "h2c"
         traefik_servers:
           - port: "443"
             url: "{{ docker_name }}"
-        traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/signalexchange.SignalExchange/`)"
+        traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/management.ManagementService/`)"
 
+  post_tasks:
+    - name: Setup netbird docker network
+      community.docker.docker_network:
+        name: "{{ service_directory }}-net"
+        connected:
+          - "{{ service_directory }}-dash"
+          - "{{ service_directory }}-mgmt"
+          - "{{ service_directory }}-signal"
+          - "traefik"
+        appends: true
+        internal: false
 
 - name: Install netbird signal server
-  hosts: vpn-host
+  hosts: vpn_host
   gather_facts: false
   vars_files:
     - vars/netbird-signal.yml
@@ -44,7 +58,8 @@
     - role: traefik
 
 - name: Install turn server for netbird
-  hosts: vpn-host
+  hosts: vpn_host
+  tags: turn
   gather_facts: false
   vars_files:
     - vars/coturn.yml
@@ -53,4 +68,3 @@
     - role: urls
     - role: files
     - role: docker
-

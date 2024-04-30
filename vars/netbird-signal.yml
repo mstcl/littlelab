@@ -12,7 +12,11 @@ files_make:
 docker_name: "{{ service_directory }}-signal"
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/signal:/var/lib/netbird"
+docker_connect_to_traefik: false
 
+traefik_service_name: "nb-signal"
+traefik_router_name: "nb-signal"
+traefik_file_name: "nb-signal"
 traefik_protocol: "h2c"
 traefik_servers:
   - port: "80"

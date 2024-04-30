@@ -11,9 +11,12 @@ files_template:
   - src: "{{ config_file }}"
     dest: "{{ base_directory }}/{{ service_directory }}"
 
+docker_name: "coturn"
 docker_domainname: "{{ expanded_url }}"
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/turnserver.conf:ro"
 docker_network_mode: "host"
 docker_command:
   - "-c /etc/turnserver.conf"
+docker_connect_to_traefik: false
+docker_network_internal: false
