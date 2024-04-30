@@ -1,0 +1,21 @@
+---
+service_directory: "glance"
+image: "glanceapp/glance:v0.2.0"
+urls_url: "{{ urls.glance }}"
+
+state: started
+
+config_file: "glance.yml"
+
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/glance.yml"
+  - "/etc/timezone:/etc/timezone:ro"
+  - "/etc/localtime:/etc/locatime:ro"
+docker_network_internal: false
+
+traefik_middlewares:
+  - "internal@file"
