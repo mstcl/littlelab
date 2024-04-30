@@ -11,3 +11,4 @@
     - role: files
       become: true
     - role: docker
+    - role: backup
