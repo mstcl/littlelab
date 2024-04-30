@@ -36,3 +36,5 @@ docker_volumes:
 
 traefik_middlewares:
   - "internal@file"
+
+backup_weekday: "TUE,SAT"

@@ -35,4 +35,5 @@ traefik_servers:
   - url: "{{ service_directory }}-server"
     port: 3001
 
+backup_weekday: "TUE,SAT"
 backup_minute: "10"

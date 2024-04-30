@@ -25,3 +25,5 @@ traefik_middlewares:
 traefik_servers:
   - url: "{{ service_directory }}"
     port: 80
+
+backup_weekday: "TUE,SAT"
