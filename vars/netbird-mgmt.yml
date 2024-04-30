@@ -27,7 +27,12 @@ docker_command:
   - "--disable-anonymous-metrics=true"
   - "--single-account-mode-domain={{ expanded_url }}"
   - "--dns-domain={{ netbird_dns_domain }}"
+docker_connect_to_traefik: false
+docker_network_internal: false
 
+traefik_service_name: "nb-mgmt-api"
+traefik_router_name: "nb-mgmt-api"
+traefik_file_name: "nb-mgmt-api"
 traefik_protocol: "http"
 traefik_servers:
   - port: "443"
