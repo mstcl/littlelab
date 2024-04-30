@@ -24,3 +24,5 @@ docker_volumes:
   - "{{ config_location }}/head.html:/app/templates/head.html:ro"
   - "{{ config_location }}/index.html:/app/templates/index.html:ro"
   - "{{ config_location }}/repo-header.html:/app/templates/repo-header.html:ro"
+
+backup_weekday: "TUE,SAT"

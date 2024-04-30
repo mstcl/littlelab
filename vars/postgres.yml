@@ -52,3 +52,5 @@ docker_volumes:
 docker_env:
   POSTGRES_USER: "{{ pg.root.user }}" # default user
   POSTGRES_PASSWORD: "{{ pg.root.password }}" # default pw
+
+backup_weekday: "TUE,SAT"
