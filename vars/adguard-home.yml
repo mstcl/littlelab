@@ -23,7 +23,7 @@ docker_networks:
   - name: "{{ docker_dns_net }}"
 docker_ports:
   - 8080:8080/tcp
-  - "{{ base_lanip }}:53:5300/tcp"
+  - "53:5300/tcp"
   - "{{ base_lanip }}:53:5300/udp"
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/config:/opt/adguardhome/conf"
@@ -38,34 +38,22 @@ ufw_rules:
     local: false
     protocol: "udp"
 
-# ~~ Adguard configuration ~~
-upstream_dns:
-  - "{{ unbound_dns_ip }}:{{ unbound_dns_port }}" # unbound
-fallback_dns:
-  - 'tls://dns.quad9.net'
-  - 'tls://unfiltered.adguard-dns.com'
-  - 'h3://unfiltered.adguard-dns.com/dns-query'
-  - 'tls://unicast.censurfridns.dk'
-  - 'tls://anycast.censurfridns.dk'
-  - 'tls://getdnsapi.net'
-  - 'tls://dot.libredns.gr'
-filters:
-  - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_33.txt
-    name: Steven Black's List
-    id: 1
-  - url: https://adguardteam.github.io/HostlistsRegistry/assets/filter_27.txt
-    name: OISD Blocklist Big
-    id: 2
-  - url: https://nsfw.oisd.nl
-    name: OISD NSFW
-    id: 3
-user_rules:
-  - '@@||steampowered.com'
-  - '@@||steamcommunity.com'
-  - '@@||steamgames.com'
-  - '@@||steamusercontent.com'
-  - '@@||steamcontent.com'
-  - '@@||steamstatic.com'
-  - '@@||akamaihd.net'
-  - '@@||click.discord.com^$important'
-  - '@@||collector.github.com^$important'
+traefik_servers:
+  - url: "{{ hostvars.cloudbox.base_tailip }}"
+    port: 8080
+traefik_additional_content: |2
+    middlewares:
+      adguard-home-strip:
+        stripprefix:
+          prefixes: "/{{ urls_url.path }}"
+      adguard-home-redirect:
+        plugin:
+          rewriteHeaders:
+            rewrites:
+              - header: "Location"
+                regex: "^/(.*)"
+                replacement: "/{{ urls_url.path }}/$1"
+traefik_middlewares:
+  - "adguard-home-strip@file"
+  - "adguard-home-redirect@file"
+  - "internal-ip@file"

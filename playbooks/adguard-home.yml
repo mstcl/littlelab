@@ -11,37 +11,13 @@
     - role: files
       become: true
     - role: docker
-    # - role: traefik
-    #   vars:
-    #     traefik_servers:
-    #       - port: 3000
-    #     traefik_trailing_slash: false
-    #     traefik_middlewares:
-    #       - "adguard-home-strip@file"
-    #       - "adguard-home-redirect@file"
-    #       - "internal-ip@file"
-    #     traefik_additional_content: |2
-    #         middlewares:
-    #           adguard-home-strip:
-    #             stripprefix:
-    #               prefixes: "/{{ url.path }}"
-    #           adguard-home-redirect:
-    #             plugin:
-    #               rewriteHeaders:
-    #                 rewrites:
-    #                   - header: "Location"
-    #                     regex: "^/(.*)"
-    #                     replacement: "/{{ url.path }}/$1"
 
-  post_tasks:
-    - name: Configure systemd-resolved
-      tags: systemd
-      become: true
-      block:
-        - name: Reload systemd daemons
-          ansible.builtin.systemd:
-            daemon_reload: true
-        - name: Restart systemd-resolved
-          ansible.builtin.systemd:
-            name: systemd-resolved
-            state: restarted
+- name: Configure traefik to route dashboard
+  hosts: homelab:&traefik
+  gather_facts: false
+  vars_files:
+    - vars/adguard-home.yml
+
+  roles:
+    - role: urls
+    - role: traefik
