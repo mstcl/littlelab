@@ -1,6 +1,6 @@
 ---
 service_directory: "glance"
-image: "glanceapp/glance:v0.2.0"
+image: "glanceapp/glance:v0.3.0"
 urls_url: "{{ urls.glance }}"
 
 state: started

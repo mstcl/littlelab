@@ -3,6 +3,7 @@ default-endpoints: &defaults
   conditions:
     - "[STATUS] == 200"
     - "[CERTIFICATE_EXPIRATION] > 48h"
+  dns-resolver: "tcp://1.1.1.1:53"
 private-endpoints: &private
   ui:
     hide-url: true

@@ -1,9 +1,6 @@
 ---
 service_directory: "isaiah"
 image: "mosswill/isaiah:1.12.0"
-urls:
-  isaiah:
-    sub: "doc"
 urls_url: "{{ urls.isaiah }}"
 
 state: started
