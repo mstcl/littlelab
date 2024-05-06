@@ -1,0 +1,11 @@
+---
+- name: Install morphos
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/morphos.yml
+
+  roles:
+    - role: urls
+    - role: docker
+    - role: traefik
