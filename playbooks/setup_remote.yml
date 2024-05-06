@@ -1,6 +1,6 @@
 - name: Setup homelab
   gather_facts: true
-  hosts: all
+  hosts: homelab
   become: "{{ 'no' if ansible_user == 'root' else 'yes' }}"
   vars_prompt:
     - name: setup_default_user_password
@@ -35,3 +35,5 @@
       tags: setup_docker
     - role: setup_cron
       tags: setup_cron
+    - role: setup_sysctl
+      tags: setup_sysctl
