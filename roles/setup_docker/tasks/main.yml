@@ -15,13 +15,31 @@
       - pyyaml==5.3.1
   when: ansible_distribution != "Debian"
 
+- name: Add keys for docker repository (Debian)
+  when: ansible_distribution == "Debian"
+  ansible.builtin.get_url:
+    mode: "0644"
+    url: "https://download.docker.com/linux/debian/gpg"
+    dest: "/usr/share/keyrings/docker.asc"
+  when: ansible_distribution == "Debian"
+
+- name: Add docker repository source (Debian)
+  when: ansible_distribution == "Debian"
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian   bookworm stable"
+  when: ansible_distribution == "Debian"
+
 - name: Install packages for Debian
   tags: packages
   ansible.builtin.include_role:
     name: packages
   vars:
     packages_native:
-      - docker.io
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
       - python3-requests
       - python3-websocket
     packages_pip:
