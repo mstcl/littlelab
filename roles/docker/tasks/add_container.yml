@@ -30,5 +30,6 @@
     network_mode: "{{ docker_network_mode | default(omit) }}"
     domainname: "{{ docker_domainname | default(omit) }}"
     dns_servers: "{{ docker_dns_servers | default(omit) }}"
+    labels: "{{ docker_labels | default(omit) }}"
     healthcheck:
       test: ["NONE"]

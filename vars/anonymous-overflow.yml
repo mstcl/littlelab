@@ -1,0 +1,13 @@
+---
+service_directory: "anonymous-overflow"
+image: "httpjamesm/anonymous-overflow"
+urls_url: "{{ urls['anonymous-overflow'] }}"
+
+state: started
+
+docker_env:
+  APP_URL: "https://{{ expanded_url }}"
+  JWT_SIGNING_SECRET: "{{ anonymous_overflow_jwt }}"
+docker_read_only: true
+docker_cap_drop: ALL
+docker_network_internal: false

@@ -22,7 +22,7 @@ files_template:
 docker_networks:
   - name: "{{ docker_dns_net }}"
 docker_ports:
-  - 8080:8080/tcp
+  - "{{ base_tailip }}:8080:8080/tcp"
   - "53:5300/tcp"
   - "{{ base_lanip }}:53:5300/udp"
 docker_volumes:

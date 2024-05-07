@@ -1,0 +1,23 @@
+---
+service_directory: "rimgo"
+image: "codeberg.org/rimgo/rimgo:1.2.3"
+urls_url: "{{ urls.rimgo }}"
+
+state: started
+
+docker_env:
+  ADDRESS: "0.0.0.0"
+  IMGUR_CLIENT_ID: "546c25a59c58ad7"
+  PORT: "8080"
+  PRIVACY_CLOUDFLARE: "false"
+  PRIVACY_PROVIDER: "ISP"
+  PRIVACY_COUNTRY: "UK"
+  PRIVACY_NOT_COLLECTED: "false"
+  PRIVACY_IP: "true"
+  PRIVACY_URL: "false"
+  PRIVACY_DEVICE: "false"
+  PRIVACY_DIAGNOSTICS: "true"
+docker_cap_drop:
+  - ALL
+docker_read_only: true
+docker_network_internal: false

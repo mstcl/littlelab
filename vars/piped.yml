@@ -8,25 +8,15 @@ state: "started"
 
 config_file: "config.properties"
 
-files_make:
-  - dest: "{{ docker_postgres_location }}"
-    owner: "70"
-    permission: "0700"
-
 files_template:
   - src: "{{ config_file }}" # templates the configuration file declared above
     dest: "{{ base_directory }}/{{ service_directory }}"
 
-docker_attach_postgres: true
-docker_postgres_image: "postgres:15-alpine"
-docker_postgres_user: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_USER') }}"
-docker_postgres_password: "{{ lookup('get_secrets', path='/piped', secret_name='PIPED_POSTGRES_PASSWORD') }}"
-docker_postgres_db: "{{ service_directory }}"
-docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
-
 docker_network_internal: false
 docker_connect_to_traefik: false
 docker_connect_to_nginx: true
+docker_networks:
+  - name: "{{ docker_pg_network }}"
 docker_cap_drop:
   - SYS_ADMIN
   - AUDIT_WRITE

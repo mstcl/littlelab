@@ -1,1 +1,3 @@
 {{ base_hostname }} tcp://{{ service_directory }}-socket-proxy:2375
+{{ hostvars.cloudbox.base_hostname }} tcp://{{ hostvars.cloudbox.base_tailip }}:2376
+{{ hostvars.netbox.base_hostname }} tcp://{{ hostvars.netbox.base_tailip }}:2376
