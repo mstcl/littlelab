@@ -6,7 +6,7 @@
     - vars/homepage.yml
   vars:
     service_directory: "homepage"
-    image: "ghcr.io/gethomepage/homepage:v0.8.12"
+    image: "ghcr.io/gethomepage/homepage:v0.8.13"
     url: "{{ urls.homepage }}"
 
   roles:
