@@ -2,7 +2,7 @@
 PORT: 8080
 
 # The number of workers to use for the server
-HTTP_WORKERS: 2
+HTTP_WORKERS: 1
 
 # Proxy
 PROXY_PART: https://{{ urls['piped-proxy'].sub }}.{{ base_tld }}
@@ -21,7 +21,7 @@ API_URL: https://{{ expanded_url }}
 FRONTEND_URL: https://{{ urls['piped-frontend'].sub }}.{{ base_tld }}
 
 # Enable haveibeenpwned compromised password API
-COMPROMISED_PASSWORD_CHECK: true
+COMPROMISED_PASSWORD_CHECK: false
 
 # Disable Registration
 DISABLE_REGISTRATION: false
@@ -30,11 +30,11 @@ DISABLE_REGISTRATION: false
 FEED_RETENTION: 30
 
 # Hibernate properties
-hibernate.connection.url: jdbc:postgresql://{{ service_directory }}-postgres:5432/piped
+hibernate.connection.url: jdbc:postgresql://postgres:5432/piped
 hibernate.connection.driver_class: org.postgresql.Driver
 hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-hibernate.connection.username: {{ docker_postgres_user }}
-hibernate.connection.password: {{ docker_postgres_password }}
+hibernate.connection.username: {{ pg.piped.user }}
+hibernate.connection.password: {{ pg.piped.password }}
 
 # frontend properties
-frontend.statusPageUrl: https://{{ urls.tinystatus.sub }}.{{ base_tld }}
+frontend.statusPageUrl: https://{{ urls.gatus.sub }}.{{ base_tld }}

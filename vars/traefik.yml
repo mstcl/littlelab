@@ -14,8 +14,6 @@ cf:
 create_docker_network_networks:
   - name: "{{ network }}"
     subnet: "{{ ipam_subnet }}.0/24"
-  - name: "{{ docker.traefik_network }}"
-  - name: "{{ docker.expose_network }}"
 
 packages_native:
   - logrotate
@@ -73,13 +71,20 @@ docker_ports:
   - "80:10080"
   - "443:10443"
 docker_env:
+  # HTTP catchall
+  TRAEFIK_ENTRYPOINTS_WEB: "true"
+  TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: ":10080"
+  TRAEFIK_ENTRYPOINTS_WEB_FORWARDEDHEADERS_INSECURE: "false"
+  TRAEFIK_ENTRYPOINTS_WEB_FORWARDEDHEADERS_TRUSTEDIPS: "127.0.0.1/32"
   CLOUDFLARE_EMAIL: "{{ cf.email }}"
   CLOUDFLARE_DNS_API_TOKEN: "{{ cf.token }}"
 docker_volumes:
-  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
+  # - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/etc/traefik/traefik.yml:ro"
   - "{{ base_directory }}/{{ service_directory }}/dynamic:/etc/traefik/dynamic:ro"
   - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
   - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
   - "/var/log/traefik:/log"
 docker_memory: "700MB"
 docker_cpus: "0.75"
+docker_labels:
+  traefik.enabled: "true"

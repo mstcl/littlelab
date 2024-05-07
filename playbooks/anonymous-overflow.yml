@@ -1,14 +1,12 @@
 ---
-- name: Install upsnap
+- name: Install anonymous-overflow
   hosts: homelab
   gather_facts: false
   vars_files:
-    - vars/upsnap.yml
+    - vars/anonymous-overflow.yml
 
   roles:
-    - role: ufw
     - role: urls
-    - role: files
     - role: docker_image
     - role: docker
     - role: traefik

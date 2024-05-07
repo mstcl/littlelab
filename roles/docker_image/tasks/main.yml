@@ -1,13 +1,16 @@
 ---
 - name: Pull container repository
-  ansible.builtin.include_role:
-    name: git
-  vars:
-    git_repo: "{{ docker_image_container_repository }}"
-    git_branch: "{{ docker_image_container_branch }}"
-    git_destination: "{{ base_directory }}/containers"
+  tags: docker
+  ansible.builtin.git:
+    repo: "{{ docker_image_container_repository }}"
+    dest: "{{ base_directory }}/containers"
+    clone: true
+    version: "{{ docker_image_container_branch }}"
+    single_branch: true
+    update: true
 
 - name: Build {{ docker_image }}
+  tags: docker
   community.docker.docker_image:
     name: "{{ docker_image }}"
     build:

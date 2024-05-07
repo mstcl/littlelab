@@ -1,6 +1,6 @@
 ---
 service_directory: "upsnap"
-image: "ghcr.io/seriousm4x/upsnap:4.2.9"
+image: "seriousm4x/upsnap"
 urls_url: "{{ urls.upsnap }}"
 
 state: started
@@ -9,8 +9,6 @@ files_make:
   - dest: "{{ location.docker_data }}/{{ service_directory }}"
 
 docker_network_mode: "host"
-docker_ports:
-  - 8000:8000
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/data:/app/pb_data"
 docker_env:
@@ -20,8 +18,6 @@ docker_env:
   UPSNAP_SCAN_TIMEOUT: "500ms"
   UPSNAP_PING_PRIVILEGED: "false"
   UPSNAP_WEBSITE_TITLE: "LD commune"
-docker_dns_servers:
-  - "192.168.1.1"
 docker_connect_to_traefik: false
 docker_network_internal: false
 

@@ -5,59 +5,59 @@
   vars_files:
     - vars/traefik.yml
 
-  pre_tasks:
-    - name: Check if logrotate is installed
-      tags: packages
-      ansible.builtin.package_facts:
-        manager: "auto"
+  # pre_tasks:
+  #   - name: Check if logrotate is installed
+  #     tags: packages
+  #     ansible.builtin.package_facts:
+  #       manager: "auto"
 
   roles:
-    - role: create_docker_network
-    - role: packages
-      when: "'logrotate' not in ansible_facts.packages"
-    - role: systemd
-      when: "'logrotate' not in ansible_facts.packages"
-    - role: create_host_users
-    - role: ufw
-    - role: urls
-    - role: files
-      become: true
+    # - role: create_docker_network
+    # - role: packages
+    #   when: "'logrotate' not in ansible_facts.packages"
+    # - role: systemd
+    #   when: "'logrotate' not in ansible_facts.packages"
+    # - role: create_host_users
+    # - role: ufw
+    # - role: urls
+    # - role: files
+    #   become: true
     - role: docker
-    - role: traefik
+    # - role: traefik
 
-  post_tasks:
-    - name: Restrict traefik certificates and logs
-      become: true
-      tags: permission
-      block:
-        - name: Change mode of certs
-          changed_when: false
-          ansible.builtin.command: "chmod 600 \
-                                  {{ location.docker_data }}/{{ service_directory }}/\
-                                  certs/acme.json"
-        - name: Change mode of logs
-          changed_when: false
-          ansible.builtin.command: "chmod 644 /var/log/traefik/*.log"
-
-    - name: Configure log rotate
-      tags: log
-      ansible.builtin.copy:
-        mode: "0644"
-        owner: "root"
-        dest: "/etc/logrotate.d/traefik"
-        force: false
-        content: |
-          /var/log/traefik/*.log {
-            size 10M
-            rotate 30
-            missingok
-            notifempty
-            compress
-            dateext
-            dateformat .%Y-%m-%d
-            create 0644 traefik traefik
-            postrotate
-              docker kill --signal="USR1" {{ service_directory }}
-            endscript
-          }
-      become: true
+  # post_tasks:
+  #   - name: Restrict traefik certificates and logs
+  #     become: true
+  #     tags: permission
+  #     block:
+  #       - name: Change mode of certs
+  #         changed_when: false
+  #         ansible.builtin.command: "chmod 600 \
+  #                                 {{ location.docker_data }}/{{ service_directory }}/\
+  #                                 certs/acme.json"
+  #       - name: Change mode of logs
+  #         changed_when: false
+  #         ansible.builtin.command: "chmod 644 /var/log/traefik/*.log"
+  #
+  #   - name: Configure log rotate
+  #     tags: log
+  #     ansible.builtin.copy:
+  #       mode: "0644"
+  #       owner: "root"
+  #       dest: "/etc/logrotate.d/traefik"
+  #       force: false
+  #       content: |
+  #         /var/log/traefik/*.log {
+  #           size 10M
+  #           rotate 30
+  #           missingok
+  #           notifempty
+  #           compress
+  #           dateext
+  #           dateformat .%Y-%m-%d
+  #           create 0644 traefik traefik
+  #           postrotate
+  #             docker kill --signal="USR1" {{ service_directory }}
+  #           endscript
+  #         }
+  #     become: true
