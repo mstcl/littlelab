@@ -1,6 +1,6 @@
 ---
 service_directory: "cgit"
-image: "joseluisq/alpine-cgit:2.5"
+image: "joseluisq/alpine-cgit:2.6"
 url: "{{ urls.cgit }}"
 
 state: started
