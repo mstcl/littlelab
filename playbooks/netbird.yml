@@ -33,18 +33,6 @@
             url: "{{ docker_name }}"
         traefik_rule: "Host(`{{ expanded_url }}`) && PathPrefix(`/management.ManagementService/`)"
 
-  post_tasks:
-    - name: Setup netbird docker network
-      community.docker.docker_network:
-        name: "{{ service_directory }}-net"
-        connected:
-          - "{{ service_directory }}-dash"
-          - "{{ service_directory }}-mgmt"
-          - "{{ service_directory }}-signal"
-          - "traefik"
-        appends: true
-        internal: false
-
 - name: Install netbird signal server
   hosts: vpn_host
   gather_facts: false
@@ -56,6 +44,18 @@
     - role: files
     - role: docker
     - role: traefik
+
+  post_tasks:
+    - name: Setup netbird docker network
+      community.docker.docker_network:
+        name: "{{ service_directory }}-net"
+        connected:
+          - "{{ service_directory }}-dash"
+          - "{{ service_directory }}-mgmt"
+          - "{{ service_directory }}-signal"
+          - "traefik"
+        appends: true
+        internal: false
 
 - name: Install turn server for netbird
   hosts: vpn_host

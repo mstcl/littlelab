@@ -1,6 +1,6 @@
 ---
 service_directory: "netbird"
-image: "netbirdio/management:0.27.4"
+image: "netbirdio/management:0.27.6"
 urls_url: "{{ urls.netbird }}"
 config_file: "management.json"
 state: "started"

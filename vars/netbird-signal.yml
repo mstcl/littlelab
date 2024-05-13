@@ -1,6 +1,6 @@
 ---
 service_directory: "netbird"
-image: "netbirdio/signal:0.27.4"
+image: "netbirdio/signal:0.27.6"
 urls_url: "{{ urls.netbird }}"
 
 state: "started"
