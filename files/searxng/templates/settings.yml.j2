@@ -15,7 +15,7 @@ brand:
 
 search:
   safe_search: 0
-  autocomplete: "google"
+  autocomplete: "duckduckgo"
   autocomplete_min: 4
   default_lang: "all"
   ban_time_on_fail: 5
@@ -39,7 +39,7 @@ server:
   secret_key: "{{ searxng_secret }}"
   image_proxy: true
   http_protocol_version: "1.0"
-  method: "POST"
+  method: "GET"
   default_http_headers:
     X-Content-Type-Options: nosniff
     X-XSS-Protection: 1; mode=block
@@ -131,7 +131,6 @@ engines:
 
   - name: annas archive
     engine: annas_archive
-    disabled: true
     shortcut: aa
 
   - name: apk mirror
@@ -173,6 +172,7 @@ engines:
     engine: artic
     shortcut: arc
     timeout: 4.0
+    disabled: true
 
   - name: arxiv
     engine: arxiv
@@ -205,14 +205,17 @@ engines:
   - name: bing images
     engine: bing_images
     shortcut: bii
+    disabled: true
 
   - name: bing news
     engine: bing_news
     shortcut: bin
+    disabled: true
 
   - name: bing videos
     engine: bing_videos
     shortcut: biv
+    disabled: true
 
   - name: bitbucket
     engine: xpath
@@ -263,6 +266,7 @@ engines:
     engine: openverse
     categories: images
     shortcut: opv
+    disabled: true
 
   - name: chefkoch
     engine: chefkoch
@@ -351,6 +355,7 @@ engines:
     engine: deviantart
     shortcut: da
     timeout: 3.0
+    disabled: true
 
   - name: ddg definitions
     engine: duckduckgo_definitions
@@ -473,6 +478,7 @@ engines:
     # api_key: 'apikey' # required!
     # Or you can use the html non-stable engine, activated by default
     engine: flickr_noapi
+    disabled: true
 
   - name: free software directory
     engine: mediawiki
@@ -507,6 +513,7 @@ engines:
     engine: gentoo
     shortcut: ge
     timeout: 10.0
+    disabled: true
 
   - name: gitlab
     engine: json_engine
@@ -540,7 +547,6 @@ engines:
     content_query: description
     categories: [it, repos]
     shortcut: cb
-    disabled: true
     about:
       website: https://codeberg.org/
       wikidata_id:
@@ -557,6 +563,7 @@ engines:
   - name: google images
     engine: google_images
     shortcut: goi
+    disabled: true
 
   - name: google news
     engine: google_news
@@ -633,6 +640,7 @@ engines:
   - name: hoogle
     engine: xpath
     paging: true
+    disabled: true
     search_url: https://hoogle.haskell.org/?hoogle={query}&start={pageno}
     results_xpath: '//div[@class="result"]'
     title_xpath: './/div[@class="ans"]//a'
@@ -744,6 +752,7 @@ engines:
     engine: loc
     shortcut: loc
     categories: images
+    disabled: true
 
   - name: lingva
     engine: lingva
@@ -1239,6 +1248,7 @@ engines:
   - name: unsplash
     engine: unsplash
     shortcut: us
+    disabled: true
 
   - name: yahoo
     engine: yahoo
@@ -1394,6 +1404,7 @@ engines:
     shortcut: wc
     categories: images
     number_of_results: 10
+    disabled: true
 
   - name: wolframalpha
     shortcut: wa
@@ -1605,6 +1616,7 @@ engines:
     engine: wallhaven
     # api_key: abcdefghijklmnopqrstuvwxyz
     shortcut: wh
+    disabled: true
 
   - name: wikimini
     engine: xpath
@@ -1648,6 +1660,7 @@ engines:
     shortcut: brimg
     categories: [images, web]
     brave_category: images
+    disabled: true
 
   - name: brave.videos
     engine: brave

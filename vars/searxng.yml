@@ -8,7 +8,6 @@ state: "started"
 config_file: "settings.yml"
 config_dir: "{{ base_directory }}/{{ service_directory }}/config"
 instance_name: "SearXNG"
-searxng_secret: "{{ lookup('get_secrets', path='/searxng', secret_name='SEARXNG_SECRET') }}"
 
 files_make:
   - dest: "{{ location.docker_data }}/{{ service_directory }}_redis"
@@ -34,5 +33,5 @@ docker_capabilities:
   - SETUID
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/config:/etc/searxng:rw"
-docker_memory: "300MB"
+docker_memory: "110M"
 docker_cpus: "0.50"

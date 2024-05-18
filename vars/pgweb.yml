@@ -19,6 +19,8 @@ create_pgweb_bookmarks_services:
 traefik_middlewares:
   - internal@file
 
+docker_memory: "110M"
+docker_swap: "120M"
 docker_networks:
   - name: "{{ docker_pg_network }}"
 docker_cap_drop:

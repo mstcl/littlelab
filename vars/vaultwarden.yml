@@ -4,14 +4,15 @@ urls_url: "{{ urls.vaultwarden }}"
 
 state: started
 
-db_location: "{{ location.docker_data }}/{{ service_directory }}"
-
 files_make:
-  - dest: "{{ db_location }}"
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
 
 traefik_middlewares:
   - "internal@file"
 
+docker_network_internal: false
+docker_networks:
+  - name: "{{ docker_pg_network }}"
 docker_user: 1000:1000
 docker_cap_drop:
   - ALL
@@ -31,16 +32,19 @@ docker_capabilities:
   - SETPCAP
 docker_env:
   DOMAIN: "https://{{ expanded_url }}"
-  SMTP_HOST: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_HOST') }}"
+  SMTP_HOST: "{{ smtp_host }}"
   SMTP_PORT: "465"
-  SMTP_FROM: "{{ lookup('get_secrets', path='/vaultwarden', secret_name='VAULTWARDEN_SMTP_SENDER') }}"
+  SMTP_FROM: "{{ smtp_from }}"
   SMTP_SECURITY: "force_tls"
-  SMTP_USERNAME: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_USER') }}"
-  SMTP_PASSWORD: "{{ lookup('get_secrets', path='/smtp', secret_name='SMTP_PASSWORD') }}"
+  SMTP_USERNAME: "{{ smtp_user }}"
+  SMTP_PASSWORD: "{{ smtp_password }}"
   LOG_LEVEL: "error"
   SENDS_ALLOWED: "false"
   ROCKET_PORT: "8080"
+  DATABASE_URL: "postgresql://{{ pg.vaultwarden.user }}:{{ pg.vaultwarden.password }}@postgres/{{ pg.vaultwarden.db }}"
 docker_volumes:
-  - "{{ db_location }}:/data"
+  - "{{ location.docker_data }}/{{ service_directory }}:/data"
+docker_memory: "90M"
+docker_swap: "100M"
 
 backup_weekday: "TUE,SAT"

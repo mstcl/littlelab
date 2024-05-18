@@ -1,6 +1,6 @@
 ---
 service_directory: "zitadel"
-image: "ghcr.io/zitadel/zitadel:v2.51.2"
+image: "ghcr.io/zitadel/zitadel:v2.52.0"
 urls_url: "{{ urls.zitadel }}"
 
 state: started
@@ -40,3 +40,5 @@ docker_command:
   - "start-from-setup"
   - "--masterkeyFromEnv"
 docker_network_internal: false
+docker_memory: "250M"
+docker_swap: "350M"

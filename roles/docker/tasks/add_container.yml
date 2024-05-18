@@ -26,6 +26,7 @@
     cap_drop: "{{ docker_cap_drop | default(omit) }}"
     capabilities: "{{ docker_capabilities | default(omit) }}"
     memory: "{{ docker_memory | default(omit) }}"
+    memory_swap: "{{ docker_swap | default(omit) }}"
     cpus: "{{ docker_cpus | default(omit) }}"
     network_mode: "{{ docker_network_mode | default(omit) }}"
     domainname: "{{ docker_domainname | default(omit) }}"

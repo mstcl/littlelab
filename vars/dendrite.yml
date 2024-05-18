@@ -37,3 +37,5 @@ docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/media:/var/dendrite/media"
   - "{{ location.docker_data }}/{{ service_directory }}/jetstream:/var/dendrite/jetstream"
   - "{{ location.docker_data }}/{{ service_directory }}/search:/var/dendrite/searchindex"
+docker_memory: "250M"
+docker_swap: "260M"

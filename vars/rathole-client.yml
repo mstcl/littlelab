@@ -14,3 +14,5 @@ docker_command:
 docker_connect_to_traefik: false
 docker_env:
   RUST_LOG: "error"
+docker_memory: "20M"
+docker_swap: "30M"

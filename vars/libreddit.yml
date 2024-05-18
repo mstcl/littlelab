@@ -12,3 +12,5 @@ docker_cap_drop:
 docker_env:
   LAYOUT: "clean"
 docker_network_internal: false # Needs internet access
+docker_memory: "100M"
+docker_swap: "110M"

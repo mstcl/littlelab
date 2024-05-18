@@ -10,3 +10,5 @@ traefik_middlewares:
 
 docker_volumes:
   - "{{ location.books }}:/books:ro"
+docker_memory: "20M"
+docker_swap: "30M"

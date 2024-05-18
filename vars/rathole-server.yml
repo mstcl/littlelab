@@ -17,3 +17,5 @@ docker_ports:
   - "{{ rathole_server_port }}:{{ rathole_server_port }}"
   # - 80:80
   # - 443:443
+docker_memory: "20M"
+docker_swap: "30M"

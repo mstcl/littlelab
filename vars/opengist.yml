@@ -21,3 +21,5 @@ docker_env:
   OG_OIDC_DISCOVERY_URL: "{{ oidc_discovery_url }}"
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}:/opengist"
+docker_memory: "70M"
+docker_swap: "80M"

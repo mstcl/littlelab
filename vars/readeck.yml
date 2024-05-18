@@ -18,6 +18,8 @@ docker_env:
   READECK_SERVER_PREFIX: "/"
   READECK_ALLOWED_HOSTS: "{{ expanded_url }}"
   READECK_USE_X_FORWARDED: "true"
+docker_memory: "100M"
+docker_swap: "110M"
 
 traefik_middlewares:
   - "internal@file"

@@ -5,9 +5,14 @@ urls_url: "{{ urls.quetre }}"
 
 state: started
 
+docker_memory: "100M"
+docker_swap: "110M"
 docker_attach_redis: true
 docker_redis_image: "registry.redict.io/redict:7.3.0"
 docker_network_internal: false # Needs internet access
+docker_cap_drop:
+  - ALL
+docker_read_only: true
 docker_env:
   PORT: "8080"
   NODE_ENV: "production"

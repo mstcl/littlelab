@@ -1,7 +1,7 @@
 ---
 service_directory: "sliding-sync"
-image: "ghcr.io/matrix-org/sliding-sync:v0.99.15"
-urls_url: "syncv3.{{ base_tld }}"
+image: "ghcr.io/matrix-org/sliding-sync:v0.99.17"
+urls_url: "{{ base_tld }}"
 
 state: started
 
@@ -18,3 +18,5 @@ docker_env:
   SYNCV3_SECRET: "{{ sliding_sync_secret }}"
   SYNCV3_BINDADDR: ":8008"
   SYNCV3_DB: "postgresql://{{ pg['sliding-sync'].user }}:{{ pg['sliding-sync'].password }}@postgres/{{ pg['sliding-sync'].db }}?sslmode=disable"
+docker_memory: "50M"
+docker_swap: "60M"

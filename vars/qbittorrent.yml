@@ -66,4 +66,4 @@ docker_ports:
   - "{{ io_port }}:{{ io_port }}"
   - "{{ io_port }}:{{ io_port }}/udp"
 docker_cpus: "0.50"
-docker_memory: "200MB"
+docker_memory: "200M"

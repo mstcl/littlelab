@@ -4,22 +4,10 @@
   gather_facts: false
   vars_files:
     - vars/actual.yml
-  vars:
-    service_directory: "actual"
-    image: "actualbudget/actual-server:24.3.0-alpine"
-    url: "{{ urls.actual }}"
 
   roles:
     - role: urls
-    - role: config
-      vars:
-        config_directories: [{}]
+    - role: files
     - role: docker
     - role: traefik
-      vars:
-        traefik_servers:
-          - port: 5006
-        traefik_middlewares:
-          - "internal-ip@file"
     - role: backup
-    - role: homepage

@@ -7,3 +7,6 @@ state: started
 
 traefik_middlewares:
   - "internal@file"
+
+docker_memory: "50M"
+docker_swap: "60M"

@@ -1,6 +1,6 @@
 ---
 service_directory: "dozzle"
-image: "amir20/dozzle:v6.5.2"
+image: "amir20/dozzle:v6.6.2"
 urls_url: "{{ urls.dozzle }}"
 
 state: started
@@ -22,7 +22,7 @@ docker_env:
 docker_cap_drop:
   - ALL
 docker_user: 1000:1000
-docker_memory: "256M"
+docker_memory: "60M"
 docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}:/data"
 

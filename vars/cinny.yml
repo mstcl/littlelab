@@ -25,3 +25,5 @@ docker_capabilities:
   - DAC_OVERRIDE
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/config.json"
+docker_memory: "30M"
+docker_swap: "40M"

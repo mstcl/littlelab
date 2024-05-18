@@ -18,6 +18,8 @@ docker_env:
   OAUTH2_OIDC_DISCOVERY_ENDPOINT: "https://{{ base_tld }}"
   OAUTH2_USER_CREATION: "1"
 docker_network_internal: false
+docker_memory: "100M"
+docker_swap: "110M"
 
 traefik_middlewares:
   - "internal@file"

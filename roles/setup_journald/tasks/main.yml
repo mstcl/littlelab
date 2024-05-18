@@ -1,0 +1,25 @@
+---
+- name: Ensure journald.conf.d config directory exists
+  tags: config
+  ansible.builtin.file:
+    path: "/etc/systemd/journald.conf.d"
+    owner: "0"
+    state: "directory"
+    mode: "0775"
+
+- name: Template config file
+  ansible.builtin.template:
+    src: "maxsize.conf.j2"
+    dest: "/etc/systemd/journald.conf.d/maxsize.conf"
+    mode: "0644"
+    owner: "0"
+
+- name: Reload and restard the systemd-journald service
+  block:
+    - name: Reload systemd daemons
+      ansible.builtin.systemd:
+        daemon_reload: true
+    - name: Restart journald
+      ansible.builtin.systemd:
+        name: systemd-journald
+        state: restarted

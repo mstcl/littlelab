@@ -32,4 +32,4 @@ docker_env:
   PGID: "150"
   TZ: "{{ base_timezone }}"
 docker_cpus: '0.80'
-docker_memory: '300MB'
+docker_memory: '300M'

@@ -1,6 +1,6 @@
 ---
 service_directory: "glance"
-image: "glanceapp/glance:v0.3.0"
+image: "glanceapp/glance:v0.4.0"
 urls_url: "{{ urls.glance }}"
 
 state: started
@@ -16,6 +16,8 @@ docker_volumes:
   - "/etc/timezone:/etc/timezone:ro"
   - "/etc/localtime:/etc/locatime:ro"
 docker_network_internal: false
+docker_memory: "30M"
+docker_swap: "40M"
 
 traefik_middlewares:
   - "internal@file"

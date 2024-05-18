@@ -84,7 +84,7 @@ docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/certs:/letsencrypt"
   - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
   - "/var/log/traefik:/log"
-docker_memory: "700MB"
+docker_memory: "700M"
 docker_cpus: "0.75"
 docker_labels:
   traefik.enabled: "true"

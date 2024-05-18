@@ -1,6 +1,6 @@
 ---
 service_directory: "isaiah"
-image: "mosswill/isaiah:1.14.1"
+image: "mosswill/isaiah:1.18.0"
 urls_url: "{{ urls.isaiah }}"
 
 state: started
@@ -16,6 +16,8 @@ files_template:
     dest: "{{ base_directory }}/{{ service_directory }}"
     permission: "0644"
 
+docker_memory: "50M"
+docker_swap: "60M"
 docker_env:
   SERVER_PORT: "8080"
   AUTHENTICATION_ENABLED: "false"

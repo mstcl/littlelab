@@ -11,3 +11,5 @@ docker_capabilities:
   - CHOWN
   - SETGID
   - SETUID
+docker_memory: "30M"
+docker_swap: "40M"

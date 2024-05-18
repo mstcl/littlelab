@@ -11,3 +11,5 @@ docker_env:
 docker_read_only: true
 docker_cap_drop: ALL
 docker_network_internal: false
+docker_memory: "50M"
+docker_swap: "60M"

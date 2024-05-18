@@ -34,3 +34,5 @@ docker_volumes:
   - "{{ location.films }}:/movies:ro" # location of movies
   - "{{ location.music }}:/music:ro" # location of music
   - "{{ location.books }}:/books:ro" # location of books
+docker_memory: "30M"
+docker_swap: "40M"

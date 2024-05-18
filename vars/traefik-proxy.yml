@@ -60,5 +60,5 @@ docker_volumes:
   - "{{ location.docker_data }}/{{ service_directory }}/plugins:/plugins-storage"
   - "/var/log/traefik:/log"
 docker_cpus: "1"
-docker_memory: "500MB"
+docker_memory: "500M"
 docker_read_only: true

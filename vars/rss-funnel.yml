@@ -18,3 +18,5 @@ docker_command:
   - "0.0.0.0:8080"
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}/funnel.yml:/funnel.yml"
+docker_memory: "50M"
+docker_swap: "60M"

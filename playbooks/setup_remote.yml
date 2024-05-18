@@ -29,6 +29,8 @@
       tags: user
     - role: setup_sshd
       tags: sshd
+    - role: setup_journald
+      tags: setup_journald
     - role: setup_ufw
       tags: ufw
     - role: setup_docker

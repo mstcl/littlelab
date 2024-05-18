@@ -23,6 +23,8 @@ docker_entrypoint:
 docker_network_internal: false
 docker_connect_to_traefik: true
 docker_connect_to_nginx: true
+docker_memory: "100M"
+docker_swap: "110M"
 
 traefik_create_service: false
 traefik_service_name: nginx

@@ -34,3 +34,6 @@ docker_volumes:
   - "{{ location.music }}:/shares:ro"
   - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/config/slskd.yml"
   - "{{ location.docker_data }}/{{ service_directory }}:/app"
+  - "/etc/localtime:/etc/localtime:ro"
+docker_memory: "550M"
+docker_swap: "600M"
