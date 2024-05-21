@@ -13,6 +13,7 @@ entryPoints:
       insecure: false
       trustedIPs:
         - "127.0.0.1/32"
+        - "172.16.0.0/12"
         - "{{ ipam_subnet }}.1"
     http:
       middlewares:
@@ -33,6 +34,7 @@ entryPoints:
       insecure: false
       trustedIPs:
         - "127.0.0.1/32"
+        - "172.16.0.0/12"
         - "{{ ipam_subnet }}.1"
     http:
       middlewares:
