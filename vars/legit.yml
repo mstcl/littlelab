@@ -1,12 +1,11 @@
 ---
 service_directory: "legit"
-image: "icyphox/legit"
+image: "mstcl/legit"
 urls_url: "{{ urls.legit }}"
 
 state: started
 
 config_file: "config.yml"
-css_file: "style.css" # (optional)
 config_location: "{{ base_directory }}/{{ service_directory }}"
 
 files_template:
@@ -20,10 +19,6 @@ legit_options:
 docker_volumes:
   - "{{ location.repos }}:/srv/git:ro"
   - "{{ config_location }}/{{ config_file }}:/config/config.yaml"
-  - "{{ config_location }}/{{ css_file }}:/app/static/style.css:ro"
-  - "{{ config_location }}/head.html:/app/templates/head.html:ro"
-  - "{{ config_location }}/index.html:/app/templates/index.html:ro"
-  - "{{ config_location }}/repo-header.html:/app/templates/repo-header.html:ro"
 docker_memory: "30M"
 docker_swap: "40M"
 
