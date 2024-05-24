@@ -1,6 +1,6 @@
 ---
 service_directory: "dozzle"
-image: "amir20/dozzle:v6.6.2"
+image: "amir20/dozzle:v7.0.0"
 urls_url: "{{ urls.dozzle }}"
 
 state: started
