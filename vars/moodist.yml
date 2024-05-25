@@ -1,6 +1,6 @@
 ---
 service_directory: "moodist"
-image: "ghcr.io/remvze/moodist:v1.4.3"
+image: "ghcr.io/remvze/moodist:v1.5.0"
 urls_url: "{{ urls.moodist }}"
 
 state: "started"
