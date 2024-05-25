@@ -1,6 +1,6 @@
 ---
 service_directory: "traefik-access-log"
-image: "alpine:3.19.1"
+image: "alpine:3.20.0"
 state: "started"
 
 docker_name: "traefik-access-log"
