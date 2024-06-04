@@ -1,8 +1,8 @@
 ---
 - name: Get rules
   ansible.builtin.set_fact:
-    hosts_file_service_rules: "{{ hosts_file_service_rules + [base_lanip + ' ' + item.value['sub'] + '.' + base_tld] }}"
-  loop: "{{ urls | dict2items }}"
+    hosts_file_service_rules: "{{ hosts_file_service_rules + [(item.host | default(base_lanip)) + ' ' + item.value['sub'] + '.' + base_tld] }}"
+  loop: "{{ hostvars.bimbox.urls | dict2items }}"
 
 - name: Template hosts file
   delegate_to: localhost
