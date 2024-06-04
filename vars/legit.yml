@@ -1,6 +1,6 @@
 ---
 service_directory: "legit"
-image: "mstcl/legit"
+image: "reg.lonely-desk.top/mstcl/legit:latest"
 urls_url: "{{ urls.legit }}"
 
 state: started

@@ -1,6 +1,6 @@
 ---
 service_directory: "anonymous-overflow"
-image: "httpjamesm/anonymous-overflow"
+image: "reg.lonely-desk.top/httpjames/anonymous-overflow:1.12.1"
 urls_url: "{{ urls['anonymous-overflow'] }}"
 
 state: started

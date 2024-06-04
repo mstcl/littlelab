@@ -16,6 +16,7 @@ config_directories:
   - path: "{{ data_loc }}"
   - path: "{{ cache_loc }}"
 
+docker_user: "1000:1000"
 docker_env:
   GONIC_LISTEN_ADDR: "0.0.0.0:8080"
   GONIC_HTTP_LOG: "False"

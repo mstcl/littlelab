@@ -1,6 +1,6 @@
 ---
 service_directory: "upsnap"
-image: "seriousm4x/upsnap"
+image: "reg.lonely-desk.top/seriousm4x/upsnap:4.2.10"
 urls_url: "{{ urls.upsnap }}"
 
 state: started

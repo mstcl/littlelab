@@ -1,6 +1,6 @@
 ---
 service_directory: "unbound"
-image: "mvance/unbound:latest"
+image: "madnuttah/unbound:1.20.0-0"
 
 state: started
 
@@ -17,7 +17,11 @@ create_docker_network_networks:
     ipam_config:
       - subnet: "{{ unbound_dns_subnet }}/16"
 
+docker_cap_add:
+  - NET_BIND_SERVICE
 docker_volumes:
-  - "{{ base_directory }}/{{ service_directory }}/config:/opt/unbound/etc/unbound"
+  - "{{ base_directory }}/{{ service_directory }}/config/unbound.conf:/usr/local/unbound/unbound.conf:ro"
+  - "{{ base_directory }}/{{ service_directory }}/config/var:/usr/local/unbound/var"
+  - "{{ base_directory }}/{{ service_directory }}/config/root.hints:/usr/local/unbound/root.hints:ro"
 docker_networks:
   - name: "{{ docker_dns_net }}"

@@ -16,6 +16,7 @@ files_template:
   - src: "config.xml"
     dest: "{{ data_location }}"
     force: false
+    permission: "0600"
 
 traefik_servers:
   - url: "{{ service_directory }}"

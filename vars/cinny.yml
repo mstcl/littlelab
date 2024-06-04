@@ -9,11 +9,11 @@ state: started
 files_template:
   - src: "{{ config_file }}"
     dest: "{{ base_directory }}/{{ service_directory }}"
+    permission: "0644"
 
 traefik_servers:
   - url: "{{ service_directory }}"
     port: 80
-
 
 docker_cap_drop:
   - ALL
@@ -24,6 +24,6 @@ docker_capabilities:
   - FOWNER
   - DAC_OVERRIDE
 docker_volumes:
-  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/config.json"
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/app/config.json:ro"
 docker_memory: "30M"
 docker_swap: "40M"

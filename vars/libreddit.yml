@@ -1,6 +1,6 @@
 ---
 service_directory: "libreddit"
-image: "quay.io/redlib/redlib:latest"
+image: "reg.lonely-desk.top/redlib/redlib:0.34.0"
 urls_url: "{{ urls.libreddit }}"
 
 state: "started"

@@ -19,6 +19,7 @@ files_make:
 files_template:
   - src: "{{ config_file }}"
     dest: "{{ base_directory }}/{{ service_directory }}"
+    permission: "0600"
 
 traefik_middlewares:
   - "internal@file"
