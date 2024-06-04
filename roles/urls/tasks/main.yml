@@ -1,6 +1,6 @@
 ---
 - name: Parse URL
-  tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker"]
+  tags: ["urls", "traefik", "homepage", "authelia", "oidc", "docker", "nginx"]
   ansible.builtin.set_fact:
     expanded_url: "{%if urls_url != base_tld %}{{ urls_url.sub + '.' + base_tld }}\
       {% if urls_url.path is defined %}/{{ urls_url.path }}{% endif %}{% else %}{{ base_tld }}{% endif %}"
