@@ -1,0 +1,19 @@
+---
+service_directory: "registry-ui"
+image: "quiq/registry-ui:0.10.1"
+urls_url: "{{ urls['registry-ui'] }}"
+
+state: started
+
+config_file: "config.yml"
+files_template:
+  - src: "{{ config_file }}"
+    dest: "{{ base_directory }}/{{ service_directory }}"
+
+docker_network_internal: false
+docker_user: 1000:1000
+docker_volumes:
+  - "{{ base_directory }}/{{ service_directory }}/{{ config_file }}:/opt/config.yml:ro"
+
+traefik_middlewares:
+  - "internal@file"

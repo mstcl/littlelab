@@ -1,0 +1,26 @@
+listen_addr: 0.0.0.0:8080
+
+uri_base_path: /{{ urls["registry-ui"].path }}
+
+performance:
+  catalog_page_size: 10
+  catalog_refresh_interval: 10
+  tags_count_refresh_interval: 60
+
+registry:
+  hostname: {{ urls.registry.sub }}.{{ base_tld }}
+  auth_with_keychain: true
+
+access_control:
+  anyone_can_view_events: true
+  anyone_can_delete_tags: true
+  admins: []
+
+event_listener:
+  bearer_token: xxx
+  retention_days: 7
+
+  database_driver: sqlite3
+  database_location: data/registry_events.db
+
+  deletion_enabled: false

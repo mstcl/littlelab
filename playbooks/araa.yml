@@ -1,0 +1,11 @@
+---
+- name: Install araa
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/araa.yml
+
+  roles:
+    - role: urls
+    - role: docker
+    - role: traefik

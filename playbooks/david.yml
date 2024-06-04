@@ -1,0 +1,13 @@
+---
+- name: Install david
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/david.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker_image
+    - role: docker
+    - role: traefik

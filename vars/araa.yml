@@ -1,0 +1,26 @@
+---
+service_directory: "araa"
+image: "reg.lonely-desk.top/extravi/araa:latest"
+urls_url: "{{ urls.araa }}"
+
+state: started
+
+docker_env:
+  DOMAIN: "{{ expanded_url }}"
+  PORT: "8080"
+  WORKERS: "1"
+  THREADS: "1"
+  SHEBANG: "!"
+  DEFAULT_THEME: "light"
+  DEFAULT_AUTOCOMPLETE: "ddg"
+  DEFAULT_METHOD: "GET"
+  DONATE_URL: "https://github.com/sponsors/Extravi"
+  ENABLE_API: "False"
+  DEFAULT_LANG: "english"
+  PIPED_INSTANCE: "{{ urls['piped-frontend'].sub }}.{{ base_tld }}"
+  PIPED_API: "{{ urls['piped'].sub }}.{{ base_tld }}"
+  PIPED_PROXY: "{{ urls['piped-proxy'].sub }}.{{ base_tld }}"
+  ENABLE_TORRENTS: "False"
+
+traefik_middlewares:
+  - "internal@file"

@@ -1,0 +1,26 @@
+---
+service_directory: "registry"
+image: "registry:2"
+urls_url: "{{ urls.registry }}"
+
+state: started
+
+files_make:
+  - dest: "{{ location.docker_data }}/{{ service_directory }}"
+
+docker_env:
+  REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: "/registry"
+  REGISTRY_LOG_LEVEL: "error"
+  REGISTRY_HTTP_ADDR: "0.0.0.0:8080"
+  REGISTRY_HTTP_HOST: "https://{{ expanded_url }}"
+  REGISTRY_STORAGE_DELETE_ENABLED: "true"
+  REGISTRY_HTTP_RELATIVEURLS: "true"
+
+docker_user: 1000:1000
+docker_memory: "60M"
+docker_swap: "70M"
+docker_volumes:
+  - "{{ location.docker_data }}/{{ service_directory }}:/registry"
+
+traefik_middlewares:
+  - "internal@file"

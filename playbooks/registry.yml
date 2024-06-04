@@ -1,0 +1,12 @@
+---
+- name: Install registry
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/registry.yml
+
+  roles:
+    - role: urls
+    - role: files
+    - role: docker
+    - role: traefik
