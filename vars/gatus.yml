@@ -1,6 +1,6 @@
 ---
 service_directory: "gatus"
-image: "twinproduction/gatus:v5.10.0"
+image: "twinproduction/gatus:v5.11.0"
 urls_url: "{{ urls.gatus }}"
 
 state: started
