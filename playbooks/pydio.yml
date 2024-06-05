@@ -6,7 +6,7 @@
     - vars/pydio.yml
   vars:
     service_directory: "pydio"
-    image: "pydio/cells-enterprise:4.4.0"
+    image: "pydio/cells-enterprise:4.4.2"
     url: "{{ urls.pydio }}"
 
   roles:
