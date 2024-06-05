@@ -1,6 +1,6 @@
 ---
 service_directory: "traefik-access-log"
-image: "alpine:3.19.1"
+image: "alpine:3.20"
 state: "started"
 
 docker_name: "traefik-access-log"
@@ -10,6 +10,8 @@ docker_volumes:
   - "/var/log/traefik/access.log:/var/log/traefik/access.log:ro"
 docker_command:
   - tail
-  - -f
+  - -F
+  - -n0
   - /var/log/traefik/access.log
 docker_read_only: true
+docker_connect_to_traefik: false
