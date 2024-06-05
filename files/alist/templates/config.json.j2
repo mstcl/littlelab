@@ -1,0 +1,81 @@
+{
+	"force": false,
+	"site_url": "https://{{ expanded_url }}",
+	"cdn": "",
+	"jwt_secret": "{{ alist_jwt_secret }}",
+	"token_expires_in": 48,
+	"database": {
+		"type": "postgres",
+		"host": "postgres",
+		"port": 5432,
+		"user": "{{ pg.alist.user }}",
+		"password": "{{ pg.alist.password }}",
+		"name": "{{ pg.alist.db }}",
+		"db_file": "",
+		"ssl_mode": "disable",
+		"dsn": ""
+	},
+	"meilisearch": {
+		"host": "http://localhost:7700",
+		"api_key": "",
+		"index_prefix": ""
+	},
+	"scheme": {
+		"address": "0.0.0.0",
+		"http_port": 8080,
+		"https_port": -1,
+		"force_https": false,
+		"cert_file": "",
+		"key_file": "",
+		"unix_file": "",
+		"unix_file_perm": ""
+	},
+	"temp_dir": "data/temp",
+	"bleve_dir": "data/bleve",
+	"dist_dir": "",
+	"log": {
+		"enable": false,
+		"name": "",
+		"max_size": 50,
+		"max_backups": 30,
+		"max_age": 28,
+		"compress": false
+	},
+	"delayed_start": 0,
+	"max_connections": 0,
+	"tls_insecure_skip_verify": true,
+	"tasks": {
+		"download": {
+		"workers": 5,
+		"max_retry": 1
+		},
+		"transfer": {
+		"workers": 5,
+		"max_retry": 2
+		},
+		"upload": {
+		"workers": 5,
+		"max_retry": 0
+		},
+		"copy": {
+		"workers": 5,
+		"max_retry": 2
+		}
+	},
+	"cors": {
+		"allow_origins": [
+		"*"
+		],
+		"allow_methods": [
+		"*"
+		],
+		"allow_headers": [
+		"*"
+		]
+	},
+	"s3": {
+		"enable": false,
+		"port": 5246,
+		"ssl": false
+	}
+}
