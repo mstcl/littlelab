@@ -6,7 +6,7 @@
     - vars/filebrowser.yml
   vars:
     service_directory: "filebrowser"
-    image: "filebrowser/filebrowser:v2.28.0"
+    image: "filebrowser/filebrowser:v2.30.0"
     url: "{{ urls.filebrowser }}"
 
   roles:
