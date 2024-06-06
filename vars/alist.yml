@@ -20,7 +20,7 @@ docker_command:
   - "--no-prefix"
 docker_volumes:
   - "{{ base_directory }}/{{ service_directory }}:/opt/alist/data"
-  - "{{ location.files }}:/data:ro"
+  - "{{ location.files }}:/data"
 docker_memory: "80M"
 docker_swap: "90M"
 docker_network_internal: false
