@@ -1,6 +1,6 @@
 ---
 service_directory: "adguard-home"
-image: "adguard/adguardhome:v0.107.48"
+image: "adguard/adguardhome:v0.107.51"
 urls_url: "{{ urls['adguard-home'] }}"
 
 state: started
