@@ -6,7 +6,7 @@
     - vars/picoshare.yml
   vars:
     service_directory: "picoshare"
-    image: "mtlynch/picoshare:1.4.2"
+    image: "mtlynch/picoshare:1.4.4"
     url: "{{ urls.picoshare }}"
 
   roles:
