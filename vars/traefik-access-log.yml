@@ -7,7 +7,7 @@ docker_name: "traefik-access-log"
 docker_networks:
   - name: "{{ docker_traefik_network }}"
 docker_volumes:
-  - "/var/log/traefik/access.log:/var/log/traefik/access.log:ro"
+  - "/var/log/traefik:/var/log/traefik:ro"
 docker_command:
   - tail
   - -F
