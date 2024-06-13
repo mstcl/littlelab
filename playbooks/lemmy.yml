@@ -6,7 +6,7 @@
     - vars/lemmy.yml
   vars:
     service_directory: "lemmy"
-    image: "dessalines/lemmy:0.19.3"
+    image: "dessalines/lemmy:0.19.4"
     url: "{{ urls.lemmy }}"
 
   roles:
