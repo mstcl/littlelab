@@ -5,6 +5,8 @@ urls_url: "{{ urls.araa }}"
 
 state: started
 
+docker_memory: "150M"
+docker_swap: "160M"
 docker_env:
   DOMAIN: "{{ expanded_url }}"
   PORT: "8080"
