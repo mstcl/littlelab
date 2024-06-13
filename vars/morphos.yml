@@ -1,6 +1,6 @@
 ---
 service_directory: "morphos"
-image: "ghcr.io/danvergara/morphos-server:0.3.0"
+image: "ghcr.io/danvergara/morphos-server:0.4.0"
 urls_url: "{{ urls.morphos }}"
 
 state: started

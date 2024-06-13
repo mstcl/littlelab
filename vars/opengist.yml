@@ -1,7 +1,7 @@
 ---
 service_directory: "opengist"
-image: "ghcr.io/thomiceli/opengist:1.7.2"
-urls_url: "{{ urls.opengists }}"
+image: "ghcr.io/thomiceli/opengist:1.7.3"
+urls_url: "{{ urls.opengist }}"
 
 state: started
 
