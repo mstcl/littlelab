@@ -1,6 +1,6 @@
 ---
 service_directory: "radarr"
-image: "linuxserver/radarr:5.4.6"
+image: "linuxserver/radarr:5.6.0"
 urls_url: "{{ urls.radarr }}"
 
 state: started

@@ -1,6 +1,6 @@
 ---
 service_directory: "slskd"
-image: "slskd/slskd:0.20.1"
+image: "slskd/slskd:0.21.0"
 urls_url: "{{ urls.slskd }}"
 
 config_file: "slskd.yml"

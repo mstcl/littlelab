@@ -1,6 +1,6 @@
 ---
 service_directory: "actual"
-image: "actualbudget/actual-server:24.5.0-alpine"
+image: "actualbudget/actual-server:24.6.0-alpine"
 urls_url: "{{ urls.actual }}"
 
 state: started

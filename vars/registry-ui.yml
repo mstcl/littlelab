@@ -1,6 +1,6 @@
 ---
 service_directory: "registry-ui"
-image: "quiq/registry-ui:0.10.1"
+image: "quiq/registry-ui:0.10.2"
 urls_url: "{{ urls['registry-ui'] }}"
 
 state: started

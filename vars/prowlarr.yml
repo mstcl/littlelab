@@ -1,6 +1,6 @@
 ---
 service_directory: "prowlarr"
-image: "linuxserver/prowlarr:1.16.2"
+image: "linuxserver/prowlarr:1.18.0"
 urls_url: "{{ urls.prowlarr }}"
 
 state: started
