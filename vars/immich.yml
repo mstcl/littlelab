@@ -1,6 +1,6 @@
 ---
 service_directory: "immich"
-image: "ghcr.io/immich-app/immich-server:v1.105.1"
+image: "ghcr.io/immich-app/immich-server:v1.106.4"
 urls_url: "{{ urls.immich }}"
 
 state: "started"
@@ -30,9 +30,13 @@ docker_postgres_user: "{{ pg.immich.user }}"
 docker_postgres_password: "{{ pg.immich.password }}"
 docker_postgres_db: "{{ pg.immich.db }}"
 docker_postgres_location: "{{ location.docker_data }}/{{ service_directory }}/db"
+docker_networks:
+  - name: "{{ service_directory }}-net"
+  - name: "{{ service_directory }}-postgres-net"
+  - name: "{{ service_directory }}-redis-net"
 
 traefik_servers:
-  - url: "{{ service_directory }}-server"
+  - url: "{{ service_directory }}"
     port: 3001
 
 backup_weekday: "TUE,SAT"

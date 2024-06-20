@@ -9,24 +9,6 @@
     - role: urls
     - role: files
       become: true
-    - role: docker # server
-      vars:
-        docker_name: "{{ service_directory }}-server"
-        docker_command:
-          - "start.sh"
-          - "immich"
-    - role: docker # microservice
-      vars:
-        docker_name: "{{ service_directory }}-microservices"
-        docker_command:
-          - "start.sh"
-          - "microservices"
-        docker_attach_postgres: false
-        docker_attach_redis: false
-        docker_connect_to_traefik: false
-        docker_networks:
-          - name: "{{ service_directory }}-net"
-          - name: "{{ service_directory }}-postgres-net"
-          - name: "{{ service_directory }}-redis-net"
+    - role: docker
     - role: traefik
     - role: backup
