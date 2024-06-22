@@ -1,0 +1,12 @@
+---
+service_directory: "rclone"
+image: "rclone/rclone:1.67.0"
+
+config_file: "rclone.conf"
+
+files_copy:
+  - src: "rclone.conf"
+    dest: "{{ base_directory }}/{{ service_directory }}/config"
+
+
+backup_hour: "5"

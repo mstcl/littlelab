@@ -1,0 +1,10 @@
+---
+- name: Install rclone
+  hosts: homelab
+  gather_facts: false
+  vars_files:
+    - vars/rclone.yml
+
+  roles:
+    - role: files
+    - role: backup

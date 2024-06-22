@@ -1,0 +1,9 @@
+#!/bin/bash
+
+docker run --rm \
+  --volume "{{ base_directory }}/{{ service_directory }}/config:/config/rclone" \
+  --volume "{{ location.onsite_backups }}:/data:ro" \
+  --user "0:0" \
+  {{ image }} \
+  copy /data encrypt-b2:
+
