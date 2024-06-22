@@ -9,7 +9,7 @@ files_copy:
     dest: "{{ base_directory }}/{{ service_directory }}"
 
 traefik_middlewares:
-  - "internal@ip"
+  - "internal-ip@file"
 docker_command:
   - "-c"
   - "/funnel.yml"
