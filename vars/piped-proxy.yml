@@ -22,6 +22,10 @@ docker_connect_to_traefik: true
 docker_connect_to_nginx: true
 docker_memory: "100M"
 docker_swap: "110M"
+docker_entrypoint:
+  - "/bin/sh"
+  - "-c"
+  - "/app/piped-proxy & sleep 1 && chmod 777 /app/socket/actix.sock"
 
 traefik_create_service: false
 traefik_service_name: nginx
