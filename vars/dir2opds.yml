@@ -1,6 +1,6 @@
 ---
 service_directory: "dir2opds"
-image: "reg.lonely-desk.top/mstcl/dir2opds:1.0.6"
+image: "reg.lonely-desk.top/mstcl/dir2opds:1.2.0"
 urls_url: "{{ urls.dir2opds }}"
 
 state: started

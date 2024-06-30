@@ -1,6 +1,6 @@
 ---
 service_directory: "zitadel"
-image: "ghcr.io/zitadel/zitadel:v2.54.2"
+image: "ghcr.io/zitadel/zitadel:v2.55.0"
 urls_url: "{{ urls.zitadel }}"
 
 state: started
