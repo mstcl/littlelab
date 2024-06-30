@@ -10,3 +10,13 @@
     - role: files
     - role: docker
     - role: traefik
+
+  post_tasks:
+    - name: Restart dozzle to pick up local socket
+      tags: docker
+      community.docker.docker_container:
+        name: "{{ service_directory }}"
+        state: started
+        restart: true
+        comparisons:
+          "*": ignore
